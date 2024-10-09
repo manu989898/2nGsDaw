@@ -10,8 +10,8 @@
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     try {
         $conn = new mysqli(HOST, USERNAME, PASSWD, DBNAME);  // CONNECTION PHASE
-                                                     // EXECUTION PHASE
-        $conn->close(); 						    // DISCONNECTION PHASE
+        // EXECUTION PHASE
+        $conn->close();   // DISCONNECTION PHASE
     }
     catch (mysqli_sql_exception $e) {
         echo "Error connecting to MySQL: " . $e->getMessage();
