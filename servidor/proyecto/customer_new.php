@@ -22,9 +22,12 @@
 			
 			// Attempt select query execution
 			$query = "INSERT INTO customers ( customer_id, cust_first_name, cust_last_name, cust_street_address, marital_status, gender  )
-					  VALUES( " . $p_ID . ", '" . $p_first_name ."','" . $p_last_name ."','" . $adress . "','" . $p_gender . "'," .$p_marital_status  .")";
+					  VALUES( " . $p_ID . ", '" . $p_first_name ."','" . $p_last_name ."','" . $adress . "','" . $p_marital_status. "'," .$p_gender  .")";
+			//PRUEBAS
+			echo $query;	  
 			$table = mysqli_query($conn, $query);
 			// mysqli_commit($conn);
+		
 		}
 	} catch (mysqli_sql_exception $e) {
 		echo  "</p> ERROR:" . $e->getMessage() . "</p>";
@@ -126,6 +129,15 @@
 					<span class="invalid-feedback"><?php echo $text_err;?></span>
 				</div>
 
+				<!-- Estado Civil (Marital Status) -->
+				<div class="form-group">
+					<label>Marital Status</label>
+					<select name="marital_status" class="form-control">
+						<option value="single" <?php echo ($p_marital_status == "single") ? "selected" : ""; ?>>Single</option>
+						<option value="married" <?php echo ($p_marital_status == "married") ? "selected" : ""; ?>>Married</option>
+					</select>
+					<span class="invalid-feedback"><?php echo $text_err;?></span>
+				</div>
 				<!-- Género (Gender) -->
 				<div class="form-group">
 					<label>Gender</label>
@@ -136,15 +148,6 @@
 					<span class="invalid-feedback"><?php echo $text_err;?></span>
 				</div>
 
-				<!-- Estado Civil (Marital Status) -->
-				<div class="form-group">
-					<label>Marital Status</label>
-					<select name="marital_status" class="form-control">
-						<option value="single" <?php echo ($p_marital_status == "single") ? "selected" : ""; ?>>Single</option>
-						<option value="married" <?php echo ($p_marital_status == "married") ? "selected" : ""; ?>>Married</option>
-					</select>
-					<span class="invalid-feedback"><?php echo $text_err;?></span>
-				</div>
 
 				<input type="submit" class="btn btn-primary" value="Submit">
 				<a href="customers.php" class="btn btn-secondary ml-2">Cancel</a>
