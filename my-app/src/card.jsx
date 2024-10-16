@@ -1,12 +1,13 @@
 import React from "react";
 import { seriesList } from "./data/series-static.js";
+import './css/card.css';
 
 export function Card() {
   const series = seriesList.map((serie) => {
     return(
     <article className="card">
         <div className="season">{serie.seasons}</div>
-        <img src={`./img/${serie.img}.jpg`} alt={serie.title} />
+      <img src={`./img/${serie.img}`} alt={serie.title} />
         <div className="container">
           <div className="coincidencia">{serie.matching} % de coincidencia</div>
           <div className="info-card-containter">
