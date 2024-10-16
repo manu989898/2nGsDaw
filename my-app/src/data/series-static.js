@@ -31,7 +31,7 @@ export const seriesList = [
     },
     {
         "id":4,
-        "Title":"Sombra hueso",
+        "title":"Sombra hueso",
         "img":"similar-sombra-hueso.jpg",
         "year":2021,
         "pegi":12,
@@ -41,7 +41,7 @@ export const seriesList = [
     },
     {
         "id":5,
-        "Title":"Gotham",
+        "title":"Gotham",
         "img":"similar-gotham.jpg",
         "year":2019,
         "pegi":16,
@@ -51,7 +51,7 @@ export const seriesList = [
     },
     {
         "id":6,
-        "Title":"Ollie",
+        "title":"Ollie",
         "type":"miniserie",
         "img":"similar-ollie.jpg",
         "year":2022,
@@ -61,7 +61,7 @@ export const seriesList = [
     },
     {
         "id":7,
-        "Title":"Los 100",
+        "title":"Los 100",
         "img":"similars-los100.jpg",
         "year":2020,
         "pegi":16,
@@ -71,7 +71,7 @@ export const seriesList = [
     },
     {
         "id":8,
-        "Title":"Lost in space",
+        "title":"Lost in space",
         "img":"similars-lost-in-space.jpg",
         "year":2021,
         "pegi":7,
