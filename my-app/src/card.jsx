@@ -3,6 +3,7 @@ import { seriesList } from "./data/series-static.js";
 import './css/card.css';
 
 export function Card() {
+  
   const series = seriesList.map((serie) => {
     return(
     <article className="card">
@@ -25,6 +26,9 @@ export function Card() {
       </article>
     );
   } 
+  
   );
-  return <div>{series}</div>;
+  return <div className="grid-similares">{series}</div>;
+
 }
+
