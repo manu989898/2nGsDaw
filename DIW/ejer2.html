@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+       
+        .div1, .div2, .div3 {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .div1, .div3 {
+            align-items: flex-start;
+        }
+
+        .div2 {
+            align-items: flex-end;
+        }
+
+        img.izq {
+            float: left;
+        }
+
+        img.der {
+            float: right;
+        }
+
+        img {
+            width: 150px;
+            border: 8px solid rgb(255, 208, 0);
+            padding: 8px;
+            background-color: rgb(255, 136, 0);
+        }
+
+        .back {
+            background-color: rgb(255, 136, 0);
+            color: white;
+            padding: 5px;
+            width: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .back:hover {
+            background-color: rgb(255, 208, 0);
+        }
+
+        .div1, .div3 {
+            border: 8px solid rgb(255, 136, 0);
+        }
+
+        .div2 {
+            border: 8px solid rgb(255, 208, 0);
+        }
+
+        
+    </style>
+  </head>
+  <body>
+    <div class="div1">
+        <div class="text">
+      <h1>The British Museum</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum in saepe
+        molestiae officiis. Cupiditate minima, quasi inventore ullam magni vel
+        dolore a architecto eius quia expedita quibusdam nisi ab et!
+      </p>
+    </div>
+      <div class="imagen"><img class="izq" src="images.jpeg" alt="" /></div>
+      <p class="back">volver</p>
+    </div>
+    <div class="div2">
+      <h1>The British Museum</h1>
+      <img class="der" src="images2.jpeg" alt="" />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum in saepe
+        molestiae officiis. Cupiditate minima, quasi inventore ullam magni vel
+        dolore a architecto eius quia expedita quibusdam nisi ab et!
+      </p>
+      <p class="back">volver</p>
+    </div>
+    <div class="div3">
+      <h1>The British Museum</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum in saepe
+        molestiae officiis. Cupiditate minima, quasi inventore ullam magni vel
+        dolore a architecto eius quia expedita quibusdam nisi ab et!
+      </p>
+      <img class="izq" src="images3.jpeg" alt="" />
+      <p class="back">volver</p>
+    </div>
+  </body>
+</html>
