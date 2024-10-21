@@ -5,12 +5,14 @@ import './css/card.css';
 export function Card() {
   
   const series = seriesList.map((serie) => {
+  
     return(
     <article className="card">
         <div className="season">{serie.seasons}</div>
       <img src={`./img/${serie.img}`} alt={serie.title} />
         <div className="container">
-          <div className="coincidencia">{serie.matching} % de coincidencia</div>
+          
+          <span className="match">{serie.match}% Match</span>
           <div className="info-card-containter">
             <div>
               <span className="pegiu">{serie.pegui}</span>
