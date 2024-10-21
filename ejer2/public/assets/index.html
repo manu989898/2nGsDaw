@@ -1,0 +1,151 @@
+<html lang="en">
+  
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Web site created using create-react-app">
+    <link rel="apple-touch-icon" href="/logo192.png">
+    <!-- manifest.json provides metadata used when your web app is installed
+    on a user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="/manifest.json">
+    <!-- Notice the use of in the tags above. It will be replaced with the
+    URL of the `public` folder during the build. Only files inside the `public`
+    folder can be referenced from the HTML. Unlike "/favicon.ico" or "favicon.ico",
+    "/favicon.ico" will work correctly both with client-side routing and a
+    non-root public URL. Learn how to configure a non-root public URL by running
+    `npm run build`. -->
+    <title>
+      React App
+    </title>
+    <script defer="" src="/static/js/bundle.js">
+    </script>
+    <style>
+      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe
+      UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing:
+      grayscale; } code { font-family: source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace; } /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9pbmRleC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxTQUFTO0VBQ1Q7O2NBRVk7RUFDWixtQ0FBbUM7RUFDbkMsa0NBQWtDO0FBQ3BDOztBQUVBO0VBQ0U7YUFDVztBQUNiIiwic291cmNlc0NvbnRlbnQiOlsiYm9keSB7XG4gIG1hcmdpbjogMDtcbiAgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJ1NlZ29lIFVJJywgJ1JvYm90bycsICdPeHlnZW4nLFxuICAgICdVYnVudHUnLCAnQ2FudGFyZWxsJywgJ0ZpcmEgU2FucycsICdEcm9pZCBTYW5zJywgJ0hlbHZldGljYSBOZXVlJyxcbiAgICBzYW5zLXNlcmlmO1xuICAtd2Via2l0LWZvbnQtc21vb3RoaW5nOiBhbnRpYWxpYXNlZDtcbiAgLW1vei1vc3gtZm9udC1zbW9vdGhpbmc6IGdyYXlzY2FsZTtcbn1cblxuY29kZSB7XG4gIGZvbnQtZmFtaWx5OiBzb3VyY2UtY29kZS1wcm8sIE1lbmxvLCBNb25hY28sIENvbnNvbGFzLCAnQ291cmllciBOZXcnLFxuICAgIG1vbm9zcGFjZTtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0=
+      */
+    </style>
+    <style>
+      * { margin: 0; font-family: Arial, Helvetica, sans-serif; } body { padding:
+      30px; font-size: 19px; } main{ display: grid; grid-template-columns: auto
+      auto auto; gap: 20px; } .img-product { width: 100%; } .star { width: 10%;
+      } .card-container{ margin: 20px; } .card-container-img { position: relative;
+      display: flex; margin: 40px auto 10px 0; } .info-container { position:
+      relative; justify-content: center; display: flex; flex-direction: column;
+      } .info-container h4, h5, p { margin: 5px 0 0 0; } .info-container h5 {
+      font-size: 20px; color: rgb(81, 81, 81); } .discount { margin-right: 12px;
+      color: rgb(202, 34, 205); } .new { position: absolute; display: flex; align-items:
+      center; top: -35px; color: rgb(45, 226, 48); font-size: 20px; } .header-container
+      { display: flex; justify-content: center; align-items: center; height:
+      100px; flex-direction: column; margin-bottom: 30px; } .header-container
+      img { height: 120px; } .header-container h3{ color: rgb(141, 141, 141);
+      } .product-container{ display: flex; flex-direction: column; } @media(min-width:
+      768px){ .product-container { display: flex; flex-direction: row; } }
+    </style>
+    <style>
+      .img-product { width: 100%; } .star { width: 10%; color:yellow; } .card{
+      position: relative; } .card-container-img { position: relative; display:
+      flex; margin: 40px auto 10px 0; } .info-container { position: relative;
+      justify-content: center; display: flex; flex-direction: column; } .info-container
+      h4,h5,p { margin: 5px 0 0 0; } .info-container h5 { font-size: 20px; color:
+      rgb(81, 81, 81); } .discount { margin-right: 12px; color: rgb(202, 34,
+      205); } .new { position: absolute; align-items: center; top: 30px; left:
+      10px; color: rgb(45, 226, 48); font-size: 20px; } h2{ font-size: 1.1rem;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root">
+      <div class="header-container">
+        <img src="assets/images/rocket.gif" alt="rocket">
+        <h2>
+          Rocket store
+        </h2>
+      </div>
+      <main>
+        <article class="card">
+          <section class="card-container-img">
+            <span class="new">
+              <img class="star" src="assets/images/star.png" alt="">
+              New
+            </span>
+            <img class="img-product" src="assets/images/nike.png" alt="">
+          </section>
+          <section>
+            <h2>
+              Nike Wherever
+            </h2>
+            <h2>
+              325€
+            </h2>
+            <h2>
+              These shoes are very comfortable
+            </h2>
+          </section>
+        </article>
+        <article class="card">
+          <section class="card-container-img">
+            <span class="new">
+              <img class="star" src="assets/images/star.png" alt="">
+              New
+            </span>
+            <img class="img-product" src="assets/images/soldOut.png" alt="">
+          </section>
+          <section>
+            <h2>
+              Adidas Wherever
+            </h2>
+            <h2>
+              175€
+              <span style="margin-left: 10px;">
+                30% off
+              </span>
+            </h2>
+            <h2>
+              These shoes are very comfortable
+            </h2>
+          </section>
+        </article>
+        <article class="card">
+          <section class="card-container-img">
+            <span class="new">
+              <img class="star" src="assets/images/star.png" alt="">
+              New
+            </span>
+            <img class="img-product" src="assets/images/reebok.png" alt="">
+          </section>
+          <section>
+            <h2>
+              Reebok Wherever
+            </h2>
+            <h2>
+              150€
+              <span style="margin-left: 10px;">
+                30% off
+              </span>
+            </h2>
+            <h2>
+              These shoes are very comfortable
+            </h2>
+          </section>
+        </article>
+      </main>
+    </div>
+    <!-- This HTML file is a template. If you open it directly in the browser,
+    you will see an empty page. You can add webfonts, meta tags, or analytics
+    to this file. The build step will place the bundled scripts into the <body> tag.
+    To begin the development, run `npm start` or `yarn start`.
+    To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+
+</html>

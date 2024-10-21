@@ -1,0 +1,51 @@
+.img-product {
+    width: 100%;
+  }
+  
+.star {
+  width: 10%;
+  color:yellow;
+}
+.card{
+  position: relative;
+}
+.card-container-img {
+  position: relative;
+  display: flex;
+  margin: 40px auto 10px 0;
+
+}
+
+.info-container {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-container h4,h5,p {
+  margin: 5px 0 0 0;
+}
+
+.info-container h5 {
+  font-size: 20px;
+  color: rgb(81, 81, 81);
+}
+
+.discount {
+  margin-right: 12px;
+  color: rgb(202, 34, 205);
+}
+
+.new {
+  position: absolute;
+  align-items: center;
+  top: 30px;
+  left: 10px;
+  color: rgb(45, 226, 48);
+  font-size: 20px;
+}
+
+h2{
+  font-size: 1.1rem;
+}
