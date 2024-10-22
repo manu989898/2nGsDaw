@@ -1,8 +1,11 @@
 import React from 'react'
+import { Publicaciones } from '../data/publicacions.js'
 
-const Header = () => {
-  return (
-    <div>
+export function Header() {
+
+  const publis = Publicaciones.map((publicacion) => {
+    return(
+      <div>
       <header className="header-container">
         <img
           src="/Users/hola/Desktop/2nGsDaw/instagram/public/images/assets/imgs/Mi-gato-tiene-genes-de-leopardo.jpg"
@@ -20,7 +23,8 @@ const Header = () => {
         />
       </header>
     </div>
-  )
+    );
+  }
+  );
+  return <div>{publis}</div>;
 }
-
-export default Header

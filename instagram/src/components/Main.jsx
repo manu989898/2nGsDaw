@@ -1,6 +1,9 @@
 import React from 'react'
+import { Publicaciones } from '../data/publicacions.js'
 
 const Main = () => {
+  const publis = Publicaciones.map((publicacion) => {
+
   return (
     <div> 
         <main className="main-container">
@@ -8,6 +11,10 @@ const Main = () => {
         </main>
   </div>
   )
+}
+
+);
+return <div>{publis}</div>;
 }
 
 export default Main
