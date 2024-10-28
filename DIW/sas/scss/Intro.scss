@@ -1,0 +1,26 @@
+$bgcolor: #f00;
+$textcolor: #fff;
+$fontsize: 16px;
+$myFont: Arial, sans-serif;
+$myFont2: 'Times New Roman', serif;
+$myBorder: 1px solid #000;
+$myBorder2: 2px dashed #f00;
+
+body {
+  background-color: $bgcolor;
+  color: $textcolor;
+  font-size: $fontsize;
+}
+
+h1 {
+  font-family: $myFont;
+  border: $myBorder;
+}
+
+h2 {
+  font-family: $myFont2;
+  border: $myBorder2;
+}
+
+
+

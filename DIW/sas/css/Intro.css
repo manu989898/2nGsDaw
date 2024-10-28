@@ -1,0 +1,17 @@
+body {
+  background-color: #f00;
+  color: #fff;
+  font-size: 16px;
+}
+
+h1 {
+  font-family: Arial, sans-serif;
+  border: 1px solid #000;
+}
+
+h2 {
+  font-family: "Times New Roman", serif;
+  border: 2px dashed #f00;
+}
+
+/*# sourceMappingURL=Intro.css.map */
