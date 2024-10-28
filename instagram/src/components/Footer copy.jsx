@@ -13,6 +13,7 @@ const Footer = () => {
 
   const likeClass = state.like?"corazon_active":"corazon";
   const saveClass = state.save?"guardar_active":"guardar";
+  const id = state.id;
 
   const actualizarSoloLikeDeUnPost = (id) => {
     const publicacionesActualizadas = Publicaciones.map((publicacion) => {
@@ -28,7 +29,13 @@ const Footer = () => {
     return publicacionesActualizadas;
   }
 
-  
+  const changeLikeState = () => {
+    setState(preState =>({
+        ...preState, // se usa para decir dejame todos como estaban y modificame los siguientes de abajo.
+        like: !preState.like, //Cambiamos el valor de like
+        likeCount: (preState.like?  preState.likeCount-1 : preState.likeCount+1) //Cambiamos el valor de likeCount
+    }));
+  };
   
   const changeSaveState = () => {
     setState(preState =>({
@@ -66,7 +73,7 @@ const Footer = () => {
   </div>
         <div className="footer">
             <div className="footer-icons">
-            <span  className={likeClass} id="corazon" onClick={actualizarSoloLikeDeUnPost}></span>
+            <span  className={likeClass} id="corazon" onClick={actualizarSoloLikeDeUnPost()}></span>
             <span className="burbuja" id="b1"></span>
             <span className="enviar" id="e1"></span>
             <div className="guardar-icon-container">
