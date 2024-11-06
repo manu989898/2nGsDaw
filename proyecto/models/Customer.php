@@ -128,7 +128,7 @@ class Customer extends Model {
                     cust_geo_location = VALUES (cust_geo_location),
                     date_of_birth = VALUES (date_of_birth),
                     marital_status = VALUES (marital_status),
-                    gender = VALUES (gender)
+                    gender = VALUES (gender),
                     income_level = VALUES (income_level)";
 
                     $stmt = $db->conn->prepare($sql);
@@ -162,19 +162,65 @@ class Customer extends Model {
                 }
                 $db->conn->commit();
             } catch (\mysqli_sql_exception $e) {
-                echo "hola ha fallado" + $e->getMessage();
+                echo "hola ha fallado" . $e->getMessage();
                 if ($db->conn)
                     $db->conn->rollback(); 
                 throw new \mysqli_sql_exception($e->getMessage());
             } finally {
-                echo "finLLY";
+                
                 if ($db->conn)
                     // Tancar la connexió
                     $db->closeDB();         				 
             }
         }
-    
-			
+        public static function find($id) {
+            // Crear una instancia de la base de datos
+            $db = new Database();
+            $db->connectDB('./config/config.db'); // Ruta a la base de datos, ajústala si es necesario
+            
+            // Preparar la consulta para evitar inyección SQL
+            $stmt = $db->conn->prepare("SELECT * FROM customers WHERE customer_id = ?");
+            $stmt->bind_param("i", $id); // Suponiendo que `customer_id` es un número entero
+            $stmt->execute();
+            
+            // Obtener el resultado de la consulta
+            $result = $stmt->get_result();
+            if ($result->num_rows === 0) {
+                return null; // Retorna null si no se encuentra el cliente
+            }
+            
+            // Convertir el resultado en un array asociativo
+            $data = $result->fetch_assoc();
+            
+            // Crear una instancia de Customer con los datos obtenidos
+            $customer = new Customer(
+                $data['CUSTOMER_ID'],
+                $data['CUST_FIRST_NAME'],
+                $data['CUST_LAST_NAME'],
+                $data['CUST_STREET_ADDRESS'],
+                $data['CUST_POSTAL_CODE'],
+                $data['CUST_CITY'],
+                $data['CUST_STATE'],
+                $data['CUST_COUNTRY'],
+                $data['PHONE_NUMBERS'],
+                $data['NLS_LANGUAGE'],
+                $data['NLS_TERRITORY'],
+                $data['CREDIT_LIMIT'],
+                $data['CUST_EMAIL'],
+                $data['ACCOUNT_MGR_ID'],
+                $data['CUST_GEO_LOCATION'],
+                $data['DATE_OF_BIRTH'],
+                $data['MARITAL_STATUS'],
+                $data['GENDER'],
+                $data['INCOME_LEVEL']
+            );
+            
+            // Cerrar la conexión y liberar recursos
+            $stmt->close();
+            $db->closeDB();
+            
+            return $customer;
+        }
 }
 
 ?>

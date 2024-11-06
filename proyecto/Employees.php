@@ -52,34 +52,18 @@
             background-color: #ddd;
             color: black;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+        
     </style>
 </head>
 <body>
     <div class="menu">
   
     <h1>Employees</h1>
-    <a href="Customers.php">Customers</a>
     <a href="Employees.php">Employees</a>
     <a href="employeeNew.php">Add Employee</a>
-    <a href="jobs.php">Jobs</a>
-    <a href="locations.php">Locations</a>
-    <a href="warehouses.php">Warehouses</a>
-    <a href="categories.php">Categories</a>
-    <a href="customers.php">Customers</a>
-    <a href="products.php">Products</a>
-    <a href="orders.php">Orders</a>
+    <a href="ModEmployee.php">Mod Employee</a>
+    <a href="Customers.php">Customers</a>
+    
     </div>
 
     <table>

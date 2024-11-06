@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="global.css">
     <title>Document</title>
     <style>
-        body {
+       body {
             background-color: #f3f3f3;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -51,33 +51,19 @@
             background-color: #ddd;
             color: black;
         }
-       table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+         
+      
     </style>
 </head>
+
 <h1>Customers</h1>
 <body>
     <div class="menu">
     <a href="Customers.php">Customers</a>
+    <a href="CustomersNew.php">Add Customer</a>
+    <a href="ModCustomer.php">Mod Customer</a>
     <a href="Employees.php">Employees</a>
-    <a href="employeeNew.php">Add Employee</a>
-    <a href="jobs.php">Jobs</a>
-    <a href="locations.php">Locations</a>
-    <a href="warehouses.php">Warehouses</a>
-    <a href="categories.php">Categories</a>
-    <a href="customers.php">Customers</a>
-    <a href="products.php">Products</a>
-    <a href="orders.php">Orders</a>
+    
     </div>
 
     
@@ -110,8 +96,8 @@
         <?php
         try {
             //Crear un Customer
-            echo "insertando";
-            $customer = new Customer( 12,
+          
+            $customer = new Customer( 13,
                                     "Tomeu",
                                     "Vives",
                                     "C Ses Illes Balears 12",
@@ -121,21 +107,21 @@
                                     "ES",
                                     "123456789",
                                     "ES",
-                                    "SPAIN",
+                                    "SP",
                                     1000.00,
                                     "mcr@gmail.com",
                                     145,
-                                    "123.456, 123.456",
+                                    "[-86.13631, 40.485424, null]",
                                     "2024-01-01",
                                     "married",
                                     "F",
                                     "1000-2000" );
             // Guardar l'empleat a la base de dades
             $customer->save();  // INSERT / UPDATE
-            echo "Hola abans2";
+          
         
         } catch(\mysqli_sql_exception $e) {
-            echo "Hola despres";               
+            
             echo "S'ha produït el següent error:" . "<br>" . $e->getMessage();
         }
             foreach ($customers as $customer) {

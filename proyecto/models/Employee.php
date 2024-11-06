@@ -124,7 +124,7 @@ class Employee extends Model {
 		try {
 			// Connectar a la base de dades
 			$db = new Database();
-			$db->connectDB('C:/temp/config.db');
+			$db->connectDB('./config/config.db');
 			//$db->conn->autocommit(false);
 			//$db->conn->begin_transaction();
 
@@ -161,5 +161,52 @@ class Employee extends Model {
 				$db->closeDB();         				 
 		}
 	}
+
+	public static function find($id) {
+		// Crear una instancia de la base de datos
+		$db = new Database();
+		$db->connectDB('./config/config.db'); // Ajusta la ruta según tu configuración
+		
+		// Preparar la consulta para evitar inyección SQL
+		$stmt = $db->conn->prepare("SELECT * FROM employees WHERE employee_id = ?");
+		$stmt->bind_param("i", $id); // Suponiendo que `employee_id` es un número entero
+		$stmt->execute();
+		
+		// Obtener el resultado de la consulta
+		$result = $stmt->get_result();
+		if ($result->num_rows === 0) {
+			$stmt->close();
+			$db->closeDB();
+			return null; // Retorna null si no se encuentra el empleado
+		}
+		
+		// Convertir el resultado en un array asociativo
+		$data = $result->fetch_assoc();
+		
+		
+		
+		// Usar nombres de columnas en mayúsculas, si es necesario
+		$employee = new Employee(
+			$data['EMPLOYEE_ID'] ?? $data['employee_id'],
+			$data['FIRST_NAME'] ?? $data['first_name'],
+			$data['LAST_NAME'] ?? $data['last_name'],
+			$data['EMAIL'] ?? $data['email'],
+			$data['PHONE_NUMBER'] ?? $data['phone_number'],
+			$data['HIRE_DATE'] ?? $data['hire_date'],
+			$data['JOB_ID'] ?? $data['job_id'],
+			$data['SALARY'] ?? $data['salary'],
+			array_key_exists('COMMISSION_PCT', $data) ? $data['COMMISSION_PCT'] : (array_key_exists('commission_pct', $data) ? $data['commission_pct'] : null),
+			$data['MANAGER_ID'] ?? $data['manager_id'],
+			$data['DEPARTMENT_ID'] ?? $data['department_id']
+	
+		);
+		
+		// Cerrar la conexión y liberar recursos
+		$stmt->close();
+		$db->closeDB();
+		
+		return $employee;
+	}
+	
 }
 ?>

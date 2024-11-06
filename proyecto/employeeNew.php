@@ -121,16 +121,9 @@
   
 
   <h1>Afegir un Nou Empleat</h1>
-  <a href="Customers.php">Customers</a>
-  <a href="Employees.php">Employees</a>
-  <a href="employeeNew.php">Add Employee</a>
-  <a href="jobs.php">Jobs</a>
-  <a href="locations.php">Locations</a>
-  <a href="warehouses.php">Warehouses</a>
-  <a href="categories.php">Categories</a>
-  <a href="customers.php">Customers</a>
-  <a href="products.php">Products</a>
-  <a href="orders.php">Orders</a>
+    <a href="Employees.php">Employees</a>
+    <a href="ModEmployee.php">Mod Employee</a>
+    <a href="Customers.php">Customers</a>
   </div>
 		<form method="POST" action="">
 			<label>ID Empleat:</label><br>

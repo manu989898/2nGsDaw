@@ -1,14 +1,78 @@
+<?php
+	spl_autoload_register(function($classe) {
+		if (file_exists(str_replace('\\','/',$classe) . '.php'))
+			require_once(str_replace('\\','/',$classe) . '.php');
+	});
+
+	function convertToNull($value) {
+		return $value === '' ? null : $value;
+	}
+
+	use Config\Database;
+	use Models\Customer;
+
+    try {
+		// Si el formulari ha estat enviat
+		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			// Obtenir els valors del formulari
+			$customer_id = $_POST['customer_id'];
+            $cust_first_name = $_POST['cust_first_name'];
+            $cust_last_name = $_POST['cust_last_name'];
+            $cust_street_address = $_POST['cust_street_address'];
+            $cust_city = $_POST['cust_city'];
+            $cust_state = $_POST['cust_state'];
+            $cust_postal_code = $_POST['cust_postal_code'];
+            $cust_country = $_POST['cust_country'];
+            $phone_numbers = $_POST['phone_numbers'];
+            $nls_language = $_POST['nls_language'];
+            $nls_territory = $_POST['nls_territory'];
+            $credit_limit = $_POST['credit_limit'];
+            $cust_email = $_POST['cust_email'];
+            $account_mgr_id = $_POST['account_mgr_id'];
+            $cust_geo_location = $_POST['cust_geo_location'];
+            $date_of_birth = $_POST['date_of_birth'];
+            $marital_status = $_POST['marital_status'];
+            $gender = $_POST['gender'];
+            $income_level = $_POST['income_level'];
+
+            // Crear una nova instància d'Employee amb els valors del formulari
+            $customer = new Customer( $customer_id,
+            $cust_first_name,
+            $cust_last_name,
+            $cust_street_address,
+            $cust_city,
+            $cust_state,
+            $cust_postal_code,
+            $cust_country,
+            $phone_numbers,
+            $nls_language,
+            $nls_territory,
+            $credit_limit,
+            $cust_email,
+            $account_mgr_id,
+            $cust_geo_location,
+            $date_of_birth,
+            $marital_status,
+            $gender,
+            $income_level );
+
+
+            // Guardar l'empleat a la base de dades
+            $customer->save();  // INSERT / UPDATE
+        }
+    } catch (\mysqli_sql_exception $e) {
+        echo "S'ha produït el següent error:" . "<br>" . $e->getMessage();
+    }
+?>
 
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="global.css">
-    <title>Document</title>
-    <style>
-        body {
+<html lang="ca">
+	<head>
+		<meta charset="UTF-8">
+		<title>Formulari d'Empleat</title>
+		<style>
+		body {
             background-color: #f3f3f3;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -46,7 +110,12 @@
             width: 50%;
             margin-left: 25%;
         }
-
+		input[type=email] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+		}
         input[type=text] {
             width: 100%;
             padding: 12px 20px;
@@ -63,107 +132,61 @@
             cursor: pointer;
             width: 100%;
         }
-    </style>
-</head>
-<h1>Customers</h1>
-<body>
-    <div class="menu">
-    <a href="hola.php">Customers</a>
-    <a href="index.php">Employees</a>
-    <a href="CustomersNew.php">Add Customer</a>
-    <a href="jobs.php">Jobs</a>
-    <a href="locations.php">Locations</a>
-    <a href="warehouses.php">Warehouses</a>
-    <a href="categories.php">Categories</a>
-    <a href="customers.php">Customers</a>
-    <a href="products.php">Products</a>
-    <a href="orders.php">Orders</a>
-    </div>
-   
-    <form method="POST" action="">
-			<label>ID Empleat:</label><br>
-			<input type="number" name="employee_id" required><br><br>
-			
-			<label>Nom:</label><br>
-			<input type="text" name="first_name" required><br><br>
-			
-			<label>Llinatge:</label><br>
-			<input type="text" name="last_name" required><br><br>
-			
-			<label>Email:</label><br>
-			<input type="email" name="email" required><br><br>
-			
-			<label>Número de Telèfon:</label><br>
-			<input type="text" name="phone_number"><br><br>
-			
-			<label>Data de Contractació:</label><br>
-			<input type="date" name="hire_date" required><br><br>
-			
-			<label>ID de Treball:</label><br>
-			<input type="text" name="job_id" required><br><br>
-			
-			<label>Salari:</label><br>
-			<input type="number" name="salary" step="0.01" required><br><br>
-			
-			<label>Comissió:</label><br>
-			<input type="number" name="commission_pct" step="0.01"><br><br>
-			
-			<label>ID del Gerent:</label><br>
-			<input type="number" name="manager_id"><br><br>
-			
-			<label>ID del Departament:</label><br>
-			<input type="number" name="department_id"><br><br>
-			
-			<input type="submit" value="Afegir Empleat">
-		</form>
+		</style>
+	</head>
+	<body>
+	<div class="menu">
+  
 
-<?php
-
+  <h1>Afegir un Nou Empleat</h1>
+  <a href="Customers.php">Customers</a>
+    <a href="ModCustomer.php">Mod Customer</a>
+    <a href="Employees.php">Employees</a>
+  </div>
        
 
-    require_once 'models/Customer.php';
-    require_once 'models/Database.php';
+		<form method="POST" action="">
+            <label for="customer_id">Customer ID:</label><br>
+            <input type="text" id="customer_id" name="customer_id" required><br>
+            <label for="cust_first_name">First Name:</label><br>
+            <input type="text" id="cust_first_name" name="cust_first_name" required><br>
+            <label for="cust_last_name">Last Name:</label><br>
+            <input type="text" id="cust_last_name" name="cust_last_name" required><br>
+            <label for="cust_street_address">Street Address:</label><br>
+            <input type="text" id="cust_street_address" name="cust_street_address" required><br>
+            <label for="cust_postal_code">Postal Code:</label><br>
+            <input type="text" id="cust_postal_code" name="cust_postal_code" required><br>
+            <label for="cust_city">City:</label><br>
+            <input type="text" id="cust_city" name="cust_city" required><br>
+            <label for="cust_state">State:</label><br>
+            <input type="text" id="cust_state" name="cust_state" required><br>
+            <label for="cust_country">Country:</label><br>
+            <input type="text" id="cust_country" name="cust_country" required><br>
+            <label for="phone_numbers">Phone Numbers:</label><br>
+            <input type="text" id="phone_numbers" name="phone_numbers" required><br>
+            <label for="nls_language">NLS Language:</label><br>
+            <input type="text" id="nls_language" name="nls_language" required><br>
+            <label for="nls_territory">NLS Territory:</label><br>
+            <input type="text" id="nls_territory" name="nls_territory" required><br>
+            <label for="credit_limit">Credit Limit:</label><br>
+            <input type="text" id="credit_limit" name="credit_limit" required><br>
+            <label for="cust_email">Email:</label><br>
+            <input type="email" id="cust_email" name="cust_email" required><br>
+            <label for="account_mgr_id">Account Manager ID:</label><br>
+            <input type="text" id="account_mgr_id" name="account_mgr_id" required><br>
+            <label for="cust_geo_location">Geo Location:</label><br>
+            <input type="text" id="cust_geo_location" name="cust_geo_location" required><br>
+            <label for="date_of_birth">Date of Birth:</label><br>
+            <input type="text" id="date_of_birth" name="date_of_birth" required><br>
+            <label for="marital_status">Marital Status:</label><br>
+            <input type="text" id="marital_status" name="marital_status" required><br>
+            <label for="gender">Gender:</label><br>
+            <input type="text" id="gender" name="gender" required><br>
+            <label for="income_level">Income Level:</label><br>
+            <input type="text" id="income_level" name="income_level" required><br>
 
-
-    try {
-		// Si el formulari ha estat enviat
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			// Obtenir els valors del formulari
-			$employee_id    = $_POST['employee_id'];
-			$first_name     = $_POST['first_name'];
-			$last_name      = $_POST['last_name'];
-			$email          = $_POST['email'];
-			$phone_number   = $_POST['phone_number'];
-			$hire_date      = $_POST['hire_date'];
-			$job_id         = $_POST['job_id'];
-			$salary         = $_POST['salary'];
-			$commission_pct = $_POST['commission_pct'];
-			$manager_id     = $_POST['manager_id'];
-			$department_id  = $_POST['department_id'];
+            <input type="submit" value="Submit">
 			
-			// Crear una nova instància d'Employee amb els valors del formulari
-			$employee = new Employee( $employee_id, 
-									$first_name,
-									$last_name,
-									convertToNull($email),
-									convertToNull($phone_number),
-									convertToNull($hire_date),
-									$job_id, 
-									convertToNull($salary), 
-									convertToNull($commission_pct), 
-									convertToNull($manager_id),
-									convertToNull($department_id) );
-
-			// Guardar l'empleat a la base de dades
-			$employee->save();  // INSERT / UPDATE
-		}
-	} catch(\Exception $e) {
-		echo "S'ha produït el següent error:" . "<br>" . $e->getMessage();
-	}
-
-?>
-    
-</body>
+		</form>
+	</body>
 </html>
-
-    
