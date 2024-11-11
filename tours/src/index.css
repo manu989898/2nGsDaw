@@ -257,3 +257,33 @@ main {
   font-size: 1.5rem;
   cursor: pointer;
 }
+.search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--clr-grey-5);
+  padding: 0.5rem;
+  background-color: rgb(164, 164, 164);
+}
+.search input{
+  padding: 0.5rem;
+  border-radius: var(--radius);
+}
+.search button{
+  background: var(--clr-primary-5);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  text-transform: capitalize;
+  color: var(--clr-white);
+  letter-spacing: var(--spacing);
+  border-color: transparent;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.search button:hover{
+  background: var(--clr-primary-4);
+}
+

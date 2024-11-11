@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Loading from './components/Loading'
 import Tours from './components/ToursList'
 import NoTours from './components/NoTours'
-
+import Video from './components/video.js'
+import Buscador from './components/Buscador.js'
 
 function App() {
   // TODO: Set state loading and tours
@@ -37,9 +38,10 @@ const [tours, setTours] = useState([])
   return (
     <main>
       {loading && <Loading />}
+      
       {!loading && tours.length === 0 && <NoTours fetchTours={fetchTours} />}
       {!loading && tours.length > 0 && <Tours tours={tours} removeTour={removeTour} />}      
-
+      <Video />
     </main>
   )
 }
