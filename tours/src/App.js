@@ -38,7 +38,6 @@ const [tours, setTours] = useState([])
   return (
     <main>
       {loading && <Loading />}
-      
       {!loading && tours.length === 0 && <NoTours fetchTours={fetchTours} />}
       {!loading && tours.length > 0 && <Tours tours={tours} removeTour={removeTour} />}      
       <Video />
