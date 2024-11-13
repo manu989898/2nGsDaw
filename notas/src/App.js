@@ -25,12 +25,18 @@ function App() {
 
   const [searchNote , setSearchNote] = useState('');
   const [darkMode, setDarkMode] = useState(false);
-  const [notes, setNotes] = useState(inicialNotesList);
 
+  
+  const [notes, setNotes] = useState(() => {
+    const savedNotes = JSON.parse(localStorage.getItem('react-notes-app-data'));
+    return savedNotes || inicialNotesList; // Si hay notas guardadas, usarlas; si no, usar la lista inicial.
+  });
+  
   useEffect(() => {
     const savedNotes = JSON.parse(localStorage.getItem('react-notes-app-data'));
     if(savedNotes){
       setNotes(savedNotes);
+      console.log(savedNotes)
     }
   }
   ,[]);
@@ -47,22 +53,25 @@ function App() {
       text: text,
       date: date.toLocaleDateString()
     }
-    const newNotes = [...notes, newNote];
-    setNotes(newNotes);
+    const newNotes = [...notes, newNote]
+    setNotes(newNotes)
   }
 
-  const handleDelete = (id) => {
-    const updateNotes = notes.filter((note) => note.id !== id);
-    setNotes(updateNotes);
+  // This function is for deleting notes in note app with a id
+  const deletingNote = (id) => {
+    const newNotes = notes.filter((note) => note.id !== id);
+    setNotes(newNotes)
   }
-
   return (
     
     <div className={`${darkMode && 'dark-mode'}`}>
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode} />
-        <Search handleSearchNote={setSearchNote} />
-        <NotesList notes={notes.filter((note) => note.text.toLowerCase().includes(searchNote))} handleAddNote={addNote} handleDeleteNote={handleDelete} />
+        <Search handleSearch={setSearchNote} />
+        <NotesList notes={notes.filter((note) => 
+          note.text.includes(searchNote))} 
+          handleAddNote={addNote} 
+          handleDelete={deletingNote} />
       </div>
     </div>
 
