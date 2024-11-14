@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículum Manuel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+
+    <div class="container">
+        <!-- Encabezado con iconos de menú y modo noche -->
+        <div class="header-icons d-flex justify-content-between align-items-center">
+            <!-- Botón para abrir el menú offcanvas -->
+            <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+            </button>
+            <!-- Icono de modo noche -->
+            <i class="bi bi-moon" style="font-size: 1.5rem;"></i>
+        </div>
+
+        <!-- Offcanvas Menu -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menú</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="list-unstyled">
+                    <li><a href="proyectos.html" class="nav-link">Proyectos</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección de Presentación -->
+        <section class="profile-section" id="presentacion">
+            <img src="https://portfoliomanucuestarodriguez.netlify.app/static/media/miyo.1e1564a53ea7562919dc.jpg" class="profile-pic" alt="Foto de perfil">
+            <div>
+                <h2 class="h5 mb-0">Manuel Cuesta Rodriguez</h2>
+                <p class="text-muted mb-0">Web Developer
+                    <span class="badge bg-primary ms-2">JUNIOR</span>
+                </p>
+                <p>
+                    Hola, soy Manu. Me encanta trabajar en equipo y aprender nuevas tecnologías. El campo que más me gusta es el "backend".
+                </p>
+            </div>
+        </section>
+
+        <!-- Título de Estudios y Experiencia -->
+        <div class="section-title" id="estudios">Estudios y Experiencia</div>
+        <div class="grid-section">
+            <!-- Estudios -->
+            <div class="grid-item">
+                <h3 class="h6">Grado medio Mecánica de automóviles</h3>
+                <p class="text-muted">Técnico en electromecánica de vehículos.</p>
+            </div>
+            <div class="grid-item">
+                <h3 class="h6">Grado superior DAW</h3>
+                <p class="text-muted">Grado superior en desarrollo de aplicaciones web.</p>
+            </div>
+            <!-- Experiencia -->
+            <div class="grid-item">
+                <h3 class="h6">Jaguar & Land Rover</h3>
+                <p class="text-muted">4 Años - Oficial de segunda en concesionario Jaguar & Land Rover.</p>
+            </div>
+            <div class="grid-item">
+                <h3 class="h6">Trablisa</h3>
+                <p class="text-muted">3 Años - Técnico en instalaciones de sistemas de seguridad y CCTV.</p>
+            </div>
+        </div>
+
+        <!-- Sección de Idiomas -->
+        <div class="section-title" id="idiomas">Idiomas</div>
+        <section class="grid-item">
+            <ul class="list-unstyled">
+                <li><i class="bi bi-dot"></i> Español (nativo)</li>
+                <li><i class="bi bi-dot"></i> Inglés (medio)</li>
+                <li><i class="bi bi-dot"></i> Catalán (nativo)</li>
+            </ul>
+        </section>
+
+        <!-- Sección de Habilidades -->
+        <div class="section-title" id="habilidades">Habilidades</div>
+        <section class="skills-section">
+            <div class="skill-circle"><img src="imgs/bootstrap.svg" alt="Bootstrap"></div>
+            <div class="skill-circle"><img src="imgs/css.svg" alt="CSS"></div>
+            <div class="skill-circle"><img src="imgs/html5.svg" alt="HTML5"></div>
+            <div class="skill-circle"><img src="imgs/java.svg" alt="Java"></div>
+            <div class="skill-circle"><img src="imgs/javascript.svg" alt="JavaScript"></div>
+            <div class="skill-circle"><img src="imgs/laravel.svg" alt="Laravel"></div>
+            <div class="skill-circle"><img src="imgs/react.svg" alt="React"></div>
+            <div class="skill-circle"><img src="imgs/tailwindcss.svg" alt="Tailwind CSS"></div>
+            <div class="skill-circle"><img src="imgs/php_dark.svg" alt="PHP"></div>
+            <div class="skill-circle"><img src="imgs/blender.svg" alt="Blender"></div>
+            <div class="skill-circle"><img src="imgs/github-light.svg" alt="GitHub"></div>
+            <div class="skill-circle"><img src="imgs/mysql.svg" alt="MySQL"></div>
+        </section>
+
+        <!-- Sección de Contacto -->
+        <div class="section-title" id="contacto">Contacto</div>
+        <section class="contact-section">
+            <div class="contact-item">
+                <i class="bi bi-envelope"></i> <span>apkmanu1@gmail.com</span>
+            </div>
+            <div class="contact-item">
+                <i class="bi bi-phone"></i> <span>+34 633 02 68 48</span>
+            </div>
+            <div class="contact-item">
+                <i class="bi bi-linkedin"></i> <a target="_blank" href="https://www.linkedin.com/in/manuel-cuesta-rodriguez/">LinkedIn</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
