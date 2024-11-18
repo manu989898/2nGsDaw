@@ -1,6 +1,7 @@
 import React from "react";
 import { MdAdd } from "react-icons/md";
 const ExpenseForm = ({
+  //Aquí se desestructuran las props que se pasan desde App.js
   charge,
   amount,
   handleCharge,
@@ -9,7 +10,9 @@ const ExpenseForm = ({
   edit
 }) => {
   return (
-    <form onSubmit={handleSubmit}>
+    //Aquí se crea el formulario que se renderiza en App.js
+        //se le asigna la función handleSubmit al evento onSubmit
+    <form onSubmit={handleSubmit}> 
       <div className="form-center">
         <div className="form-group">
           <label htmlFor="expense">charge</label>
@@ -32,6 +35,7 @@ const ExpenseForm = ({
             name="amount"
             placeholder=""
             value={amount}
+            //se le asigna la función handleAmount al evento onChange
             onChange={handleAmount}
           />
         </div>
