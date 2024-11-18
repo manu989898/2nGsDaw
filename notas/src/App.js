@@ -4,6 +4,7 @@ import NotesList from './components/NotesList'
 import Header from './components/Header'
 import Search from './components/Search'
 import {nanoid} from 'nanoid'
+
 function App() {
   const inicialNotesList = [
     {
