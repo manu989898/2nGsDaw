@@ -1,0 +1,84 @@
+
+.card{
+   width: 100%;
+    border: 1px solid #f5f5f5e5;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 1rem;
+    max-width: 16.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+
+}
+.offer{
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    position: absolute;
+    top:15px;
+    left:0px;
+    z-index: 2;
+    width: 60px;
+    padding: 0.4rem 0.5rem 0.4rem 0.2rem;
+    
+    background-color:#FF8F9C ;
+    color:white;
+    font-weight: 2px;
+    text-shadow: 2px 2px 2px rgba(5,2,1,0.56);
+    font-size: 0.8rem;
+    text-align: center;
+    
+}
+.card:hover{
+    box-shadow: 0px 0px 15px 1px #989898;
+}
+.card h3{
+    color: #FF8F9C;
+    font-size: 0.9rem;
+}
+.card h4{
+    color: #4F4F4F;
+    font-size: 1rem;
+    font-weight: normal;
+}
+.card .price{
+    font-weight: bolder;
+}
+.card del {
+    text-decoration: line-through;
+    font-weight: normal;
+}
+.card img{
+    width: 100%;
+}
+.card .showcase-rating{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 2rem;
+}
+.card .fa-star{
+    color:#F6A355;
+}
+.card .grey-star{
+    color:#acabaa;
+}
+.card .price-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card .price-box button{
+    border-radius: 5px;
+    border: 0;
+    padding: 0.5rem 1rem;
+    color:white;
+    font-weight: 700;
+    background-color: #fb9550;
+    cursor:pointer;
+}
+.card .price-box button:hover{
+    background-color: #e46918;
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}

@@ -1,0 +1,72 @@
+header{
+    
+    position: sticky;
+    top:0;
+    left:0;
+    z-index: 100;
+}
+header .top-header{
+    padding: 0rem 10%;
+    height: 20vh;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #ccc;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .logo{
+    width: 50%;
+}
+
+header .search-container{
+    width: 60%;
+    text-align: center;
+    position: relative;
+}
+header .search-container input{
+    width:100%;
+    padding: 0.8rem 0.8rem;
+    border: 2px solid #de752a92;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: 'Poppins';
+}
+header .search-container input:focus{
+    border-style: none;
+}
+header .search-container .search-btn {
+    background: white;
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    padding: 8px 15px;
+    color:rgb(92, 91, 91)
+}
+
+header .icons-container{
+    text-align: right;
+    width: 20%;
+}
+header .fa-user, .fa-heart, .fa-bag-shopping{
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+}
+
+.main-nav{
+    display: flex;
+    justify-content: center;
+    padding: 1rem 10%;
+    background-color: white;
+}
+.main-nav a{
+    text-decoration: none;
+    margin-right: 2rem;
+    display: inline-block;
+    color: black;
+    font-weight:600;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
