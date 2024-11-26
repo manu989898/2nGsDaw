@@ -267,3 +267,155 @@ table {
 .botones-ordenacion button:hover {
   background-color: #0056b3;
 }
+
+.imagenMarca {
+  width: 150px; /* Establece el ancho deseado */
+  height: 150px; /* Establece la altura deseada */
+  object-fit: cover; /* Ajusta la imagen al contenedor sin distorsionarla */
+  border-radius: 5px; /* Opcional: añade bordes redondeados */
+}
+/* Estilo para el campo de búsqueda */
+.input-busqueda {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 15px;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-busqueda:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.buscador-matricula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 0; /* Elimina cualquier espacio entre elementos */
+  max-width: 500px; /* Ajusta el ancho total para que sea consistente */
+  margin: 0 auto; /* Centra el contenedor */
+}
+
+.etiqueta-matricula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0056b3;
+  color: white;
+  border-radius: 5px 0 0 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-right: none; /* Elimina el borde derecho */
+}
+
+.input-matricula {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none; /* Elimina el borde izquierdo */
+  border-radius: 0 5px 5px 0;
+  width: 200px;
+  text-transform: uppercase; /* Fuerza texto en mayúsculas */
+  box-sizing: border-box; /* Asegura que el padding no altere el tamaño */
+}
+
+.input-matricula:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-buscar {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 5px; /* Agrega un pequeño margen entre el input y el botón */
+}
+
+.btn-buscar:hover {
+  background-color: #003d82;
+}
+
+.btn-buscar {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-buscar:hover {
+  background-color: #003d82;
+}
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+}
+

@@ -7,10 +7,13 @@ const Citas = () => {
   const [idMecanicoSeleccionado, setIdMecanicoSeleccionado] = useState(null);
 
   useEffect(() => {
-    // Obtener citas
+    // Obtener citas con relaciones
     axios
       .get("http://localhost:8000/api/citas")
-      .then((response) => setCitas(response.data))
+      .then((response) => {
+        console.log("Citas obtenidas:", response.data); // Depuración
+        setCitas(response.data);
+      })
       .catch((error) => console.error("Error al obtener las citas:", error));
 
     // Obtener mecánicos disponibles
@@ -28,9 +31,8 @@ const Citas = () => {
       return;
     }
 
-    /*
     try {
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:8000/api/citas/${idCita}/asignar-mecanico`,
         {
           id_mecanico: idMecanicoSeleccionado,
@@ -40,7 +42,7 @@ const Citas = () => {
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
           cita.id_cita === idCita
-            ? { ...cita, estado: "Asignado", id_mecanico: idMecanicoSeleccionado }
+            ? { ...cita, estado: "Asignado", mecanico: { id_mecanico: idMecanicoSeleccionado } }
             : cita
         )
       );
@@ -49,55 +51,55 @@ const Citas = () => {
       alert("No se pudo asignar el mecánico.");
     }
   };
-  */
-};
 
   const columns = [
-    "id_cita",
-    "id_vehiculo",
-    "id_mecanico",
-    "fecha_hora",
-    "tipo_servicio",
-    "estado",
-    "acciones",
+    "ID Cita",
+    "Cliente",
+    "Vehículo",
+    "Mecánico",
+    "Fecha/Hora",
+    "Servicio",
+    "Estado",
+    "Acciones",
   ];
 
   return (
     <div>
       <h2>Citas</h2>
 
+      {/* Selector de mecánico */}
       <div className="asignar-mecanico-container">
-  <select
-    id="mecanico-select"
-    onChange={(e) => setIdMecanicoSeleccionado(e.target.value)}
-  >
-    <option value="">--Seleccionar Mecánico--</option>
-    {mecanicos.map((mecanico) => (
-      <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
-        {mecanico.nombre} (ID: {mecanico.id_mecanico})
-      </option>
-    ))}
-  </select>
-  <button
-    onClick={() => {
-      if (idMecanicoSeleccionado) {
-        alert(`Seleccionaste al mecánico con ID: ${idMecanicoSeleccionado}`);
-      } else {
-        alert("Por favor, selecciona un mecánico primero.");
-      }
-    }}
-    disabled={!idMecanicoSeleccionado} // Deshabilita el botón si no hay selección
-  >
-    Seleccionar Mecánico
-  </button>
-</div>
+        <select
+          id="mecanico-select"
+          onChange={(e) => setIdMecanicoSeleccionado(e.target.value)}
+        >
+          <option value="">--Seleccionar Mecánico--</option>
+          {mecanicos.map((mecanico) => (
+            <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
+              {mecanico.nombre} {mecanico.apellido} (ID: {mecanico.id_mecanico})
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() => {
+            if (idMecanicoSeleccionado) {
+              alert(`Seleccionaste al mecánico con ID: ${idMecanicoSeleccionado}`);
+            } else {
+              alert("Por favor, selecciona un mecánico primero.");
+            }
+          }}
+          disabled={!idMecanicoSeleccionado} // Deshabilita el botón si no hay selección
+        >
+          Seleccionar Mecánico
+        </button>
+      </div>
 
-
+      {/* Tabla de citas */}
       <table>
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col}>{col.replace("_", " ").toUpperCase()}</th>
+              <th key={col}>{col}</th>
             ))}
           </tr>
         </thead>
@@ -105,11 +107,28 @@ const Citas = () => {
           {citas.map((cita) => (
             <tr key={cita.id_cita}>
               <td>{cita.id_cita}</td>
-              <td>{cita.id_vehiculo}</td>
-              <td>{cita.id_mecanico || "No asignado"}</td>
-              <td>{cita.fecha_hora}</td>
-              <td>{cita.tipo_servicio}</td>
-              <td>{cita.estado}</td>
+              <td>
+                {cita.vehiculo?.cliente
+                  ? `${cita.vehiculo.cliente.nombre} ${cita.vehiculo.cliente.apellido}`
+                  : "Cliente no disponible"}
+              </td>
+              <td>
+                {cita.vehiculo
+                  ? `${cita.vehiculo.marca} ${cita.vehiculo.modelo} (${cita.vehiculo.placa})`
+                  : "Vehículo no disponible"}
+              </td>
+              <td>
+                {cita.mecanico
+                  ? `${cita.mecanico.nombre}`
+                  : "No asignado"}
+              </td>
+              <td>{cita.fecha || "Fecha no disponible"}</td>
+              <td>{cita.tipo_servicio || "Servicio no especificado"}</td>
+              <td>
+                {cita.reparacion?.estado
+                  ? cita.reparacion.estado
+                  : "Sin reparación"}
+              </td>
               <td>
                 {cita.estado === "Pendiente" ? (
                   <button onClick={() => asignarMecanico(cita.id_cita)}>

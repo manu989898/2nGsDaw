@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import api from "../api";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
-  const [historial, setHistorial] = useState([]);
   const [facturas, setFacturas] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+
+  const facturasRef = useRef(null); // Ref para la sección de facturas
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -27,14 +29,34 @@ const Clientes = () => {
       );
       setClienteSeleccionado(cliente); // Guardamos el objeto completo del cliente seleccionado
       setFacturas(response.data.facturas);
+
+      // Desplazar hacia la sección de facturas
+      if (facturasRef.current) {
+        facturasRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     } catch (error) {
       console.error("Error al obtener las facturas:", error);
     }
   };
 
+  // Filtrar clientes por nombre
+  const filteredClientes = clientes.filter((cliente) =>
+    cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) // Filtra por el nombre
+  );
+
   return (
     <div>
       <h1>Clientes</h1>
+
+      {/* Campo de búsqueda */}
+      <input
+        type="text"
+        placeholder="Buscar por nombre"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+        className="input-busqueda"
+      />
+
       <table>
         <thead>
           <tr>
@@ -47,7 +69,7 @@ const Clientes = () => {
           </tr>
         </thead>
         <tbody>
-          {clientes.map((cliente) => (
+          {filteredClientes.map((cliente) => (
             <tr key={cliente.id_usuario}>
               <td>{cliente.id_usuario}</td>
               <td>{cliente.nombre}</td>
@@ -65,9 +87,7 @@ const Clientes = () => {
       </table>
 
       {clienteSeleccionado && (
-        <div>
-          
-
+        <div ref={facturasRef}>
           <h2>
             Facturas de {clienteSeleccionado.nombre}{" "}
             {clienteSeleccionado.apellido}
