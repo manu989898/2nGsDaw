@@ -12,6 +12,8 @@ import Inventarios from './pages/Inventarios'; // Nueva página
 import Reparaciones from './pages/Reparaciones'; // Nueva página
 import Reportes from './pages/Reportes'; // Nueva página
 import HistorialServicios from './pages/HistorialServicios'; // Nueva página
+import Empleados from './pages/Empleados'; // Importa el componente Empleados
+
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/clientes" element={<Clientes />} />
+        <Route path="/empleados" element={<Empleados />} />
         <Route path="/citas" element={<Citas />} />
         <Route path="/vehiculos" element={<Vehiculos />} />
         <Route path="/mecanicos" element={<Mecanicos />} />

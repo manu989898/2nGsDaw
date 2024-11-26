@@ -7,7 +7,8 @@ body {
   color: #333;
 }
 
-h1, h2 {
+h1,
+h2 {
   text-align: center;
   color: #444;
   margin-bottom: 20px;
@@ -54,7 +55,7 @@ h1, h2 {
 /* Table Styling */
 table {
   width: 90%;
-  margin: 0 auto 30px;
+  margin: 20px auto;
   border-collapse: collapse;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   background: white;
@@ -62,7 +63,8 @@ table {
   overflow: hidden;
 }
 
-table th, table td {
+table th,
+table td {
   padding: 12px 15px;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -82,41 +84,186 @@ table td {
   color: #555;
 }
 
-/* Buttons (if needed) */
+/* Buttons */
 button {
+  margin: 5px;
   padding: 10px 15px;
-  margin: 10px 0;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-/* Progress Bar (Reparaciones) */
-.progress-bar {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
+/* Disabled Button */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-.progress-bar div {
-  height: 10px;
-  background-color: green;
+/* Section for Details */
+.details-section {
+  margin: 20px auto;
+  padding: 15px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 90%;
 }
 
-/* Table Status Styling */
-td.status-completada {
-  background-color: green;
+.details-section h2 {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Sub-tables for Details */
+.details-section table {
+  margin-top: 15px;
+}
+
+.details-section th {
+  background-color: #6c757d;
   color: white;
 }
 
-td.status-pendiente {
-  background-color: red;
+.details-section td {
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table,
+  .details-section table {
+    font-size: 12px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .navbar h1 {
+    font-size: 18px;
+  }
+}
+
+/* Contenedor del selector de mecánico */
+
+.asignar-mecanico-container {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 20px auto;
+
+  padding: 15px;
+
+  background-color: white;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  border-radius: 8px;
+
+  max-width: 800px;
+}
+
+/* Selector de mecánico */
+
+.asignar-mecanico-container select {
+  padding: 10px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 4px;
+
+  margin-right: 15px;
+
+  font-size: 16px;
+}
+
+/* Botón de asignar */
+
+.asignar-mecanico-container button {
+  padding: 10px 20px;
+
+  background-color: #007bff;
+
   color: white;
+
+  border: none;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  font-size: 16px;
+}
+
+.asignar-mecanico-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Deshabilitar el botón */
+
+.asignar-mecanico-container button:disabled {
+  background-color: #007bff;
+
+  cursor: not-allowed;
+}
+
+/* Tabla estilizada para citas */
+
+table {
+  margin-top: 20px;
+}
+
+.eleccion {
+  margin-left: 10px;
+}
+
+/* Estilo para el campo de estado de las facturas */
+.estado-pagada {
+  background-color: #28a745; /* Verde */
+  color: white;
+  font-weight: bold;
+}
+
+.estado-pendiente {
+  background-color: #ffc107; /* Amarillo */
+  color: white;
+  font-weight: bold;
+}
+
+.estado-vencida {
+  background-color: #dc3545; /* Rojo */
+  color: white;
+  font-weight: bold;
+}
+.botones-ordenacion {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px; /* Espaciado entre los botones */
+}
+
+.botones-ordenacion button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botones-ordenacion button:hover {
+  background-color: #0056b3;
 }
