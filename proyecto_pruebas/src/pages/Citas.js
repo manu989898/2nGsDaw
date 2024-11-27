@@ -10,16 +10,66 @@ const Citas = () => {
 
   // Obtener citas y mecánicos al cargar el componente
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/citas")
-      .then((response) => setCitas(response.data))
-      .catch((error) => console.error("Error al obtener las citas:", error));
+    const fetchCitas = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/citas");
+        setCitas(response.data);
+      } catch (error) {
+        console.error("Error al obtener las citas:", error);
+      }
+    };
 
-    axios
-      .get("http://localhost:8000/api/mecanicos")
-      .then((response) => setMecanicos(response.data))
-      .catch((error) => console.error("Error al obtener los mecánicos:", error));
+    const fetchMecanicos = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/mecanicos");
+        setMecanicos(response.data);
+      } catch (error) {
+        console.error("Error al obtener los mecánicos:", error);
+      }
+    };
+
+    fetchCitas();
+    fetchMecanicos();
   }, []);
+
+  // Asignar mecánico a una cita
+  const asignarMecanico = async (idCita) => {
+    if (!idMecanicoSeleccionado) {
+      alert("Selecciona un mecánico antes de asignarlo.");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/citas/${idCita}/asignar-mecanico`,
+        {
+          id_mecanico: idMecanicoSeleccionado,
+        }
+      );
+
+      alert("Mecánico asignado correctamente.");
+
+      // Actualizar citas en el estado
+      const updatedCita = response.data.cita;
+      const updatedMecanico = mecanicos.find(
+        (mecanico) => mecanico.id_mecanico === idMecanicoSeleccionado
+      );
+
+      setCitas((prevCitas) =>
+        prevCitas.map((cita) =>
+          cita.id_cita === idCita
+            ? {
+                ...cita,
+                mecanico: updatedMecanico, // Actualizar mecánico en la cita
+              }
+            : cita
+        )
+      );
+    } catch (error) {
+      console.error("Error al asignar el mecánico:", error.response?.data || error);
+      alert("No se pudo asignar el mecánico.");
+    }
+  };
 
   // Asignar reparación a una cita
   const asignarReparacion = async (idCita) => {
@@ -37,16 +87,24 @@ const Citas = () => {
           estado,
         }
       );
+
       alert("Reparación asignada correctamente.");
+
+      // Actualizar citas en el estado
+      const updatedReparacion = response.data.reparacion;
+
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
           cita.id_cita === idCita
-            ? { ...cita, reparacion: response.data.reparacion }
+            ? {
+                ...cita,
+                reparacion: updatedReparacion,
+              }
             : cita
         )
       );
     } catch (error) {
-      console.error("Error al asignar la reparación:", error);
+      console.error("Error al asignar la reparación:", error.response?.data || error);
       alert("No se pudo asignar la reparación.");
     }
   };
@@ -59,7 +117,7 @@ const Citas = () => {
       <div className="asignar-mecanico-container">
         <select
           className="selector-mecanico"
-          onChange={(e) => setIdMecanicoSeleccionado(e.target.value)}
+          onChange={(e) => setIdMecanicoSeleccionado(parseInt(e.target.value))}
         >
           <option value="">--Seleccionar Mecánico--</option>
           {mecanicos.map((mecanico) => (
@@ -95,6 +153,7 @@ const Citas = () => {
             <th>Cliente</th>
             <th>Vehículo</th>
             <th>Estado</th>
+            <th>Mecánico</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -122,6 +181,14 @@ const Citas = () => {
                 </span>
               </td>
               <td>
+                {cita.mecanico
+                  ? `${cita.mecanico.nombre} ${cita.mecanico.apellido}`
+                  : "-"}
+              </td>
+              <td>
+                <button onClick={() => asignarMecanico(cita.id_cita)}>
+                  Asignar Mecánico
+                </button>
                 <button onClick={() => asignarReparacion(cita.id_cita)}>
                   Asignar Reparación
                 </button>

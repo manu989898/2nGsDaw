@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import api from "../api";
 import "../styles/Timeline.css";
 
@@ -31,7 +30,19 @@ const Timeline = () => {
         try {
           setLoading(true);
           const response = await api.get(`/mecanicos/${selectedMecanico}/citas`);
-          setCitas(response.data);
+          const sortedCitas = response.data.sort((a, b) => {
+            const estadoA = a.reparacion?.estado || "Pendiente";
+            const estadoB = b.reparacion?.estado || "Pendiente";
+
+            const order = {
+              "En Proceso": 1,
+              Pendiente: 2,
+              Completada: 3,
+            };
+
+            return (order[estadoA] || 4) - (order[estadoB] || 4);
+          });
+          setCitas(sortedCitas);
         } catch (error) {
           console.error("Error al obtener las citas:", error);
         } finally {
@@ -43,29 +54,11 @@ const Timeline = () => {
     fetchCitas();
   }, [selectedMecanico]);
 
-  // Manejar el movimiento de las tarjetas
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const { source, destination } = result;
-
-    // Reordenar citas dentro del mismo mecánico
-    const reorderedCitas = Array.from(citas);
-    const [movedCita] = reorderedCitas.splice(source.index, 1);
-    reorderedCitas.splice(destination.index, 0, movedCita);
-
-    setCitas(reorderedCitas);
-
-    // Actualizar el backend con el nuevo orden (opcional)
-    // Aquí puedes enviar la solicitud al servidor para guardar el orden actualizado.
-  };
-
   return (
-    <div className="timeline-container">
+    <div className="timeline-module-container">
       <h1>Timeline de Citas</h1>
 
-      {/* Selector de mecánicos */}
-      <div className="selector-mecanicos">
+      <div className="timeline-module-selector">
         <label htmlFor="mecanico-select">Seleccione un Mecánico:</label>
         <select
           id="mecanico-select"
@@ -89,72 +82,46 @@ const Timeline = () => {
       ) : citas.length === 0 ? (
         <p>No hay citas asignadas para este mecánico.</p>
       ) : (
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="timeline">
-            {(provided) => (
-              <div
-                className="timeline"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {citas.map((cita, index) => (
-                  <Draggable
-                    key={cita.id_cita}
-                    draggableId={`cita-${cita.id_cita}`}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        className="timeline-item"
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <div className="timeline-content">
-                          <h3>
-                            Vehículo: {cita.vehiculo?.modelo} (
-                            {cita.vehiculo?.marca})
-                          </h3>
-                          <p>
-                            <strong>Matrícula:</strong> {cita.vehiculo?.placa}
-                          </p>
-                          <p>
-                            <strong>Servicio:</strong> {cita.tipo_servicio}
-                          </p>
-                          <p>
-                            <strong>Fecha/Hora:</strong>{" "}
-                            {cita.fecha_hora || "No disponible"}
-                          </p>
-                          {cita.reparacion ? (
-                            <>
-                              <p>
-                                <strong>Estado de Reparación:</strong>{" "}
-                                {cita.reparacion.estado}
-                              </p>
-                              <p>
-                                <strong>Notas:</strong>{" "}
-                                {cita.reparacion.notas}
-                              </p>
-                              <p>
-                                <strong>Progreso:</strong>{" "}
-                                {cita.reparacion.progreso}%
-                              </p>
-                            </>
-                          ) : (
-                            <p>
-                              <strong>Reparación:</strong> No asignada
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+        <div className="timeline-module">
+          {citas.map((cita) => (
+            <div
+              key={cita.id_cita}
+              className={`timeline-module-item ${cita.reparacion?.estado?.toLowerCase() || "pendiente"}`}
+            >
+              <div className="timeline-module-content">
+                <h3>
+                  Vehículo: {cita.vehiculo?.modelo} ({cita.vehiculo?.marca})
+                </h3>
+                <p>
+                  <strong>Matrícula:</strong> {cita.vehiculo?.placa}
+                </p>
+                <p>
+                  <strong>Servicio:</strong> {cita.tipo_servicio}
+                </p>
+                <p>
+                  <strong>Fecha/Hora:</strong> {cita.fecha_hora || "No disponible"}
+                </p>
+                {cita.reparacion ? (
+                  <>
+                    <p>
+                      <strong>Estado de Reparación:</strong> {cita.reparacion.estado}
+                    </p>
+                    <p>
+                      <strong>Notas:</strong> {cita.reparacion.notas}
+                    </p>
+                    <p>
+                      <strong>Progreso:</strong> {cita.reparacion.progreso}%
+                    </p>
+                  </>
+                ) : (
+                  <p>
+                    <strong>Reparación:</strong> No asignada
+                  </p>
+                )}
               </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

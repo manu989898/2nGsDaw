@@ -419,3 +419,162 @@ input:focus {
   background-color: #0056b3;
 }
 
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.vehiculos-table table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
+table td {
+  color: #555;
+}
+.vehiculos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  width: 250px;
+}
+
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card img {
+  max-width: 100%;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.card li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 280px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.vehiculos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+.details-section h2 {
+  font-size: 24px;
+  color: #0056b3;
+  text-align: center;
+  margin-bottom: 30px;
+}
+/* Estilo para la tarjeta */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 280px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen dentro de la tarjeta */
+.card .imagenMarca {
+  width: 100px;
+  height: auto;
+  margin: 10px 0;
+}
+
+/* Título de Historial de Servicios */
+.card h4 {
+  font-size: 18px;
+  color: #0056b3;
+  margin-top: 15px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* Lista del historial */
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.card ul li {
+  font-size: 14px;
+  color: #555;
+  padding: 8px 0;
+  border-bottom: 1px dashed #ddd;
+}
+
+.card ul li:last-child {
+  border-bottom: none;
+}
+
+/* Espaciado entre elementos */
+.card ul li span {
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+/* Estilo para los montos en dinero */
+.card ul li .dinero {
+  color: green;
+  font-weight: bold;
+}

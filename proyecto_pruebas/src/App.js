@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar'; // Importa el componente Navbar
 import Login from './pages/Login'; // Importa el componente Login
-import Clientes from './pages/Clientes';
 import Citas from './pages/Citas';
 import Vehiculos from './pages/Vehiculos';
 import Mecanicos from './pages/Mecanicos';
@@ -15,6 +14,7 @@ import Reportes from './pages/Reportes';
 import HistorialServicios from './pages/HistorialServicios'; 
 import Empleados from './pages/Empleados'; 
 import Timeline from './pages/Timeline';
+import InfoClientes from './pages/InfoCliente';
 
 const App = () => {
   return (
@@ -23,9 +23,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} /> {/* Nueva ruta */}
-        <Route path="/clientes" element={<Clientes />} />
+        <Route path="/clientes" element={<InfoClientes />} />
         <Route path="/empleados" element={<Empleados />} />
         <Route path="/citas" element={<Citas />} />
+
         <Route path="/vehiculos" element={<Vehiculos />} />
         <Route path="/mecanicos" element={<Mecanicos />} />
         <Route path="/facturas" element={<Facturas />} /> 
