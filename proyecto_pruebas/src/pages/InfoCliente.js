@@ -132,8 +132,9 @@ useEffect(() => {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Imagen</th>
             <th>Nombre</th>
-            <th>Apellido</th>
+            
             <th>Email</th>
             <th>Acciones</th>
           </tr>
@@ -142,8 +143,14 @@ useEffect(() => {
           {filteredClientes.map((cliente) => (
             <tr key={cliente.id_usuario}>
               <td>{cliente.id_usuario}</td>
-              <td>{cliente.nombre}</td>
-              <td>{cliente.apellido}</td>
+              <td><img
+                    className="imagenMarcas"
+                    src={`http://localhost:8000/img/perfil.webp`}
+                    alt={cliente.nombre}
+                    style={{ width: "75px", height: "auto" }}
+                  /></td>
+              <td>{cliente.nombre} {cliente.apellido}</td>
+             
               <td>{cliente.email}</td>
               <td>
                 <button onClick={() => verInformacion(cliente)}>Ver Información</button>
@@ -185,7 +192,7 @@ useEffect(() => {
                         factura.estado === "Pagada"
                           ? "estado-pagada"
                           : factura.estado === "Pendiente"
-                          ? "estado-pendiente"
+                          ? "estado-pendientes"
                           : "estado-vencida"
                       }
                     >

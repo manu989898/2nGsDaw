@@ -48,8 +48,6 @@ const Citas = () => {
       );
 
       alert("Mecánico asignado correctamente.");
-
-      // Actualizar citas en el estado
       const updatedCita = response.data.cita;
       const updatedMecanico = mecanicos.find(
         (mecanico) => mecanico.id_mecanico === idMecanicoSeleccionado
@@ -58,10 +56,7 @@ const Citas = () => {
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
           cita.id_cita === idCita
-            ? {
-                ...cita,
-                mecanico: updatedMecanico, // Actualizar mecánico en la cita
-              }
+            ? { ...cita, mecanico: updatedMecanico }
             : cita
         )
       );
@@ -73,33 +68,23 @@ const Citas = () => {
 
   // Asignar reparación a una cita
   const asignarReparacion = async (idCita) => {
-    if (!idMecanicoSeleccionado) {
-      alert("Selecciona un mecánico antes de asignar la reparación.");
-      return;
-    }
-
     try {
       const response = await axios.put(
         `http://localhost:8000/api/citas/${idCita}/asignar-reparacion`,
         {
-          id_mecanico: idMecanicoSeleccionado,
+          id_mecanico: idMecanicoSeleccionado || null,
           notas,
           estado,
         }
       );
 
       alert("Reparación asignada correctamente.");
-
-      // Actualizar citas en el estado
       const updatedReparacion = response.data.reparacion;
 
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
           cita.id_cita === idCita
-            ? {
-                ...cita,
-                reparacion: updatedReparacion,
-              }
+            ? { ...cita, reparacion: updatedReparacion }
             : cita
         )
       );
@@ -163,18 +148,23 @@ const Citas = () => {
               <td>{cita.id_cita}</td>
               <td>{cita.vehiculo?.cliente?.nombre || "Cliente no disponible"}</td>
               <td>
-                {cita.vehiculo
-                  ? `${cita.vehiculo.marca} ${cita.vehiculo.modelo}`
-                  : "Vehículo no disponible"}
+                <img
+                  className="imagenMarca"
+                  src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
+                  alt={cita.vehiculo.modelo}
+                  style={{ width: "100px", height: "auto" }}
+                />
               </td>
               <td>
                 <span
                   className={
                     cita.reparacion?.estado === "Completada"
-                      ? "estado-pagada"
+                      ? "estado-completada"
                       : cita.reparacion?.estado === "En Proceso"
+                      ? "estado-en-proceso"
+                      : cita.reparacion?.estado === "Pendiente"
                       ? "estado-pendiente"
-                      : "estado-vencida"
+                      : "estado-sin-reparacion"
                   }
                 >
                   {cita.reparacion?.estado || "Sin reparación"}
@@ -182,7 +172,7 @@ const Citas = () => {
               </td>
               <td>
                 {cita.mecanico
-                  ? `${cita.mecanico.nombre} ${cita.mecanico.apellido}`
+                  ? `${cita.mecanico.nombre}`
                   : "-"}
               </td>
               <td>

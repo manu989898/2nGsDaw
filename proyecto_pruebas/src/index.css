@@ -236,7 +236,7 @@ table {
   font-weight: bold;
 }
 
-.estado-pendiente {
+.estado-pendientes {
   background-color: #ffc107; /* Amarillo */
   color: white;
   font-weight: bold;
@@ -525,6 +525,7 @@ table td {
   text-align: center;
   width: 280px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 20px;
 }
 
 .card:hover {
@@ -577,4 +578,63 @@ table td {
 .card ul li .dinero {
   color: green;
   font-weight: bold;
+}
+/* Estilos para los estados */
+.estado-completada {
+  color: #fff;
+  background-color: #28a745; /* Verde */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.estado-en-proceso {
+  color: #fff;
+  background-color: #ffc107; /* Amarillo */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.estado-pendiente {
+  color: #fff;
+  background-color: #dc3545; /* Rojo */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.estado-sin-reparacion {
+  color: #333;
+  background-color: #6c757d; /* Gris */
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+.placa-container {
+  background-image: url("./img/matricula.jpg"); /* Ruta de la imagen de la matrícula */
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 150px; /* Ajusta el ancho según la imagen */
+  height: 50px; /* Ajusta la altura según la imagen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: auto; /* Centrar en la celda */
+}
+
+.placa-texto {
+  font-size: 16px; /* Tamaño de la fuente */
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  text-transform: uppercase; /* Opcional: convertir el texto a mayúsculas */
+  margin-left: 15px;
+  letter-spacing: 0.5px;
 }

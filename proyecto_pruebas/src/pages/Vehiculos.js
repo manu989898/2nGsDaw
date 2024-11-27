@@ -64,8 +64,12 @@ const Vehiculos = () => {
         </thead>
         <tbody>
           {filteredVehiculos.map((vehiculo) => {
-            const cliente = clientes.find((c) => c.id_usuario === vehiculo.id_cliente); // Busca el cliente por ID
-            const nombreCompleto = cliente ? `${cliente.nombre} ${cliente.apellido}` : "Cliente no encontrado";
+            const cliente = clientes.find(
+              (c) => c.id_usuario === vehiculo.id_cliente
+            ); // Busca el cliente por ID
+            const nombreCompleto = cliente
+              ? `${cliente.nombre} ${cliente.apellido}`
+              : "Cliente no encontrado";
 
             return (
               <tr key={vehiculo.id}>
@@ -80,7 +84,12 @@ const Vehiculos = () => {
                   />
                 </td>
                 <td>{vehiculo.año}</td>
-                <td>{vehiculo.placa}</td> {/* Mostrar la placa */}
+                <td>
+                  <div className="placa-container">
+                    <span className="placa-texto">{vehiculo.placa}</span>
+                  </div>
+                </td>
+                {/* Mostrar la placa */}
                 <td>{nombreCompleto}</td> {/* Mostrar el nombre completo */}
               </tr>
             );
