@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { FiCopy } from "react-icons/fi"; // Importa un ícono de la librería react-icons
 import api from "../api";
 
 const Vehiculos = () => {
   const [vehiculos, setVehiculos] = useState([]);
   const [clientes, setClientes] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchDatos = async () => {
@@ -12,7 +13,7 @@ const Vehiculos = () => {
         const responseVehiculos = await api.get("/vehiculos");
         setVehiculos(responseVehiculos.data);
 
-        const responseClientes = await api.get("/usuarios"); // Ruta para obtener clientes
+        const responseClientes = await api.get("/usuarios");
         setClientes(responseClientes.data);
       } catch (error) {
         console.error("Error al obtener los datos:", error);
@@ -23,17 +24,19 @@ const Vehiculos = () => {
   }, []);
 
   const columns = ["id", "modelo", "marca", "año", "placa", "propietario"];
-
-  // Filtrar vehículos por matrícula
   const filteredVehiculos = vehiculos.filter((vehiculo) =>
     vehiculo.placa.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const copiarAlPortapapeles = (texto) => {
+    navigator.clipboard.writeText(texto);
+    alert(`Copiado al portapapeles: ${texto}`);
+  };
 
   return (
     <div>
       <h1>Vehículos</h1>
 
-      {/* Buscador con estilo de matrícula */}
       <div className="buscador-matricula">
         <label htmlFor="matricula" className="etiqueta-matricula">
           <span className="pais">E</span>
@@ -66,7 +69,7 @@ const Vehiculos = () => {
           {filteredVehiculos.map((vehiculo) => {
             const cliente = clientes.find(
               (c) => c.id_usuario === vehiculo.id_cliente
-            ); // Busca el cliente por ID
+            );
             const nombreCompleto = cliente
               ? `${cliente.nombre} ${cliente.apellido}`
               : "Cliente no encontrado";
@@ -89,8 +92,18 @@ const Vehiculos = () => {
                     <span className="placa-texto">{vehiculo.placa}</span>
                   </div>
                 </td>
-                {/* Mostrar la placa */}
-                <td>{nombreCompleto}</td> {/* Mostrar el nombre completo */}
+                <td>
+  {nombreCompleto}{" "}
+  <button
+    className="btn-copy"
+    onClick={() => copiarAlPortapapeles(cliente.nombre)}
+    title="Copiar al portapapeles"
+  >
+    Copiar
+    <FiCopy />
+  </button>
+</td>
+
               </tr>
             );
           })}
