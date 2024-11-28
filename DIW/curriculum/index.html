@@ -19,6 +19,16 @@
 
     <!-- CSS Personalizado -->
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      document.getElementById('profile-image').addEventListener('click', function () {
+          // Ruta de la nueva imagen
+          const newImage = 'imgs/unnamedD.jpg';
+  
+          // Cambiar la imagen al hacer clic
+          this.src = this.src === newImage ? 'https://portfoliomanucuestarodriguez.netlify.app/static/media/miyo.1e1564a53ea7562919dc.jpg' : newImage;
+      });
+  </script>
+  
   </head>
   <body>
     <div class="container">
@@ -69,15 +79,28 @@
           <!-- Imagen de Perfil -->
           <div class="col-12 col-md-4 text-center">
             <img
-              src="https://portfoliomanucuestarodriguez.netlify.app/static/media/miyo.1e1564a53ea7562919dc.jpg"
-              class="rounded-circle img-fluid"
-              alt="Foto de perfil"
-              style="
-                max-width: 150px;
-                border: 3px solid #f0f0f0;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              "
-            />
+            id="profile-image"
+            src="https://portfoliomanucuestarodriguez.netlify.app/static/media/miyo.1e1564a53ea7562919dc.jpg"
+            class="rounded-circle img-fluid profile-img"
+            alt="Foto de perfil"
+            style="width: 150px; height: 150px; border: 3px solid #f0f0f0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+            onclick="toggleImage(this)"
+        />
+        
+        <script>
+            function toggleImage(img) {
+                // Define las dos imágenes para alternar
+                const image1 = 'https://portfoliomanucuestarodriguez.netlify.app/static/media/miyo.1e1564a53ea7562919dc.jpg';
+                const image2 = 'imgs/unnamedD.jpg';
+                
+                // Alterna entre las imágenes
+                img.src = img.src === image1 ? image2 : image1;
+            }
+        </script>
+        
+
+        
+
           </div>
           <!-- Información Personal -->
           <div class="col-12 col-md-8 text-center text-md-start ps-md-4">
@@ -137,7 +160,7 @@
           </p>
         </div>
       </div>
-
+     <!-- El profe de DIW es el mejor --> 
       <!-- Sección de Idiomas -->
       <div class="section-title mt-4" id="idiomas">Idiomas</div>
       <div class="bg-white  border p-3 rounded">
