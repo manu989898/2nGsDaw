@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cita;
 use App\Models\Factura;
 use App\Models\Usuario;
+use App\Models\Vehiculo;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -17,15 +21,32 @@ class UsuarioController extends Controller
     // Store a new usuario
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email',
-            'password' => 'required|string|min:8',
+        // Validar los datos recibidos
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:usuarios',
+            'telefono' => 'nullable|string|max:20',
+            'rol' => 'required|string|in:cliente,admin,mecanico', // Roles permitidos
+            'contraseña' => 'required|string|min:8', // Contraseña con mínimo 8 caracteres
         ]);
 
-        $validated['password'] = bcrypt($validated['password']); // Encrypt password
+        // Crear el cliente en la base de datos
+        $cliente = Usuario::create([
+            'nombre' => $validatedData['nombre'],
+            'apellido' => $validatedData['apellido'],
+            'email' => $validatedData['email'],
+            'telefono' => $validatedData['telefono'],
+            'rol' => $validatedData['rol'],
+            'contraseña' => Hash::make($validatedData['contraseña']), // Encriptar la contraseña
+        ]);
 
-        return Usuario::create($validated);
+        // Retornar una respuesta de éxito
+        return response()->json([
+            'success' => true,
+            'message' => 'Cliente creado exitosamente.',
+            'data' => $cliente,
+        ], 201);
     }
 
     // Show a specific usuario
@@ -99,5 +120,38 @@ public function obtenerFacturas($id)
 
     return response()->json(['facturas' => $facturas]);
 }
+
+// Obtener los vehículos asociados a un cliente
+public function getVehiculos($id)
+{
+    // Buscar vehículos cuyo id_cliente coincida con el ID del usuario
+    $vehiculos = Vehiculo::where('id_cliente', $id)->get();
+
+    if ($vehiculos->isEmpty()) {
+        return response()->json(['error' => 'No se encontraron vehículos para este cliente'], 404);
+    }
+
+    return response()->json(['vehiculos' => $vehiculos]);
+}
+
+
+// Obtener las citas de un usuario
+public function getCitas($id)
+{
+    $usuario = Usuario::find($id);
+
+    if (!$usuario) {
+        return response()->json(['error' => 'Usuario no encontrado'], 404);
+    }
+
+    $citas = $usuario->citas;
+
+    if ($citas->isEmpty()) {
+        return response()->json(['error' => 'No se encontraron citas'], 404);
+    }
+
+    return response()->json(['citas' => $citas]);
+}
+
 
 }

@@ -14,14 +14,33 @@ class CitaController extends Controller
 }
 
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'campo_ejemplo' => 'required|string|max:255', // Actualizar con campos reales
-        ]);
+public function store(Request $request)
+{
+    // Validar los datos recibidos
+    $validatedData = $request->validate([
+        'id_cliente' => 'required|exists:usuarios,id_usuario',
+        'id_vehiculo' => 'required|exists:vehiculos,id_vehiculo',
+        'tipo_servicio' => 'required|string|max:255',
+        'fecha_hora' => 'required|date_format:Y-m-d H:i:s',
+        'estado' => 'required|in:Pendiente,Completada,Cancelada,Asignada',
+    ]);
 
-        return Cita::create($validated);
-    }
+    // Crear la cita en la base de datos
+    $cita = Cita::create([
+        'id_cliente' => $validatedData['id_cliente'],
+        'id_vehiculo' => $validatedData['id_vehiculo'],
+        'tipo_servicio' => $validatedData['tipo_servicio'],
+        'fecha_hora' => $validatedData['fecha_hora'],
+        'estado' => $validatedData['estado'],
+    ]);
+
+    // Retornar una respuesta
+    return response()->json([
+        'success' => true,
+        'message' => 'Cita creada exitosamente.',
+        'data' => $cita,
+    ], 201);
+}
 
     public function show(Cita $cita)
     {
@@ -55,7 +74,7 @@ class CitaController extends Controller
 public function asignarMecanico(Request $request, $id)
 {
     try {
-        // Validar que se envía el ID del mecánico
+        // Validar el ID del mecánico
         $request->validate([
             'id_mecanico' => 'required|exists:mecanicos,id_mecanico',
         ]);
@@ -63,9 +82,8 @@ public function asignarMecanico(Request $request, $id)
         // Buscar la cita por ID
         $cita = Cita::findOrFail($id);
 
-        // Asignar el mecánico y cambiar el estado de la cita
+        // Asignar el mecánico a la cita
         $cita->id_mecanico = $request->id_mecanico;
-        $cita->estado = 'Asignado';
         $cita->save();
 
         // Retornar la respuesta con éxito
@@ -81,6 +99,7 @@ public function asignarMecanico(Request $request, $id)
         ], 500);
     }
 }
+
 
 
 }

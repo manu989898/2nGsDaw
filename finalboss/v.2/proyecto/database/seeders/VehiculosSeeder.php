@@ -23,7 +23,7 @@ class VehiculosSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             Vehiculo::create([
-                'placa' => strtoupper($faker->unique()->bothify('???###')),
+                'placa' => strtoupper($faker->unique()->bothify('#### ???')),
                 'marca' => $faker->randomElement(['Toyota', 'Honda', 'Ford', 'Chevrolet', 'BMW']),
                 'modelo' => $faker->randomElement(['Corolla', 'Civic', 'Focus', 'Impala', 'X5']),
                 'año' => $faker->year(),

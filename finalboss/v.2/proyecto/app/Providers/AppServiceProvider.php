@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('api', function ($request) {
-                return Limit::perMinute(120);
+                return Limit::perMinute(500);
         });
         Route::pattern('id', '[0-9]+');
     }

@@ -44,7 +44,7 @@ class FacturasSeeder extends Seeder
 
         foreach ($clientes as $cliente) {
             // Genera entre 10 y 15 facturas para cada cliente
-            $numFacturas = rand(10, 15);
+            $numFacturas = rand(1,3);
 
             for ($i = 0; $i < $numFacturas; $i++) {
                 $historial = $historiales->random(); // Obtiene un historial de servicio aleatorio

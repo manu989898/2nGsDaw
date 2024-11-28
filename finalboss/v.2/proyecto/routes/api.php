@@ -38,10 +38,14 @@ Route::get('/user', function (Request $request) {
     Route::apiResource('historial_servicios', HistorialServicioController::class);
     Route::get('/usuarios/{id}/historial-servicios', [UsuarioController::class, 'obtenerHistorialServicios']);
     Route::get('/usuarios/{id}/facturas', [UsuarioController::class, 'obtenerFacturas']);
+    Route::get('/usuarios/{id}/vehiculos', [UsuarioController::class, 'getVehiculos']);
+    Route::get('/usuarios/{id}/citas', [UsuarioController::class, 'getCitas']);
     Route::get('/mecanicos/{id}/reparaciones', [ReparacionController::class, 'reparacionesPorMecanico']);
     Route::get('/mecanicos/{id}/citas', [CitaController::class, 'citasPorMecanico']);
     Route::put('/citas/{id}/asignar-mecanico', [CitaController::class, 'asignarMecanico']);
     Route::put('/citas/{id}/asignar-reparacion', [ReparacionController::class, 'asignarReparacion']);
-
-
+    Route::post('/citas', [CitaController::class, 'store']);
+    Route::post('/usuarios', [UsuarioController::class, 'store']);
+    Route::post('/vehiculos', [VehiculoController::class, 'store']);
+    
 });

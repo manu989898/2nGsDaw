@@ -18,5 +18,15 @@ class Usuario extends Model
 {
     return $this->belongsTo(Vehiculo::class, 'vehiculo_id');
 }
+public function vehiculos()
+{
+    return $this->hasMany(Vehiculo::class, 'id_usuario', 'id');
+}
+
+public function citas()
+{
+    return $this->hasMany(Cita::class, 'id_usuario', 'id');
+}
+
 
 }
