@@ -48,15 +48,43 @@ class VehiculoController extends Controller
         return $vehiculo;
     }
 
-    public function update(Request $request, Vehiculo $vehiculo)
-    {
-        $validated = $request->validate([
-            'campo_ejemplo' => 'sometimes|string|max:255', // Actualizar con campos reales
+    public function update(Request $request, $id)
+{
+    // Validación de los datos entrantes
+    $request->validate([
+        'marca' => 'required|string|max:255',
+        'modelo' => 'required|string|max:255',
+        'placa' => 'required|string|max:255',
+        'año' => 'required|integer',
+        'color' => 'required|string|max:255',
+    ]);
+
+    try {
+        // Buscar el vehículo por ID
+        $vehiculo = Vehiculo::findOrFail($id);
+
+        // Actualizar los campos del vehículo
+        $vehiculo->update([
+            'marca' => $request->input('marca'),
+            'modelo' => $request->input('modelo'),
+            'placa' => $request->input('placa'),
+            'año' => $request->input('año'),
+            'color' => $request->input('color'),
         ]);
 
-        $vehiculo->update($validated);
-        return $vehiculo;
+        // Responder con el vehículo actualizado
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehículo actualizado correctamente',
+            'data' => $vehiculo,
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al actualizar el vehículo: ' . $e->getMessage(),
+        ], 500);
     }
+}
 
     public function destroy(Vehiculo $vehiculo)
     {

@@ -47,5 +47,5 @@ Route::get('/user', function (Request $request) {
     Route::post('/citas', [CitaController::class, 'store']);
     Route::post('/usuarios', [UsuarioController::class, 'store']);
     Route::post('/vehiculos', [VehiculoController::class, 'store']);
-    
+    Route::put('/vehiculos/{id}', [VehiculoController::class, 'update']);
 });
