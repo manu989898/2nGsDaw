@@ -218,9 +218,11 @@ const CrearCita = () => {
               ))}
             </ul>
           )}
-          <button className="btn-login" onClick={() => setMostrarFormularioNuevoCliente(true)}>
+          <div className="centrar-boton">
+          <button className="btn-login2" onClick={() => setMostrarFormularioNuevoCliente(true)}>
             Crear Nuevo Cliente
           </button>
+          </div>
         </div>
       )}
 
@@ -442,16 +444,18 @@ const CrearCita = () => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Tipo de Servicio:</label>
-          <input
-            className="input-busqueda"
-            type="text"
-            value={tipoServicio}
-            onChange={(e) => setTipoServicio(e.target.value)}
-          />
-        </div>
-        <div>
+      <div className="form-group">
+  <label htmlFor="tipoServicio">Tipo de Servicio:</label>
+  <input
+    className="input-busqueda"
+    type="text"
+    id="tipoServicio"
+    value={tipoServicio}
+    onChange={(e) => setTipoServicio(e.target.value)}
+  />
+</div>
+
+        <div className="form-group">
           <label>Fecha y Hora:</label>
           <input
             className="input-busqueda"
@@ -461,7 +465,7 @@ const CrearCita = () => {
           />
         </div>
         <div>
-          <label>Estado de la Cita:</label>
+          <label className="form-group">Estado de la Cita:</label>
           <select
             className="input-busqueda"
             value={estadoCita}
@@ -473,10 +477,12 @@ const CrearCita = () => {
             <option value="Asignada">Asignada</option>
           </select>
         </div>
+        <div className="centrar-boton">
 
-        <button className="btn-login" type="submit">
+        <button className="btn-login2" type="submit">
           Crear Cita
         </button>
+        </div>
       </form>
     </div>
   );

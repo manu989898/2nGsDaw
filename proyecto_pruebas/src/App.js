@@ -16,6 +16,8 @@ import Empleados from './pages/Empleados';
 import Timeline from './pages/Timeline';
 import InfoClientes from './pages/InfoCliente';
 import CrearCita from './pages/CrearCita';
+import EditarVehiculo from './pages/EditarVehiculo';
+import CrearCliente from './pages/CrearCliente';
 
 const App = () => {
   return (
@@ -27,8 +29,9 @@ const App = () => {
         <Route path="/clientes" element={<InfoClientes />} />
         <Route path="/empleados" element={<Empleados />} />
         <Route path="/citas" element={<Citas />} />
-
+        <Route path="/crear-cita" element={<CrearCita />} />
         <Route path="/vehiculos" element={<Vehiculos />} />
+        <Route path="/editar-vehiculo/:id" element={<EditarVehiculo />} />
         <Route path="/mecanicos" element={<Mecanicos />} />
         <Route path="/pruebas" element={<CrearCita />} /> 
         <Route path="/notificaciones" element={<Notificaciones />} /> 

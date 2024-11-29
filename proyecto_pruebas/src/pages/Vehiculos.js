@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FiCopy } from "react-icons/fi"; // Importa un ícono de la librería react-icons
+import { useNavigate } from "react-router-dom";
+import { FiCopy } from "react-icons/fi"; // Ícono para copiar
 import api from "../api";
 
 const Vehiculos = () => {
   const [vehiculos, setVehiculos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
     const fetchDatos = async () => {
@@ -23,7 +25,7 @@ const Vehiculos = () => {
     fetchDatos();
   }, []);
 
-  const columns = ["id", "modelo", "marca", "año", "placa", "propietario"];
+  const columns = ["ID", "Modelo", "Marca", "Año", "Placa", "Propietario", "Acciones"];
   const filteredVehiculos = vehiculos.filter((vehiculo) =>
     vehiculo.placa.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -61,7 +63,7 @@ const Vehiculos = () => {
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col}>{col.replace("_", " ").toUpperCase()}</th>
+              <th key={col}>{col}</th>
             ))}
           </tr>
         </thead>
@@ -87,23 +89,26 @@ const Vehiculos = () => {
                   />
                 </td>
                 <td>{vehiculo.año}</td>
+                <td>{vehiculo.placa}</td>
                 <td>
-                  <div className="placa-container">
-                    <span className="placa-texto">{vehiculo.placa}</span>
-                  </div>
+                  {nombreCompleto}
+                  
                 </td>
                 <td>
-  {nombreCompleto}{" "}
-  <button
-    className="btn-copy"
-    onClick={() => copiarAlPortapapeles(cliente.nombre)}
-    title="Copiar al portapapeles"
-  >
-    Copiar
-    <FiCopy />
-  </button>
-</td>
-
+                  <button
+                    className="btn-copy"
+                    onClick={() => copiarAlPortapapeles(cliente.nombre)}
+                    title="Copiar al portapapeles"
+                  >
+                    Copiar <FiCopy />
+                  </button>
+                  <button
+                    className="btn-copy"
+                    onClick={() => navigate(`/editar-vehiculo/${vehiculo.id_vehiculo}`)}
+                  >
+                    Editar
+                  </button>
+                </td>
               </tr>
             );
           })}

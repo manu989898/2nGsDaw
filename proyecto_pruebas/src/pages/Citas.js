@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const Citas = () => {
   const [citas, setCitas] = useState([]);
@@ -7,6 +9,8 @@ const Citas = () => {
   const [idMecanicoSeleccionado, setIdMecanicoSeleccionado] = useState(null);
   const [notas, setNotas] = useState("");
   const [estado, setEstado] = useState("Pendiente");
+
+  const navigate = useNavigate();
 
   // Obtener citas y mecánicos al cargar el componente
   useEffect(() => {
@@ -97,7 +101,17 @@ const Citas = () => {
   return (
     <div>
       <h2>Citas</h2>
-
+     
+      {/* Botón para crear una nueva cita */}
+      <div className="centrar-boton">
+      <button
+        className="btn-login2"
+        style={{ marginBottom: "20px" }}
+        onClick={() => navigate("/crear-cita")}
+      >
+        Crear Nueva Cita
+      </button>
+      </div>
       {/* Contenedor de asignación */}
       <div className="asignar-mecanico-container">
         <select
