@@ -25,7 +25,7 @@ const Vehiculos = () => {
     fetchDatos();
   }, []);
 
-  const columns = ["ID", "Modelo", "Marca", "Año", "Placa", "Propietario", "Acciones"];
+  const columns = ["ID", "Modelo", "Marca", "Año", "Placa", "Quilometraje", "Propietario", "Acciones"];
   const filteredVehiculos = vehiculos.filter((vehiculo) =>
     vehiculo.placa.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -90,6 +90,7 @@ const Vehiculos = () => {
                 </td>
                 <td>{vehiculo.año}</td>
                 <td>{vehiculo.placa}</td>
+                <td>{vehiculo.quilometraje} Km</td> 
                 <td>
                   {nombreCompleto}
                   
