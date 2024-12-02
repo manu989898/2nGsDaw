@@ -292,7 +292,7 @@ const CrearCita = () => {
         >
           <option value="">--Seleccionar Rol--</option>
           <option value="cliente">Cliente</option>
-          <option value="admin">Administrador</option>
+          <option value="gerente">Gerente</option>
           <option value="mecanico">Mecánico</option>
         </select>
       </div>

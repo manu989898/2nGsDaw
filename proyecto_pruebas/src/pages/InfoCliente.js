@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
+
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -8,7 +10,7 @@ const Clientes = () => {
   const [historialGlobal, setHistorialGlobal] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const navigate = useNavigate(); // Hook para redirigir
   const facturasRef = useRef(null);
   const vehiculosRef = useRef(null);
 
@@ -155,6 +157,11 @@ useEffect(() => {
               <td>
                 <button onClick={() => verInformacion(cliente)}>Ver Información</button>
                 <button onClick={() => verFacturas(cliente)}>Ver Facturas</button>
+                <button
+  onClick={() => navigate(`/editar-cliente/${cliente.id_usuario}`)}
+>
+  Editar
+</button>
               </td>
             </tr>
           ))}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -7,6 +8,7 @@ const Clientes = () => {
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
+  const navigate = useNavigate();
   const facturasRef = useRef(null); // Ref para la sección de facturas
 
   useEffect(() => {
@@ -80,6 +82,7 @@ const Clientes = () => {
                 <button onClick={() => verFacturas(cliente)}>
                   Ver Facturas
                 </button>
+                
               </td>
             </tr>
           ))}
