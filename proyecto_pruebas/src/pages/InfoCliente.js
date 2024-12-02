@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 
-
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [facturas, setFacturas] = useState([]);
