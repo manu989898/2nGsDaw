@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('color');
             $table->unsignedBigInteger('id_cliente');
             $table->timestamps();
+            $table->bigInteger('quilometraje')->nullable();
 
             $table->foreign('id_cliente')->references('id_usuario')->on('usuarios');
         

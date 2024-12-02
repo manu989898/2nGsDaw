@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('email')->unique();
             $table->string('telefono');
-            $table->enum('rol', ['Cliente', 'Mecánico', 'Gerente']);
+            $table->enum('rol', ['cliente', 'mecanico', 'gerente']);
             $table->string('contraseña');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class VehiculosSeeder extends Seeder
         $faker = Faker::create();
 
         // Obtén una lista de IDs de usuarios existentes con rol "Cliente"
-        $clientesIds = Usuario::where('rol', 'Cliente')->pluck('id_usuario')->toArray();
+        $clientesIds = Usuario::where('rol', 'cliente')->pluck('id_usuario')->toArray();
 
         if (empty($clientesIds)) {
             // Si no hay clientes, lanza una excepción para evitar fallos
@@ -29,6 +29,7 @@ class VehiculosSeeder extends Seeder
                 'año' => $faker->year(),
                 'color' => $faker->safeColorName(),
                 'id_cliente' => $faker->randomElement($clientesIds), // Selecciona un cliente existente
+                'quilometraje' => $faker->numberBetween(0, 200000),
             ]);
         }
     }

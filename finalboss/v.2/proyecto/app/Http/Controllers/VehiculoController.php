@@ -23,6 +23,7 @@ class VehiculoController extends Controller
             'modelo' => 'required|string|max:255',
             'año' => 'required|integer|min:1900|max:' . date('Y'),
             'color' => 'required|string|max:50', // Validación del color
+            'quilometraje' => 'nullable|integer|min:0',
         ]);
 
         // Crear el vehículo en la base de datos
@@ -33,6 +34,7 @@ class VehiculoController extends Controller
             'modelo' => $validatedData['modelo'],
             'año' => $validatedData['año'],
             'color' => $validatedData['color'],
+            'quilometraje' => $validatedData['quilometraje'] ?? null,
         ]);
 
         // Retornar una respuesta de éxito
@@ -57,6 +59,7 @@ class VehiculoController extends Controller
         'placa' => 'required|string|max:255',
         'año' => 'required|integer',
         'color' => 'required|string|max:255',
+        'quilometraje' => 'nullable|integer',
     ]);
 
     try {
@@ -70,6 +73,7 @@ class VehiculoController extends Controller
             'placa' => $request->input('placa'),
             'año' => $request->input('año'),
             'color' => $request->input('color'),
+            'quilometraje' => $request->input('quilometraje'),
         ]);
 
         // Responder con el vehículo actualizado

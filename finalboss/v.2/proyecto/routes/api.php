@@ -48,4 +48,6 @@ Route::get('/user', function (Request $request) {
     Route::post('/usuarios', [UsuarioController::class, 'store']);
     Route::post('/vehiculos', [VehiculoController::class, 'store']);
     Route::put('/vehiculos/{id}', [VehiculoController::class, 'update']);
+    Route::put('/usuarios/{id}', [UsuarioController::class, 'update']); // Actualizar un usuario
+
 });
