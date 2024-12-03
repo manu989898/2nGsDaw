@@ -14,7 +14,9 @@ const Timeline = () => {
       try {
         const response = await api.get("/mecanicos");
         setMecanicos(response.data);
-        setSelectedMecanico(response.data.length > 0 ? response.data[0].id_mecanico : null);
+        setSelectedMecanico(
+          response.data.length > 0 ? response.data[0].id_mecanico : null
+        );
       } catch (error) {
         console.error("Error al obtener los mecánicos:", error);
       }
@@ -29,7 +31,9 @@ const Timeline = () => {
       if (selectedMecanico) {
         try {
           setLoading(true);
-          const response = await api.get(`/mecanicos/${selectedMecanico}/citas`);
+          const response = await api.get(
+            `/mecanicos/${selectedMecanico}/citas`
+          );
           const sortedCitas = response.data.sort((a, b) => {
             const estadoA = a.reparacion?.estado || "Pendiente";
             const estadoB = b.reparacion?.estado || "Pendiente";
@@ -54,6 +58,30 @@ const Timeline = () => {
     fetchCitas();
   }, [selectedMecanico]);
 
+  // Manejar la actualización del estado de la reparación
+  const handleEstadoChange = async (idReparacion, nuevoEstado) => {
+    try {
+      console.log(`Cambiando estado de la reparación ID ${idReparacion} a ${nuevoEstado}`);
+      const response = await api.put(`/reparaciones/${idReparacion}`, {
+        estado: nuevoEstado,
+      });
+      const updatedReparacion = response.data;
+  
+      // Actualizar la reparación en la lista de citas
+      setCitas((prevCitas) =>
+        prevCitas.map((cita) =>
+          cita.reparacion?.id_reparacion === idReparacion
+            ? { ...cita, reparacion: updatedReparacion }
+            : cita
+        )
+      );
+      alert("Estado actualizado correctamente.");
+    } catch (error) {
+      console.error("Error al actualizar el estado de la reparación:", error.response?.data || error);
+      alert("No se pudo actualizar el estado de la reparación.");
+    }
+  };
+  
   return (
     <div className="timeline-module-container">
       <h1>Timeline de Citas</h1>
@@ -86,7 +114,9 @@ const Timeline = () => {
           {citas.map((cita) => (
             <div
               key={cita.id_cita}
-              className={`timeline-module-item ${cita.reparacion?.estado?.toLowerCase() || "pendiente"}`}
+              className={`timeline-module-item ${
+                cita.reparacion?.estado?.toLowerCase() || "pendiente"
+              }`}
             >
               <div className="timeline-module-content">
                 <h3>
@@ -104,7 +134,20 @@ const Timeline = () => {
                 {cita.reparacion ? (
                   <>
                     <p>
-                      <strong>Estado de Reparación:</strong> {cita.reparacion.estado}
+                      <strong>Estado de Reparación:</strong>{" "}
+                      <select
+                        value={cita.reparacion.estado}
+                        onChange={(e) =>
+                          handleEstadoChange(
+                            cita.reparacion.id_reparacion,
+                            e.target.value
+                          )
+                        }
+                      >
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Proceso">En Proceso</option>
+                        <option value="Completada">Completada</option>
+                      </select>
                     </p>
                     <p>
                       <strong>Notas:</strong> {cita.reparacion.notas}
