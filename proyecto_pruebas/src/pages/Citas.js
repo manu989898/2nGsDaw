@@ -9,6 +9,9 @@ const Citas = () => {
   const [idMecanicoSeleccionado, setIdMecanicoSeleccionado] = useState(null);
   const [notas, setNotas] = useState("");
   const [estado, setEstado] = useState("Pendiente");
+  const [filteredCitas, setFilteredCitas] = useState([]);
+  const [estadoFiltro, setEstadoFiltro] = useState(""); // Filtro de estado
+
 
   const navigate = useNavigate();
 
@@ -69,7 +72,28 @@ const Citas = () => {
       alert("No se pudo asignar el mecánico.");
     }
   };
+ // Filtro por estado
+useEffect(() => {
+  let filtradas = [...citas];
 
+  if (estadoFiltro) {
+    if (estadoFiltro === "Pendiente") {
+      // Mostrar aquellas que no están completadas ni en progreso
+      filtradas = filtradas.filter(
+        (cita) =>
+          cita.reparacion?.estado !== "Completada" &&
+          cita.reparacion?.estado !== "En Proceso"
+      );
+    } else {
+      // Filtrar por el estado seleccionado
+      filtradas = filtradas.filter(
+        (cita) => cita.reparacion?.estado === estadoFiltro
+      );
+    }
+  }
+
+  setFilteredCitas(filtradas);
+}, [estadoFiltro, citas]);
   // Asignar reparación a una cita
   const asignarReparacion = async (idCita) => {
     try {
@@ -101,7 +125,21 @@ const Citas = () => {
   return (
     <div>
       <h2>Citas</h2>
-     
+      {/* Filtro por estado */}
+      <div className="asignar-mecanico-container">
+        <div className="form-group">
+          <label htmlFor="estadoFiltro"></label>
+          <select
+            id="estadoFiltro"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            className="input-busqueda">
+            <option value="">Todos</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En Proceso">En Proceso</option>
+            <option value="Completada">Completada</option>
+          </select>
+        </div>
       {/* Botón para crear una nueva cita */}
       <div className="centrar-boton">
       <button
@@ -111,6 +149,7 @@ const Citas = () => {
       >
         Crear Nueva Cita
       </button>
+      </div>
       </div>
       {/* Contenedor de asignación */}
       <div className="asignar-mecanico-container">
@@ -142,6 +181,7 @@ const Citas = () => {
           <option value="En Proceso">En Proceso</option>
           <option value="Completada">Completada</option>
         </select>
+       
       </div>
 
       {/* Tabla de citas */}
@@ -152,15 +192,21 @@ const Citas = () => {
             <th>Cliente</th>
             <th>Vehículo</th>
             <th>Estado</th>
-            <th>Mecánico</th>
+            <th>
+  Mecánico
+  <span className="info-icon" title="Mecánicos asignados a la reparación vinculada a esta cita.">
+    ℹ️
+  </span>
+</th>
+
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {citas.map((cita) => (
+          {filteredCitas.map((cita) => (
             <tr key={cita.id_cita}>
               <td>{cita.id_cita}</td>
-              <td>{cita.vehiculo?.cliente?.nombre || "Cliente no disponible"}</td>
+              <td>{cita.vehiculo?.cliente?.nombre   || "Nombre no disponible"} {cita.vehiculo?.cliente?.apellido   || "Apellido no disponible"} </td>
               <td>
                 <img
                   className="imagenMarca"
@@ -185,9 +231,12 @@ const Citas = () => {
                 </span>
               </td>
               <td>
-                {cita.mecanico
-                  ? `${cita.mecanico.nombre}`
-                  : "-"}
+                
+                  {mecanicos.filter((mecanico) => mecanico.id_mecanico === cita.reparacion?.id_mecanico).map((mecanico) => (
+                    <span key={mecanico.id_mecanico}>
+                      {mecanico.nombre} {mecanico.apellido}
+                    </span>
+                  ))}
               </td>
               <td>
                 <button onClick={() => asignarMecanico(cita.id_cita)}>

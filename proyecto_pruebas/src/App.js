@@ -19,7 +19,7 @@ import CrearCita from './pages/CrearCita';
 import EditarVehiculo from './pages/EditarVehiculo';
 import CrearCliente from './pages/CrearCliente';
 import EditarCliente from './pages/EditarCliente';
-
+import CrearReparacion from './pages/CrearReparacion';
 const App = () => {
   return (
     <Router>
@@ -35,10 +35,11 @@ const App = () => {
         <Route path="/vehiculos" element={<Vehiculos />} />
         <Route path="/editar-vehiculo/:id" element={<EditarVehiculo />} />
         <Route path="/mecanicos" element={<Mecanicos />} />
-        <Route path="/pruebas" element={<CrearCita />} /> 
+        <Route path="/pruebas" element={<CrearReparacion />} /> 
         <Route path="/notificaciones" element={<Notificaciones />} /> 
         <Route path="/inventarios" element={<Inventarios />} /> 
         <Route path="/reparaciones" element={<Reparaciones />} /> 
+        <Route path="/crear-reparacion" element={<CrearReparacion />} />
         <Route path="/reportes" element={<Reportes />} /> 
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/historial-servicios" element={<HistorialServicios />} /> 

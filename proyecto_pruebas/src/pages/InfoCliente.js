@@ -8,6 +8,7 @@ const Clientes = () => {
   const [vehiculos, setVehiculos] = useState([]);
   const [historialGlobal, setHistorialGlobal] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+  const [imagenes, setImagenes] = useState({}); // Almacenar imágenes generadas
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate(); // Hook para redirigir
   const facturasRef = useRef(null);
@@ -19,6 +20,12 @@ const Clientes = () => {
       try {
         const response = await api.get("/usuarios");
         setClientes(response.data);
+       // Generar imágenes para cada cliente
+       const nuevasImagenes = {};
+       response.data.forEach((cliente) => {
+         nuevasImagenes[cliente.id_usuario] = `https://randomuser.me/api/portraits/men/${cliente.id_usuario % 100}.jpg`;
+       });
+       setImagenes(nuevasImagenes);
       } catch (error) {
         console.error("Error al obtener los clientes:", error);
       }
@@ -135,7 +142,6 @@ useEffect(() => {
             <th>ID</th>
             <th>Imagen</th>
             <th>Nombre</th>
-            
             <th>Email</th>
             <th>Acciones</th>
           </tr>
@@ -145,11 +151,11 @@ useEffect(() => {
             <tr key={cliente.id_usuario}>
               <td>{cliente.id_usuario}</td>
               <td><img
-                    className="imagenMarcas"
-                    src={`http://localhost:8000/img/perfil.webp`}
-                    alt={cliente.nombre}
-                    style={{ width: "75px", height: "auto" }}
-                  /></td>
+                  className="imagenMarcas"
+                  src={imagenes[cliente.id_usuario] || `https://via.placeholder.com/75`}
+                  alt={cliente.nombre}
+                  style={{ width: "100px", height: "auto", borderRadius: "50%" }}
+                /></td>
               <td>{cliente.nombre} {cliente.apellido}</td>
              
               <td>{cliente.email}</td>

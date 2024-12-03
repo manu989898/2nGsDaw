@@ -834,3 +834,18 @@ table td {
   
   
 }
+.filters-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite ajustar los filtros si no hay suficiente espacio */
+  justify-content: center; /* Centra los filtros horizontalmente */
+  align-items: center; /* Centra los filtros verticalmente */
+  gap: 20px; /* Espaciado entre los filtros */
+  margin: 20px 0; /* Espaciado vertical para separar los filtros de la tabla */
+}
+
+.filters-container .form-group {
+  display: flex;
+  flex-direction: column; /* Alinear label e input verticalmente */
+  align-items: flex-start; /* Alinear los labels con los inputs */
+  min-width: 200px; /* Tamaño mínimo para los filtros */
+}
