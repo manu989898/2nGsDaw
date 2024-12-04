@@ -57,20 +57,21 @@
 }
 
 /* Estilos por estado */
-.timeline-module-item.en-proceso .timeline-module-content {
-  background-color: #fff3cd;
-  border-left: 5px solid #ffc107;
-}
-
-.timeline-module-item.pendiente .timeline-module-content {
+.timeline-module-item.Sin-asignar .timeline-module-content {
   background-color: #f8d7da;
   border-left: 5px solid #dc3545;
 }
 
-.timeline-module-item.completada .timeline-module-content {
+.timeline-module-item.En-Proceso .timeline-module-content {
+  background-color: #fff3cd;
+  border-left: 5px solid #ffc107;
+}
+
+.timeline-module-item.Completada .timeline-module-content {
   background-color: #d4edda;
   border-left: 5px solid #28a745;
 }
+
 
 /* Contenido de las cards */
 .timeline-module-content {

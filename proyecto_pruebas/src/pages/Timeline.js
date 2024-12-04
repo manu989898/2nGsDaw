@@ -58,29 +58,41 @@ const Timeline = () => {
     fetchCitas();
   }, [selectedMecanico]);
 
+  const normalizeEstado = (estado) => {
+    if (!estado) return "sin-asignar"; // Predeterminado si no hay estado
+    return estado.toLowerCase().replace(/\s+/g, '-'); // Convertir a minúsculas y reemplazar espacios por guiones
+  };
+
   // Manejar la actualización del estado de la reparación
   const handleEstadoChange = async (idReparacion, nuevoEstado) => {
     try {
-      console.log(`Cambiando estado de la reparación ID ${idReparacion} a ${nuevoEstado}`);
-      const response = await api.put(`/reparaciones/${idReparacion}`, {
-        estado: nuevoEstado,
-      });
-      const updatedReparacion = response.data;
-  
-      // Actualizar la reparación en la lista de citas
-      setCitas((prevCitas) =>
-        prevCitas.map((cita) =>
-          cita.reparacion?.id_reparacion === idReparacion
-            ? { ...cita, reparacion: updatedReparacion }
-            : cita
-        )
-      );
-      alert("Estado actualizado correctamente.");
+        console.log(`Actualizando estado de la reparación ID ${idReparacion} a ${nuevoEstado}`);
+        
+        // Llamada a la API para actualizar el estado
+        const response = await api.put(`/reparaciones/${idReparacion}`, {
+            estado: nuevoEstado,
+        });
+
+        const updatedReparacion = response.data.reparacion;
+
+        // Actualizar la lista de citas
+        setCitas((prevCitas) =>
+            prevCitas.map((cita) =>
+                cita.reparacion?.id_reparacion === idReparacion
+                    ? { ...cita, reparacion: updatedReparacion }
+                    : cita
+            )
+        );
+
+        alert("Estado actualizado correctamente.");
+        console.log('Respuesta del servidor:', response.data);
     } catch (error) {
-      console.error("Error al actualizar el estado de la reparación:", error.response?.data || error);
-      alert("No se pudo actualizar el estado de la reparación.");
+        console.error("Error al actualizar el estado de la reparación:", error.response?.data || error);
+        alert("No se pudo actualizar el estado de la reparación.");
     }
-  };
+};
+
+
   
   return (
     <div className="timeline-module-container">
@@ -114,9 +126,7 @@ const Timeline = () => {
           {citas.map((cita) => (
             <div
               key={cita.id_cita}
-              className={`timeline-module-item ${
-                cita.reparacion?.estado?.toLowerCase() || "pendiente"
-              }`}
+              className={`timeline-module-item ${normalizeEstado(cita.reparacion?.estado)}`}
             >
               <div className="timeline-module-content">
                 <h3>
@@ -144,7 +154,7 @@ const Timeline = () => {
                           )
                         }
                       >
-                        <option value="Pendiente">Pendiente</option>
+                        <option value="Sin asignar">Sin asignar</option>
                         <option value="En Proceso">En Proceso</option>
                         <option value="Completada">Completada</option>
                       </select>

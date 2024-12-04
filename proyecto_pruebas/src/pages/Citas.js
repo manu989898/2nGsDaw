@@ -121,6 +121,23 @@ useEffect(() => {
       alert("No se pudo asignar la reparación.");
     }
   };
+// Función para eliminar una cita
+const eliminarCita = async (idCita) => {
+  if (!window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+    return; // Cancelar si el usuario no confirma
+  }
+
+  try {
+    await axios.delete(`http://localhost:8000/api/citas/${idCita}`);
+    alert("Cita eliminada correctamente.");
+
+    // Actualizar la lista de citas después de eliminar
+    setCitas((prevCitas) => prevCitas.filter((cita) => cita.id_cita !== idCita));
+  } catch (error) {
+    console.error("Error al eliminar la cita:", error.response?.data || error);
+    alert("No se pudo eliminar la cita.");
+  }
+};
 
   return (
     <div>
@@ -203,52 +220,63 @@ useEffect(() => {
           </tr>
         </thead>
         <tbody>
-          {filteredCitas.map((cita) => (
-            <tr key={cita.id_cita}>
-              <td>{cita.id_cita}</td>
-              <td>{cita.vehiculo?.cliente?.nombre   || "Nombre no disponible"} {cita.vehiculo?.cliente?.apellido   || "Apellido no disponible"} </td>
-              <td>
-                <img
-                  className="imagenMarca"
-                  src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
-                  alt={cita.vehiculo.modelo}
-                  style={{ width: "100px", height: "auto" }}
-                />
-              </td>
-              <td>
-                <span
-                  className={
-                    cita.reparacion?.estado === "Completada"
-                      ? "estado-completada"
-                      : cita.reparacion?.estado === "En Proceso"
-                      ? "estado-en-proceso"
-                      : cita.reparacion?.estado === "Pendiente"
-                      ? "estado-pendiente"
-                      : "estado-sin-reparacion"
-                  }
-                >
-                  {cita.reparacion?.estado || "Sin reparación"}
-                </span>
-              </td>
-              <td>
-                
-                  {mecanicos.filter((mecanico) => mecanico.id_mecanico === cita.reparacion?.id_mecanico).map((mecanico) => (
-                    <span key={mecanico.id_mecanico}>
-                      {mecanico.nombre} {mecanico.apellido}
-                    </span>
-                  ))}
-              </td>
-              <td>
-                <button onClick={() => asignarMecanico(cita.id_cita)}>
-                  Asignar Mecánico
-                </button>
-                <button onClick={() => asignarReparacion(cita.id_cita)}>
-                  Asignar Reparación
-                </button>
-              </td>
-            </tr>
+  {filteredCitas.map((cita) => (
+    <tr key={cita.id_cita}>
+      <td>{cita.id_cita}</td>
+      <td>
+        {cita.vehiculo?.cliente?.nombre || "Nombre no disponible"}{" "}
+        {cita.vehiculo?.cliente?.apellido || "Apellido no disponible"}
+      </td>
+      <td>
+        <img
+          className="imagenMarca"
+          src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
+          alt={cita.vehiculo.modelo}
+          style={{ width: "100px", height: "auto" }}
+        />
+      </td>
+      <td>
+        <span
+          className={
+            cita.reparacion?.estado === "Completada"
+              ? "estado-completada"
+              : cita.reparacion?.estado === "En Proceso"
+              ? "estado-en-proceso"
+              : cita.reparacion?.estado === "Pendiente"
+              ? "estado-pendiente"
+              : "estado-sin-reparacion"
+          }
+        >
+          {cita.reparacion?.estado || "Sin reparación"}
+        </span>
+      </td>
+      <td>
+        {mecanicos
+          .filter((mecanico) => mecanico.id_mecanico === cita.reparacion?.id_mecanico)
+          .map((mecanico) => (
+            <span key={mecanico.id_mecanico}>
+              {mecanico.nombre} {mecanico.apellido}
+            </span>
           ))}
-        </tbody>
+      </td>
+      <td>
+        <button onClick={() => asignarMecanico(cita.id_cita)}>
+          Asignar Mecánico
+        </button>
+        <button onClick={() => asignarReparacion(cita.id_cita)}>
+          Asignar Reparación
+        </button>
+        <button
+          onClick={() => eliminarCita(cita.id_cita)}
+          style={{ color: "red", marginLeft: "10px" }}
+        >
+          Eliminar
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
       </table>
     </div>
   );
