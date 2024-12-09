@@ -1,0 +1,31 @@
+body {
+  background-color: black;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calc-wrapper {
+  background-color: white;
+  width: 400px;
+  border-radius: 16px;
+}
+
+.row {
+  display: flex;
+}
+
+.alert {
+  padding: 0.75rem 1.25rem;
+  color: var(--mainWhite);
+  text-align: center;
+  width: 90%;
+  margin: 2rem auto 0 auto;
+  border-radius: 2px;
+}
+.alert-danger {
+  background: var(--mainRed);
+}
