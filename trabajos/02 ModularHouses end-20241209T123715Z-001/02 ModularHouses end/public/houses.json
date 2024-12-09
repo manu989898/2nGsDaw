@@ -1,0 +1,72 @@
+[
+    {
+        "id":1,
+        "name":"Mallorca cube",
+        "price":300000,
+        "material":"wood",
+        "photo":"cube-1.png"
+    },
+    {
+        "id":2,
+        "name":"Ibiza cube",
+        "price":400000,
+        "material":"wood",
+        "photo":"cube-2.png"
+    },
+    {
+        "id":3,
+        "name":"Formentera cube",
+        "price":350000,
+        "material":"wood",
+        "photo":"cube-3.png"
+    },
+    {
+        "id":4,
+        "name":"Menorca cube",
+        "price":330000,
+        "material":"cement",
+        "photo":"cube-4.png"
+    },
+    {
+        "id":5,
+        "name":"Cabrera cube",
+        "price":540000,
+        "material":"steel frame",
+        "photo":"cube-5.png"
+    },
+    {
+        "id":6,
+        "name":"Mallorc cube",
+        "price":300000,
+        "material":"wood",
+        "photo":"cube-1.png"
+    },
+    {
+        "id":7,
+        "name":"Ibiz cube",
+        "price":400000,
+        "material":"wood",
+        "photo":"cube-2.png"
+    },
+    {
+        "id":8,
+        "name":"Formenter cube",
+        "price":350000,
+        "material":"wood",
+        "photo":"cube-3.png"
+    },
+    {
+        "id":9,
+        "name":"Menorc cube",
+        "price":330000,
+        "material":"cement",
+        "photo":"cube-4.png"
+    },
+    {
+        "id":10,
+        "name":"Cabrer cube",
+        "price":540000,
+        "material":"steel frame",
+        "photo":"cube-5.png"
+    }
+]
