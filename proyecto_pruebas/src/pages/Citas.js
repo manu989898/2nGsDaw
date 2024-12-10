@@ -14,13 +14,14 @@ const Citas = () => {
 
 
   const navigate = useNavigate();
-
+  
   // Obtener citas y mecánicos al cargar el componente
   useEffect(() => {
-    const fetchCitas = async () => {
+    async function fetchCitas(){
       try {
         const response = await axios.get("http://localhost:8000/api/citas");
         setCitas(response.data);
+        console.log("Citas:", response.data);
       } catch (error) {
         console.error("Error al obtener las citas:", error);
       }
@@ -30,6 +31,7 @@ const Citas = () => {
       try {
         const response = await axios.get("http://localhost:8000/api/mecanicos");
         setMecanicos(response.data);
+        console.log("Mecánicos:", response.data);
       } catch (error) {
         console.error("Error al obtener los mecánicos:", error);
       }
