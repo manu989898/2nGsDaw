@@ -10,6 +10,7 @@ const CrearReparacion = () => {
   const [estado, setEstado] = useState("En Proceso"); // Estado de la reparación
   const [fechaInicio, setFechaInicio] = useState(""); // Fecha de inicio
   const [fechaFin, setFechaFin] = useState(""); // Fecha de finalización opcional
+  const [vehiculos, setVehiculos] = useState([]); // Lista de vehículos
 
   // Cargar citas y mecánicos al montar el componente
   useEffect(() => {
@@ -22,6 +23,10 @@ const CrearReparacion = () => {
         // Obtener mecánicos desde la API
         const mecanicosResponse = await api.get("/mecanicos");
         setMecanicos(mecanicosResponse.data);
+
+        const vehiculosResponse = await api.get("/vehiculos");
+        setVehiculos(vehiculosResponse.data);
+
       } catch (error) {
         console.error("Error al cargar datos:", error);
       }
@@ -84,7 +89,7 @@ const CrearReparacion = () => {
             <option value="">-- Seleccionar Cita --</option>
             {citas.map((cita) => (
               <option key={cita.id_cita} value={cita.id_cita}>
-                {`Cita ${cita.id_cita} - Vehículo: ${cita.id_vehiculo}`}
+                {`Cita ${cita.id_cita} - Vehículo: ${vehiculos.find((vehiculo) => vehiculo.id_vehiculo === cita.id_vehiculo)?.placa} `}
               </option>
             ))}
           </select>
@@ -103,7 +108,7 @@ const CrearReparacion = () => {
             <option value="">-- Seleccionar Mecánico --</option>
             {mecanicos.map((mecanico) => (
               <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
-                {`${mecanico.nombre} ${mecanico.apellido}`}
+                {`${mecanico.nombre}`}
               </option>
             ))}
           </select>

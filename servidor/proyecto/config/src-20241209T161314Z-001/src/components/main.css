@@ -1,0 +1,60 @@
+main{
+    padding: 1rem 10% 2rem 10%;
+}
+main > h2{
+    padding-top:1rem;
+    font-size: 1.5rem;
+}
+
+.hero {
+    background: url('/public/assets/images/banners/banner-1.jpg') no-repeat top left;
+    background-size: cover;
+    padding-right: 70%;
+    border-radius: 1rem;
+    padding:1rem 50% 1rem 4rem;
+}
+.hero h2{
+    font-size: 2.5rem;
+    color:black ;  
+}
+.hero h3{
+    font-size: 1.5rem;  
+    color:#FF8F9C;  
+}
+.hero h4{
+    font-size: 1.3rem; 
+    color:#7E7E7E;   
+    font-weight: 500;
+}
+.hero .number{
+    font-weight: bolder;
+    font-size: 1.8rem; 
+}
+.hero button{
+    margin:1rem 0;
+    padding: 0.8rem 0;
+    text-align: center;
+    width: 7rem;
+    color:white;
+    background-color: #ff8f9c;
+    border-radius: 5px;
+    border: 0px;
+    font-weight: bold;
+}
+
+.product-grid{
+    padding: 1rem 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 0.7rem;
+    justify-content: start;
+}
+.offer-grid{
+    padding: 1rem 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 0.3rem;
+    justify-content: start;
+}
+
+

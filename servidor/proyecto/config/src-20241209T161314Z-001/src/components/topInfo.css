@@ -1,0 +1,28 @@
+.top-info{
+    padding: 0 10%;
+    height: 8vh;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #ccc;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.top-info .shipping-text{
+    color:#787878;
+    font-size: 0.9rem;
+    text-transform:uppercase;
+}
+
+.top-info .social-link{
+    text-decoration: none;
+    margin-right: 0.8rem;
+}
+.top-info .social-link:hover i{
+    color:blue;
+}
+
+.top-info .social-link i{
+   font-size: 1.1rem;
+   color:#787878;
+}

@@ -209,6 +209,7 @@ const eliminarCita = async (idCita) => {
             <th>Cliente</th>
             <th>Vehículo</th>
             <th>Estado</th>
+           
             <th>
   Mecánico
   <span className="info-icon" title="Mecánicos asignados a la reparación vinculada a esta cita.">
@@ -250,6 +251,7 @@ const eliminarCita = async (idCita) => {
           {cita.reparacion?.estado || "Sin reparación"}
         </span>
       </td>
+   
       <td>
         {mecanicos
           .filter((mecanico) => mecanico.id_mecanico === cita.reparacion?.id_mecanico)

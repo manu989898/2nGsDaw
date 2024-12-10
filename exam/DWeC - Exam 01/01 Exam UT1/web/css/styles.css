@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.card span {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+.card .brand,
+.card .description,
+.card .stock {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+#figures-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+/* Favorite Icon Styles: For the heart icon on each card */
+.favorite {
+    position: absolute; /* Positions the favorite icon at a specific location within the card */
+    top: 10px; /* Places the icon 10px from the top of the card */
+    right: 10px; /* Places the icon 10px from the right side of the card */
+    z-index: 10; /* Ensures the icon appears above the other elements in the card */
+}
+
+/* Favorite Icon - Active State */
+.favorite .on {
+    color: red; /* Changes the color of the heart icon to red when the figure is marked as a favorite */
+}
+
+/* Heart Icon Styling */
+.fa-heart {
+    font-size: 1.2rem; /* Sets the size of the heart icon to a readable size */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate the icon is clickable */
+}
