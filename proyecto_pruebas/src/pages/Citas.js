@@ -21,7 +21,7 @@ const Citas = () => {
       try {
         const response = await axios.get("http://localhost:8000/api/citas");
         setCitas(response.data);
-        console.log("Citas:", response.data);
+        console.log("Citas:", response.data); // Mostrar las citas en la consola  
       } catch (error) {
         console.error("Error al obtener las citas:", error);
       }
@@ -31,7 +31,7 @@ const Citas = () => {
       try {
         const response = await axios.get("http://localhost:8000/api/mecanicos");
         setMecanicos(response.data);
-        console.log("Mecánicos:", response.data);
+        console.log("Mecánicos:", response.data); // Mostrar los mecánicos en la consola
       } catch (error) {
         console.error("Error al obtener los mecánicos:", error);
       }

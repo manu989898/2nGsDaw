@@ -1,21 +1,37 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Simulate a login event (to be replaced with API call)
-    if (email && password) {
-      onLogin({ email, password }); // Pass email and password to parent or API
-    } else {
-      alert("Please fill in all fields");
+  
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Datos recibidos en Login:", data); // Verificar usuario y token
+        localStorage.setItem("authToken", data.token); // Guarda el token
+        onLogin(data.user); // Actualiza el estado del usuario
+        navigate("/"); // Redirige al Dashboard
+            
+      } else {
+        alert("Credenciales inválidas");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
     }
   };
-
+  
   return (
     <div className="login-container">
       <h1>Login</h1>
@@ -27,7 +43,6 @@ const Login = ({ onLogin }) => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
             required
           />
         </div>
@@ -38,13 +53,10 @@ const Login = ({ onLogin }) => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
             required
           />
         </div>
-        <button type="submit" className="btn-login">
-          Login
-        </button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
