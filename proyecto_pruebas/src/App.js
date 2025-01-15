@@ -20,6 +20,7 @@ import CrearCliente from './pages/CrearCliente';
 import EditarCliente from './pages/EditarCliente';
 import CrearReparacion from './pages/CrearReparacion';
 import React, { useState, useEffect } from "react";
+import Register from './pages/Register';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -73,12 +74,13 @@ const App = () => {
         <Route path="/mecanicos" element={<Mecanicos />} />
         <Route path="/pruebas" element={<CrearReparacion />} /> 
         <Route path="/notificaciones" element={<Notificaciones />} /> 
-        <Route path="/inventarios" element={<Inventarios />} /> 
         <Route path="/reparaciones" element={<Reparaciones />} /> 
         <Route path="/crear-reparacion" element={<CrearReparacion />} />
         <Route path="/reportes" element={<Reportes />} /> 
         <Route path="/timeline" element={<Timeline />} />
-        <Route path="/historial-servicios" element={<HistorialServicios />} /> 
+        <Route path="/historial-servicios" element={<HistorialServicios />} />
+        <Route path="/register" element={<Register />} />
+  
       </Routes>
     </Router>
   );

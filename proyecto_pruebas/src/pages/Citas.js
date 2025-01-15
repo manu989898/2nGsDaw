@@ -272,7 +272,7 @@ const eliminarCita = async (idCita) => {
         </button>
         <button
           onClick={() => eliminarCita(cita.id_cita)}
-          style={{ color: "red", marginLeft: "10px" }}
+          style={{ backgroundColor: "red", marginLeft: "10px" }}
         >
           Eliminar
         </button>

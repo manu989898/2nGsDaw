@@ -14,19 +14,19 @@ const Navbar = ({ user, onLogout }) => {
         <li><Link to="/mecanicos">Mecánicos</Link></li>
         <li><Link to="/empleados">Empleados</Link></li>
         <li><Link to="/notificaciones">Notificaciones</Link></li>
-        <li><Link to="/inventarios">Inventarios</Link></li>
         <li><Link to="/reparaciones">Reparaciones</Link></li>
         <li><Link to="/reportes">Reportes</Link></li>
         <li><Link to="/timeline">Timeline</Link></li>
         <li><Link to="/historial-servicios">Historial Servicios</Link></li>
         {user ? (
           <>
-            <li>Bienvenido, {user.name}</li>
+            <li>Bienvenid@, {user.name}</li>
             <li><button onClick={onLogout}>Logout</button></li>
           </>
         ) : (
           <li><Link to="/login">Login</Link></li>
         )}
+        <li><Link to="/register">SignUp</Link></li>
       </ul>
     </nav>
   );

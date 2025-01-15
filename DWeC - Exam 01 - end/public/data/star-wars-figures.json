@@ -1,0 +1,290 @@
+[
+    {
+        "id": 1,
+        "name": "Armena",
+        "price": 10,
+        "photo": "armera.jpg",
+        "description": "A fierce warrior figure with intricate armor details.",
+        "brand": "GalacticWorks",
+        "stock": {
+            "new": 5,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 2,
+        "name": "Boba Fett",
+        "price": 15,
+        "photo": "boba-fett.jpg",
+        "description": "The iconic bounty hunter from the galaxy far, far away.",
+        "brand": "StarForge",
+        "stock": {
+            "new": 8,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 3,
+        "name": "Jar Jar",
+        "price": 17,
+        "photo": "jar-jar.jpg",
+        "description": "A playful and charming figure of the Gungan hero.",
+        "brand": "EmpireGear",
+        "stock": {
+            "new": 6,
+            "refurbished": 3
+        }
+    },
+    {
+        "id": 4,
+        "name": "Hunter",
+        "price": 14,
+        "photo": "hunter.jpg",
+        "description": "A tactical and rugged warrior from the elite squad.",
+        "brand": "RebelCraft",
+        "stock": {
+            "new": 4,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 5,
+        "name": "Jaxxon",
+        "price": 14,
+        "photo": "jaxxon.jpg",
+        "description": "A quirky and fun-loving character with a bold design.",
+        "brand": "CosmoCreations",
+        "stock": {
+            "new": 7,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 6,
+        "name": "Asajj Ventress",
+        "price": 18,
+        "photo": "asajj-ventress.jpg",
+        "description": "A mysterious and powerful figure with dual lightsabers.",
+        "brand": "GalacticWorks",
+        "stock": {
+            "new": 5,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 7,
+        "name": "Bo-Katan",
+        "price": 19,
+        "photo": "bokatan.jpg",
+        "description": "A fearless Mandalorian leader in her signature armor.",
+        "brand": "StarForge",
+        "stock": {
+            "new": 6,
+            "refurbished": 3
+        }
+    },
+    {
+        "id": 8,
+        "name": "Lando Calrissian",
+        "price": 20,
+        "photo": "calrissian.jpg",
+        "description": "The charismatic and smooth-talking hero of the galaxy.",
+        "brand": "EmpireGear",
+        "stock": {
+            "new": 9,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 9,
+        "name": "Carnor Jax",
+        "price": 16,
+        "photo": "carnor-jax.jpg",
+        "description": "A bold and fearsome Imperial Guard figure.",
+        "brand": "RebelCraft",
+        "stock": {
+            "new": 8,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 10,
+        "name": "Baby Yoda",
+        "price": 12,
+        "photo": "child-yoda.jpg",
+        "description": "The adorable Force-sensitive child from the Mandalorian series.",
+        "brand": "CosmoCreations",
+        "stock": {
+            "new": 10,
+            "refurbished": 0
+        }
+    },
+    {
+        "id": 11,
+        "name": "Crosshair",
+        "price": 13,
+        "photo": "crosshair.jpg",
+        "description": "A precise and calculating marksman of the elite squad.",
+        "brand": "GalacticWorks",
+        "stock": {
+            "new": 7,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 12,
+        "name": "Darth Maul",
+        "price": 25,
+        "photo": "darth-maul.jpg",
+        "description": "The dark and fearsome Sith apprentice wielding a dual saber.",
+        "brand": "StarForge",
+        "stock": {
+            "new": 4,
+            "refurbished": 3
+        }
+    },
+    {
+        "id": 13,
+        "name": "Greef Karga",
+        "price": 18,
+        "photo": "greef-karga.jpg",
+        "description": "A trusted ally with a commanding presence.",
+        "brand": "EmpireGear",
+        "stock": {
+            "new": 3,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 14,
+        "name": "Kuiil",
+        "price": 22,
+        "photo": "kuill.jpg",
+        "description": "A wise and resourceful Ugnaught from the Mandalorian series.",
+        "brand": "RebelCraft",
+        "stock": {
+            "new": 5,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 15,
+        "name": "Luke Skywalker",
+        "price": 28,
+        "photo": "luke-skywalker.jpg",
+        "description": "The legendary Jedi knight in his iconic outfit.",
+        "brand": "CosmoCreations",
+        "stock": {
+            "new": 2,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 16,
+        "name": "The Mandalorian",
+        "price": 30,
+        "photo": "mandalorian.jpg",
+        "description": "The enigmatic bounty hunter clad in Beskar armor.",
+        "brand": "GalacticWorks",
+        "stock": {
+            "new": 8,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 17,
+        "name": "Moff Gideon",
+        "price": 21,
+        "photo": "moff-gideon.jpg",
+        "description": "The cunning and ruthless Imperial officer.",
+        "brand": "StarForge",
+        "stock": {
+            "new": 6,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 18,
+        "name": "Mordor",
+        "price": 20,
+        "photo": "morador.jpg",
+        "description": "A skilled warrior from the dark side.",
+        "brand": "EmpireGear",
+        "stock": {
+            "new": 7,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 19,
+        "name": "Imperial Repulsor",
+        "price": 14,
+        "photo": "repulsor-imperial.jpg",
+        "description": "A sleek and powerful Imperial repulsor craft.",
+        "brand": "RebelCraft",
+        "stock": {
+            "new": 5,
+            "refurbished": 0
+        }
+    },
+    {
+        "id": 20,
+        "name": "Rey",
+        "price": 18,
+        "photo": "rey.jpg",
+        "description": "The heroic Jedi figure leading the Resistance.",
+        "brand": "CosmoCreations",
+        "stock": {
+            "new": 6,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 21,
+        "name": "Stormtrooper",
+        "price": 12,
+        "photo": "soldado-asalto.jpg",
+        "description": "An elite Stormtrooper figure ready for battle.",
+        "brand": "GalacticWorks",
+        "stock": {
+            "new": 10,
+            "refurbished": 2
+        }
+    },
+    {
+        "id": 22,
+        "name": "Imperial Soldier",
+        "price": 11,
+        "photo": "soldado-imperial.jpg",
+        "description": "A classic Imperial soldier in full gear.",
+        "brand": "StarForge",
+        "stock": {
+            "new": 8,
+            "refurbished": 3
+        }
+    },
+    {
+        "id": 23,
+        "name": "Black Trooper",
+        "price": 15,
+        "photo": "trooper-black.jpg",
+        "description": "A stealthy and elite version of the Stormtrooper.",
+        "brand": "EmpireGear",
+        "stock": {
+            "new": 7,
+            "refurbished": 1
+        }
+    },
+    {
+        "id": 24,
+        "name": "Wrecker",
+        "price": 16,
+        "photo": "wrecker.jpg",
+        "description": "The muscle of the elite squad, full of strength.",
+        "brand": "RebelCraft",
+        "stock": {
+            "new": 9,
+            "refurbished": 0
+        }
+    }
+]
