@@ -5,11 +5,11 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-blue-500 text-white p-4 shadow-md">
+    <nav className="bg-blue-500 text-white p-4 ">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <Link to="/" className="hover:underline">
-          <h1 className="text-xl font-bold">My App</h1>
-          </Link>
+        <Link to="/" className="hover:underline">
+          <img src="/logo.png" alt="logo" className="w-24 h-16" />
+        </Link>
 
     
         <Link to="/all-comments" className="hover:underline">

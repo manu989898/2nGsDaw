@@ -117,7 +117,7 @@ const SpaceDetails = () => {
   const generateRandomImages = () => {
     const imageSources = Array.from({ length: 5 }, () => {
       const randomIndex = Math.floor(Math.random() * 10) + 1; // Generar un número entre 1 y 10
-      return `../public/spaceimg/${randomIndex}.jpg`; // Ruta a las imágenes
+      return `/spaceimg/${randomIndex}.jpg`; // Ruta a las imágenes
     });
     setGalleryImages(imageSources);
     setSelectedImage(imageSources[0]); // Establecer la primera imagen como seleccionada
@@ -141,7 +141,7 @@ const SpaceDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-300">
       <Navbar />
       <div className="p-6 max-w-4xl mx-auto">
         <div className="bg-white rounded shadow-lg p-6 mb-6">
@@ -149,27 +149,6 @@ const SpaceDetails = () => {
           <p className="mt-4 text-gray-600">
             {space.observation_ES || "No hay descripción disponible."}
           </p>
-          <div className="mt-6">
-            <p className="text-gray-600">
-              <strong>Teléfono:</strong> {space.telefono || "No disponible"}
-            </p>
-            <p className="text-gray-600">
-              <strong>Email:</strong> {space.email || "No disponible"}
-            </p>
-            <p className="text-gray-600">
-              <strong>Web:</strong> {space.web ? (
-                <a
-                  href={`http://${space.web}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  {space.web}
-                </a>
-              ) : (
-                "No disponible"
-              )}
-            </p>
           {/* Galería de Imágenes */}
           <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-8">Galería</h2>
           <div className="flex flex-col items-center">
@@ -194,6 +173,27 @@ const SpaceDetails = () => {
               ))}
             </div>
         </div>
+          <div className="mt-6">
+            <p className="text-gray-600">
+              <strong>Teléfono:</strong> {space.telefono || "No disponible"}
+            </p>
+            <p className="text-gray-600">
+              <strong>Email:</strong> {space.email || "No disponible"}
+            </p>
+            <p className="text-gray-600">
+              <strong>Web:</strong> {space.web ? (
+                <a
+                  href={`http://${space.web}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 underline"
+                >
+                  {space.web}
+                </a>
+              ) : (
+                "No disponible"
+              )}
+            </p>
           </div>
 
         </div>

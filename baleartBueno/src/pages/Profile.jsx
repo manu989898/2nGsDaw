@@ -208,23 +208,7 @@ const ProfileWithComments = () => {
               required
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="role_id"
-              className="block text-gray-700 font-semibold"
-            >
-              Rol (ID)
-            </label>
-            <input
-              type="text"
-              id="role_id"
-              name="role_id"
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              value={userData.role_id}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+          
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"

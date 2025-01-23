@@ -1,74 +1,60 @@
-import {useState, useEffect} from "react";
-
+import { useState, useEffect } from "react";
 import Filter from "../components/Filter";
-import LoadMoreButton from "../components/LoadMoreButton";
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
-    const [products, setProducts] = useState([]);
-    const [displayedProducts, setDisplayedProducts] = useState([]);
-    const [favorites, setFavorites] = useState(()=>
-        JSON.parse(localStorage.getItem("favorites"))
-        ?JSON.parse(localStorage.getItem("favorites")):[]);
+  const [products, setProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
 
-    useEffect(() => {
-        const localStorageProducts = JSON.parse(localStorage.getItem("products"));
-        if(localStorageProducts){            
-            setProducts(localStorageProducts);
-            setDisplayedProducts(localStorageProducts.slice(0,8));
-        }
-        else{
-            fetch("/data/star-wars-figures.json")
-                .then(res => res.json())
-                .then(data => {
-                    setProducts(data);
-                    setDisplayedProducts(data.slice(0,8));
-                    localStorage.setItem("products",JSON.stringify(data));
-                })
-        }
-    }, []);
+  useEffect(() => {
+    fetch("/data/characters.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data);
+        setDisplayedProducts(data);
+      })
+      .then((dog) => console.log(dog));
+  }, []);
 
-    function loadMore(){
-        const moreProducts = products.slice(displayedProducts.length,displayedProducts.length+4);
-        setDisplayedProducts([...displayedProducts,...moreProducts]);
-    }
+  function onFilter(minPower, maxPower) {
+    if (isNaN(minPower)) minPower = 0;
+    const min = parseFloat(minPower);
 
-    function onFilter(minPrice, maxPrice){  
-        if(isNaN(minPrice)) minPrice = 0;     
-        const min = parseFloat(minPrice);
-        
-        if(isNaN(maxPrice)) maxPrice = Infinity;  
-        const max = parseFloat(maxPrice);
+    if (isNaN(maxPower)) maxPower = Infinity;
+    const max = parseFloat(maxPower);
 
-        const filteredProducts = products.filter(product => {
-            const price = parseFloat(product.price);
-            return price >= min && price <= max;
-        })
+    const filteredProducts = products.filter((product) => {
+      const price = parseFloat(product.power);
+      return price >= min && price <= max;
+    });
+    setDisplayedProducts(filteredProducts);
+  }
 
-        setDisplayedProducts(filteredProducts);
-    }
+  function onDelete(id) {
+    const updatedProducts = products.filter((product) => product.id !== id);
+    setProducts(updatedProducts);
+    setDisplayedProducts(updatedProducts);
+  }
 
-    function toggleFavorite(id){  
-        const updatedFavorites = favorites.includes(id)
-            ?favorites.filter(favoriteId => favoriteId != id)
-            :[...favorites,id];
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites",JSON.stringify(updatedFavorites));
-    }
+  return (
 
-    return(
+   
         <div>
-            <Filter onFilter={onFilter}/>
-            <section id="figures-list" className="container py-4"> 
-                {displayedProducts.map(product => (                    
-                    <ProductCard
-                        key={product.id}
-                        product={{...product, favorite: favorites.includes(product.id)}}
-                        toggleFavorite={toggleFavorite}
-                    />
-                ))}
-            </section>
-            <LoadMoreButton loadMore={loadMore}/>
+          <Filter onFilter={onFilter} />
+         
+
+          <section id="grid-characters" className="grid-4">
+          {displayedProducts.map((product) => (
+              
+              <ProductCard
+                key={product.id}
+                product={{ ...product }}
+                handleDelete={onDelete}
+              />
+            ))}
+          </section>
         </div>
-    )
+
+
+    );
 }

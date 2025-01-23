@@ -5,7 +5,6 @@ import Contact from "./pages/Contact";
 import Favorites from "./pages/Favorites";
 import Home from "./pages/Home";
 import Stock from "./pages/Stock";
-
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import "./App.css"
@@ -25,6 +24,7 @@ export default function App(){
                     <Route path="*" element={<Navigate to="/" replace/>}/>
                 </Routes>
             </div>
+         
         </Router>
     )
 }
