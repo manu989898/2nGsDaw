@@ -14,10 +14,11 @@ const Spaces = () => {
   const [accessibilityFilter, setAccessibilityFilter] = useState(false); // Filtro de accesibilidad
   const [searchQuery, setSearchQuery] = useState(""); // Filtro de búsqueda por nombre
   const [selectedModality, setSelectedModality] = useState(""); // Modalidad seleccionada
-  const [filtersVisible, setFiltersVisible] = useState(false); // Estado para mostrar/ocultar filtros
+ const [filtersVisible, setFiltersVisible] = useState(true); // Estado para mostrar/ocultar filtros
   const [municipality, setMunicipality] = useState(""); // Municipio seleccionado
   const [municipalities, setMunicipalities] = useState([]); // Lista de municipios según la isla
   const navigate = useNavigate();
+  const [spaceImages, setSpaceImages] = useState([]); // Lista de imágenes de los espacios
 
   const islands = [
     "Mallorca",
@@ -35,66 +36,61 @@ const Spaces = () => {
   const fetchSpaces = async (islandName, municipalityName) => {
     setLoading(true);
     try {
+      // Cargar las imágenes primero
+      const imageResponse = await axios.get("/spaces.json");
+      const loadedImages = imageResponse.data;
+      setSpaceImages(loadedImages);
+
+      // Luego cargar los espacios
       const response = await axios.get(
         `http://127.0.0.1:8000/api/space/island/${islandName}`
       );
-      console.log("Espacios:", response.data.data);
+      console.log("Espacios recibidos de la API:", response.data.data);
 
       let filteredSpaces = response.data.data;
 
-      // Filtrar municipios de la isla
-      const uniqueMunicipalities = Array.from(
-        new Set(
-          filteredSpaces.map((space) => space.address.municipality.name)
-        )
-      );
-      setMunicipalities(uniqueMunicipalities);
-
-      // Filtrar por municipio si está seleccionado
-      if (municipalityName) {
+      // Filtrar por municipio si se proporciona
+      if (municipalityName && municipalityName !== "") {
         filteredSpaces = filteredSpaces.filter(
           (space) => space.address.municipality.name === municipalityName
         );
       }
 
-      // Ordenar espacios por puntuación
+      // Extraer nombres únicos de municipios
+      const uniqueMunicipalities = Array.from(
+        new Set(filteredSpaces.map((space) => space.address.municipality.name))
+      );
+      setMunicipalities(uniqueMunicipalities);
+
+      // Ordenar los espacios por puntuación
       filteredSpaces = filteredSpaces.sort((a, b) => {
         const scoreA = parseFloat(a.totalScore) || 0;
         const scoreB = parseFloat(b.totalScore) || 0;
-        return scoreB - scoreA;
+        return scoreB - scoreA; // Orden descendente
       });
 
-      if (accessibilityFilter) {
-        filteredSpaces = filteredSpaces.filter((space) =>
-          ["S", "P"].includes(space.accessType)
+      // Asignar imágenes a los espacios
+      const spacesWithImages = filteredSpaces.map((space) => {
+        const matchingImage = loadedImages.find(
+          (img) =>
+            img.registre.trim().toLowerCase() ===
+            space.RegNumber.trim().toLowerCase()
         );
-      }
 
-      if (selectedModality) {
-        filteredSpaces = filteredSpaces.filter((space) =>
-          space.modalitats.some((mod) => mod.name === selectedModality)
-        );
-      }
-
-      setSpaces(
-        filteredSpaces.map((space) => ({
+        return {
           ...space,
-          randomImage: generateRandomImage(),
-        }))
-      );
-      setTotalPages(Math.ceil(filteredSpaces.length / 4));
+          image: matchingImage ? matchingImage.image : "./spaceimg/1.jpg",
+        };
+      });
+
+      setSpaces(spacesWithImages);
+      setTotalPages(Math.ceil(spacesWithImages.length / 4));
       setCurrentPage(1);
     } catch (error) {
       console.error("Error al obtener los espacios:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-
-  const generateRandomImage = () => {
-    const randomIndex = Math.floor(Math.random() * 10) + 1;
-    return `/spaceimg/${randomIndex}.jpg`;
   };
 
   const handleNextPage = () => {
@@ -174,8 +170,7 @@ const Spaces = () => {
       <Navbar />
       <div className="flex">
         <div className="flex-grow p-4">
-      
- {/* Botón para mostrar/ocultar filtros */}
+          {/* Botón para mostrar/ocultar filtros Actualmente desactivado para que se muestre siempre
  <div className="text-center mb-4">
         <button
           onClick={() => setFiltersVisible(!filtersVisible)}
@@ -185,145 +180,154 @@ const Spaces = () => {
         </button>
       </div>
 
-      {/* Contenedor de filtros desplegable */}
-      {filtersVisible && (
-        <div className="bg-white p-4 rounded shadow-md mb-6">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-          <div className="flex items-center gap-4 ">  
-            <div className="flex items-center">
-              <label
-                htmlFor="island"
-                className="text-lg font-semibold text-gray-700 mr-4"
-              >
-                Isla:
-              </label>
-              <select
-                id="island"
-                value={island}
-               
-                onChange={(e) => {
-                  setIsland(e.target.value);
-                  setMunicipality(""); // Reinicia el municipio al cambiar de isla
-                }}
-                className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
-              >
-                {islands.map((island) => (
-                  <option key={island} value={island}>
-                    {island}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex items-center">
+      */}
+
+          {/* Contenedor de filtros desplegable */}
+          {filtersVisible && (
+            <div className="bg-white p-4 rounded shadow-md mb-6">
+              <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div className="flex items-center gap-4 ">
+                  <div className="flex items-center">
+                    <label
+                      htmlFor="island"
+                      className="text-lg font-semibold text-gray-700 mr-4"
+                    >
+                      Isla:
+                    </label>
+                    <select
+                      id="island"
+                      value={island}
+                      onChange={(e) => {
+                        setIsland(e.target.value);
+                        setMunicipality(""); // Reinicia el municipio al cambiar de isla
+                      }}
+                      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                    >
+                      {islands.map((island) => (
+                        <option key={island} value={island}>
+                          {island}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex items-center">
+                    {/* Label de municipios (oculto por estetica)
                   <label
                     htmlFor="municipality"
                     className="text-lg font-semibold text-gray-700 mr-4"
                   >
                     Municipio:
                   </label>
-                  <select
-                    id="municipality"
-                    value={municipality}
-                    onChange={(e) => setMunicipality(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                  */}
+                    <select
+                      id="municipality"
+                      value={municipality}
+                      onChange={(e) => setMunicipality(e.target.value)}
+                      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                    >
+                      <option value="">Municipios</option>
+                      {municipalities.map((mun) => (
+                        <option key={mun} value={mun}>
+                          {mun}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Buscar por nombre..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="min-w-[200px] flex-grow px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                  />
+
+                  <button
+                    onClick={() => setAccessibilityFilter((prev) => !prev)}
+                    className={`px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 transition-all ${
+                      accessibilityFilter
+                        ? "bg-blue-500 text-white ring-blue-300"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
                   >
-                    <option value="">Todos</option>
-                    {municipalities.map((mun) => (
-                      <option key={mun} value={mun}>
-                        {mun}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-            <input
-              type="text"
-              placeholder="Buscar por nombre..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all flex-grow"/>
+                    {accessibilityFilter
+                      ? "Accesible: Activado"
+                      : "Accesible: Desactivado"}
+                  </button>
 
-            <button
-              onClick={() => setAccessibilityFilter((prev) => !prev)}
-              className={`px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 transition-all ${
-                accessibilityFilter
-                  ? "bg-blue-500 text-white ring-blue-300"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {accessibilityFilter
-                ? "Accesible: Activado"
-                : "Accesible: Desactivado"}
-            </button>
-
-            
-  <div className="flex items-center">
+                  <div className="flex items-center">
+                    {/* Label de modalidades (oculto por estetica)}
     <label
       htmlFor="modality"
       className="text-lg font-semibold text-gray-700 mr-4"
     >
       Modalidad:
     </label>
-    <select
-      id="modality"
-      value={selectedModality}
-      onChange={(e) => setSelectedModality(e.target.value)}
-      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
-    >
-      <option value="">Todas</option>
-      {allModalities.map((modality) => (
-        <option key={modality} value={modality}>
-          {modality}
-        </option>
-      ))}
-    </select>
-  </div>
+    */}
+                    <select
+                      id="modality"
+                      value={selectedModality}
+                      onChange={(e) => setSelectedModality(e.target.value)}
+                      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                    >
+                      <option value="">Modalidades</option>
+                      {allModalities.map((modality) => (
+                        <option key={modality} value={modality}>
+                          {modality}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-  <div className="flex items-center gap-2">
-    <button
-      onClick={() => setLanguage("ES")}
-      className={`px-4 py-2 rounded-l bg-gray-200 hover:bg-gray-300 ${
-        language === "ES" ? "bg-blue-500 text-white" : "text-gray-700"
-      }`}
-    >
-      <img
-        src="/flags/es.png"
-        alt="Español"
-        className="w-8 h-6"
-      />
-    </button>
-    <button
-      onClick={() => setLanguage("EN")}
-      className={`px-4 py-2 bg-gray-200 hover:bg-gray-300 ${
-        language === "EN" ? "bg-blue-500 text-white" : "text-gray-700"
-      }`}
-    >
-      <img
-        src="/flags/en.png"
-        alt="English"
-        className="w-8 h-6"
-      />
-    </button>
-    <button
-      onClick={() => setLanguage("CA")}
-      className={`px-4 py-2 rounded-r bg-gray-200 hover:bg-gray-300 ${
-        language === "CA" ? "bg-blue-500 text-white" : "text-gray-700"
-      }`}
-    >
-      <img
-        src="/flags/ca.png"
-        alt="Català"
-        className="w-8 h-6"
-      />
-    </button>
-  </div>
-</div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setLanguage("ES")}
+                      className={`px-4 py-2 rounded-l bg-gray-200 hover:bg-gray-300 ${
+                        language === "ES"
+                          ? "bg-blue-500 text-white"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      <img
+                        src="/flags/es.png"
+                        alt="Español"
+                        className="w-8 h-6"
+                      />
+                    </button>
+                    <button
+                      onClick={() => setLanguage("EN")}
+                      className={`px-4 py-2 bg-gray-200 hover:bg-gray-300 ${
+                        language === "EN"
+                          ? "bg-blue-500 text-white"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      <img
+                        src="/flags/en.png"
+                        alt="English"
+                        className="w-8 h-6"
+                      />
+                    </button>
+                    <button
+                      onClick={() => setLanguage("CA")}
+                      className={`px-4 py-2 rounded-r bg-gray-200 hover:bg-gray-300 ${
+                        language === "CA"
+                          ? "bg-blue-500 text-white"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      <img
+                        src="/flags/ca.png"
+                        alt="Català"
+                        className="w-8 h-6"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-</div>
-        </div>
-      )}
-
-
-<h1 className="text-3xl font-bold text-center mb-6">Espacios</h1>
+          <h1 className="text-3xl font-bold text-center mb-6">Espacios</h1>
           {loading ? (
             <p className="text-center text-gray-500">Cargando...</p>
           ) : spaces.length === 0 ? (
@@ -332,23 +336,36 @@ const Spaces = () => {
             </p>
           ) : (
             <>
-              <div className="mb-8">
+              <div className="mb-8 px-20">
                 {displayedSpaces[0] && (
                   <div
-                  className="bg-white rounded shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => handleSpaceClick(displayedSpaces[0].id)}
+                    className="bg-white rounded shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => handleSpaceClick(displayedSpaces[0].id)}
                   >
                     <h2 className="text-2xl font-bold text-gray-700 mb-4">
                       {displayedSpaces[0].name}
                     </h2>
                     <img
-                      src={displayedSpaces[0].randomImage}
+                      src={displayedSpaces[0].image}
                       alt="Imagen del espacio"
                       className="w-full h-64 object-cover rounded mb-4"
                     />
                     <p className="text-gray-600 text-sm mb-4">
                       {renderObservation(displayedSpaces[0], true)}
                     </p>
+                    <p className="text-gray-600 text-sm">
+                      <strong>Servicios:</strong>{" "}
+                      {displayedSpaces[0].serveis &&
+                      displayedSpaces[0].serveis.length > 0
+                        ? displayedSpaces[0].serveis
+                            .map(
+                              (service) =>
+                                service.description_ES || service.name
+                            )
+                            .join(", ")
+                        : "N/A"}
+                    </p>
+
                     <p className="text-gray-600 text-sm mb-4">
                       <strong>Modalidades:</strong>{" "}
                       {displayedSpaces[0].modalitats.length > 0
@@ -357,6 +374,7 @@ const Spaces = () => {
                             .join(", ")
                         : "N/A"}
                     </p>
+
                     {renderScoreWithStar(
                       displayedSpaces[0].totalScore || 0,
                       displayedSpaces[0].comentaris.length || 0
@@ -365,7 +383,7 @@ const Spaces = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-20">
                 {displayedSpaces.slice(1).map((space) => (
                   <div
                     key={space.id}
@@ -376,13 +394,25 @@ const Spaces = () => {
                       {space.name}
                     </h3>
                     <img
-                      src={space.randomImage}
+                      src={space.image}
                       alt="Imagen del espacio"
                       className="w-full h-48 object-cover rounded mb-4"
                     />
                     <p className="text-gray-500 text-sm mb-4">
                       {renderObservation(space, false)}
                     </p>
+                    <p className="text-gray-600 text-sm ">
+                      <strong>Servicios:</strong>{" "}
+                      {space.serveis && space.serveis.length > 0
+                        ? space.serveis
+                            .map(
+                              (service) =>
+                                service.description_ES || service.name
+                            )
+                            .join(", ")
+                        : "N/A"}
+                    </p>
+
                     <p className="text-gray-600 text-sm mb-4">
                       <strong>Modalidades:</strong>{" "}
                       {space.modalitats.length > 0
@@ -426,3 +456,40 @@ const Spaces = () => {
 };
 
 export default Spaces;
+/*
+fetch del json de o,agenes de los espacios
+
+const fetchSpaceImages = async () => {
+    try {
+      const response = await axios.get(
+        "http://
+      );
+      console.log("Imágenes de espacios:", response.data.data);
+      return response.data.data;
+    } catch (error) {
+      console.error("Error al obtener las imágenes de los espacios:", error);
+      return [];
+    }
+      
+
+const spacesWithImages = filteredSpaces.map((space) => {
+        const matchingImage = spaceImages.find(
+          (img) => img.registre === space.regNumber
+        );
+        return {
+          ...space,
+          image: matchingImage ? matchingImage.image : "/default-image.jpg", // Imagen por defecto si no se encuentra
+        };
+      });
+
+      setSpaces(spacesWithImages);
+      setTotalPages(Math.ceil(spacesWithImages.length / 4));
+      setCurrentPage(1);
+    } catch (error) {
+      console.error("Error al obtener los espacios:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+*/

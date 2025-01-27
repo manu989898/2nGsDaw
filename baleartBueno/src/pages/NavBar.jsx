@@ -12,9 +12,7 @@ const Navbar = () => {
         </Link>
 
     
-        <Link to="/all-comments" className="hover:underline">
-          Todos los Comentarios 
-        </Link>
+        
         <div className="space-x-4 flex items-center">
           {!user ? (
             <>

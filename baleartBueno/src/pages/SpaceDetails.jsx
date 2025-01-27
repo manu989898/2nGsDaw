@@ -94,11 +94,11 @@ const SpaceDetails = () => {
           comment: newComment,
           score: newScore,
           images: newImages.filter((url) => url.trim() !== ""), // Filtrar URLs vacías
-          status: 'P',
+          status: "N", // Pendiente de aprobación
         },
       ],
     };
-
+    {/* Aqui se envia el comentario a la base de datos usando api pasando regnumber del space al que posteamos comentario */}
     try {
       console.log("Usando regnumber:", regnumber);
       await axios.post(
@@ -106,14 +106,17 @@ const SpaceDetails = () => {
         commentData
       );
       setNewComment(""); // Limpiar el comentario
-      setNewScore(5); // Restablecer la puntuación
+      setNewScore(5); // Restablecer la puntuación por defrecto
       setNewImages([""]); // Limpiar las imágenes
       fetchSpaceDetails(); // Actualizar los detalles del espacio
       console.log(commentData);
     } catch (error) {
       console.error("Error al enviar el comentario:", error);
+      alert("Ocurrió un error al enviar el comentario. Por favor, inténtalo más tarde.");
     }
   };
+
+  {/* Aqui se generan imagenes aleatorias para la galeria */}
   const generateRandomImages = () => {
     const imageSources = Array.from({ length: 5 }, () => {
       const randomIndex = Math.floor(Math.random() * 10) + 1; // Generar un número entre 1 y 10
@@ -150,7 +153,11 @@ const SpaceDetails = () => {
             {space.observation_ES || "No hay descripción disponible."}
           </p>
           {/* Galería de Imágenes */}
-          <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-8">Galería</h2>
+          {/* Aqui se muestran imagenes aleatorias dentrod e una carpeta ya que el Faker image en esta versión de laravel está
+                  roto y la base de datos no previene las imagenes de los spaces */}
+          <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-8">
+            Galería
+          </h2>
           <div className="flex flex-col items-center">
             <div className="mb-4">
               <img
@@ -166,13 +173,15 @@ const SpaceDetails = () => {
                   src={src}
                   alt={`Miniatura ${index + 1}`}
                   className={`w-20 h-20 object-cover rounded cursor-pointer border-2 ${
-                    src === selectedImage ? "border-blue-500" : "border-gray-300"
+                    src === selectedImage
+                      ? "border-blue-500"
+                      : "border-gray-300"
                   }`}
                   onClick={() => setSelectedImage(src)}
                 />
               ))}
             </div>
-        </div>
+          </div>
           <div className="mt-6">
             <p className="text-gray-600">
               <strong>Teléfono:</strong> {space.telefono || "No disponible"}
@@ -181,7 +190,24 @@ const SpaceDetails = () => {
               <strong>Email:</strong> {space.email || "No disponible"}
             </p>
             <p className="text-gray-600">
-              <strong>Web:</strong> {space.web ? (
+              <strong>Servicios:</strong>
+            </p>
+            {space.serveis && space.serveis.length > 0 ? (
+              <ul className="list-disc pl-5">
+                {space.serveis.map((service) => (
+                  <li key={service.id} className="text-gray-700">
+                    {service.description_ES ||
+                      service.name ||
+                      "Servicio sin nombre"}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No hay servicios disponibles.</p>
+            )}
+            <p className="text-gray-600">
+              <strong>Web:</strong>{" "}
+              {space.web ? (
                 <a
                   href={`http://${space.web}`}
                   target="_blank"
@@ -195,7 +221,6 @@ const SpaceDetails = () => {
               )}
             </p>
           </div>
-
         </div>
 
         <div className="bg-white rounded shadow-lg p-6 mb-6">
@@ -258,9 +283,7 @@ const SpaceDetails = () => {
               </button>
             </form>
           ) : (
-            <p className="text-gray-500">
-              Debes iniciar sesión para comentar.
-            </p>
+            <p className="text-gray-500">Debes iniciar sesión para comentar.</p>
           )}
         </div>
 
@@ -268,57 +291,60 @@ const SpaceDetails = () => {
           <h2 className="text-2xl font-bold text-gray-700 mb-4">Comentarios</h2>
           {comments.length > 0 ? (
             <ul className="space-y-4">
-              {comments.map((comment) => (
-                <li
-                  key={comment.id}
-                  className="bg-gray-50 p-4 rounded shadow-md border border-gray-200"
-                >
-                  <p className="text-gray-800 font-semibold">
-                    {comment.comment}
-                  </p>
-                  <div className="flex items-center mt-2">
-                    <span className="text-sm font-medium text-gray-600 mr-2">
-                      <strong>Puntuación:</strong>
-                    </span>
-                    {[...Array(comment.score)].map((_, index) => (
-                      <span key={index} className="text-yellow-500">
-                        ★
+              {comments
+                .filter((comment) => comment.status === "P")
+                .map((comment) => (
+                  <li
+                    key={comment.id}
+                    className="bg-gray-50 p-4 rounded shadow-md border border-gray-200"
+                  >
+                    <p className="text-gray-800 font-semibold">
+                      {comment.comment}
+                    </p>
+                    <div className="flex items-center mt-2">
+                      <span className="text-sm font-medium text-gray-600 mr-2">
+                        <strong>Puntuación:</strong>
                       </span>
-                    ))}
-                    {[...Array(5 - comment.score)].map((_, index) => (
-                      <span key={index} className="text-gray-300">
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    <strong>Usuario:</strong>{" "}
-                    {comment.userName || "Desconocido"}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Publicado el{" "}
-                    {new Date(comment.created_at).toLocaleDateString()}
-                  </p>
-                  {comment.image && comment.image.length > 0 && (
-                    <div className="mt-2">
-                      <strong>Imágenes:</strong>
-                      <div className="grid grid-cols-3 gap-2 mt-2">
-                        {comment.image.map((img) => (
-                          <img
-                            key={img.id}
-                            src={img.url}
-                            alt={`Imagen del comentario ${img.id}`}
-                            className="w-full rounded object-cover"
-                            onError={(e) => {
-                              e.target.src = "/default-image.jpg"; // Imagen por defecto si falla
-                            }}
-                          />
-                        ))}
-                      </div>
+                      {[...Array(comment.score)].map((_, index) => (
+                        <span key={index} className="text-yellow-500">
+                          ★
+                        </span>
+                      ))}
+                      {[...Array(5 - comment.score)].map((_, index) => (
+                        <span key={index} className="text-gray-300">
+                          ★
+                        </span>
+                      ))}
                     </div>
-                  )}
-                </li>
-              ))}
+
+                    <p className="text-sm text-gray-600">
+                      <strong>Usuario:</strong>{" "}
+                      {comment.userName || "Desconocido"}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Publicado el{" "}
+                      {new Date(comment.created_at).toLocaleDateString()}
+                    </p>
+                    {comment.image && comment.image.length > 0 && (
+                      <div className="mt-2">
+                        <strong>Imágenes:</strong>
+                        <div className="grid grid-cols-3 gap-2 mt-2">
+                          {comment.image.map((img) => (
+                            <img
+                              key={img.id}
+                              src={img.url}
+                              alt={`Imagen del comentario ${img.id}`}
+                              className="w-full rounded object-cover"
+                              onError={(e) => {
+                                e.target.src = "/default-image.jpg"; // Imagen por defecto si falla
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                ))}
             </ul>
           ) : (
             <p className="text-gray-600">No hay comentarios disponibles.</p>

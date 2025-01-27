@@ -95,7 +95,10 @@ const ProfileWithComments = () => {
                 spaceName: spaceResponse.data.data.name,
               };
             } catch (error) {
-              console.error("Error al obtener el espacio con ID ${comment.space_id}:", error);
+              console.error(
+                "Error al obtener el espacio con ID ${comment.space_id}:",
+                error
+              );
               return { ...comment, spaceName: "Espacio no disponible" };
             }
           }
@@ -164,7 +167,10 @@ const ProfileWithComments = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold"
+            >
               Correo Electrónico
             </label>
             <input
@@ -178,7 +184,10 @@ const ProfileWithComments = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="phone" className="block text-gray-700 font-semibold">
+            <label
+              htmlFor="phone"
+              className="block text-gray-700 font-semibold"
+            >
               Teléfono
             </label>
             <input
@@ -208,7 +217,7 @@ const ProfileWithComments = () => {
               required
             />
           </div>
-          
+
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
@@ -218,7 +227,9 @@ const ProfileWithComments = () => {
         </form>
       </div>
       <div className="p-6 max-w-4xl mx-auto bg-white rounded shadow-md mt-8">
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">Tus Comentarios</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          Tus Comentarios
+        </h2>
         {comments.length === 0 ? (
           <p className="text-center text-gray-500">
             No has realizado ningún comentario aún.
@@ -236,12 +247,28 @@ const ProfileWithComments = () => {
                     <strong>Puntuación:</strong>
                   </span>
                   {[...Array(comment.score)].map((_, i) => (
-                    <span key={i} className="text-yellow-500">★</span>
+                    <span key={i} className="text-yellow-500">
+                      ★
+                    </span>
                   ))}
                   {[...Array(5 - comment.score)].map((_, i) => (
-                    <span key={i} className="text-gray-300">★</span>
+                    <span key={i} className="text-gray-300">
+                      ★
+                    </span>
                   ))}
                 </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  <strong>Estado:</strong>{" "}
+                  <span
+                    className={
+                      comment.status === "P"
+                        ? "text-green-500 font-semibold bg-green-100 px-2 py-1 rounded"
+                        : "text-red-500 font-semibold bg-red-100 px-2 py-1 rounded"
+                    }
+                  >
+                    {comment.status === "P" ? "Publicado" : "Pendiente"}
+                  </span>
+                </p>
                 <p className="text-sm text-gray-600 mt-2">
                   <strong>Espacio:</strong> {comment.spaceName}
                 </p>
@@ -261,7 +288,8 @@ const ProfileWithComments = () => {
                   </div>
                 )}
                 <p className="text-xs text-gray-500 mt-2">
-                  Publicado el {new Date(comment.created_at).toLocaleDateString()}
+                  Publicado el{" "}
+                  {new Date(comment.created_at).toLocaleDateString()}
                 </p>
               </div>
             ))}

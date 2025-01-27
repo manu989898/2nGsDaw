@@ -75,7 +75,7 @@ const AllComments = () => {
         })
       );
 
-      setComments(enrichedComments);
+      setComments(enrichedComments.reverse());
     } catch (error) {
       console.error("Error al obtener los comentarios:", error);
     } finally {
@@ -161,7 +161,7 @@ const AllComments = () => {
                       key={img.id}
                       src={img.url}
                       alt={`Comentario imagen ${img.id}`}
-                      className="w-full h-20 object-cover rounded"
+                      className="w-64  object-cover rounded"
                       onError={(e) => {
                         e.target.src = "/default-image.jpg"; // Imagen por defecto si falla
                       }}
