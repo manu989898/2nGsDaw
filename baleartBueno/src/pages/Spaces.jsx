@@ -14,7 +14,7 @@ const Spaces = () => {
   const [accessibilityFilter, setAccessibilityFilter] = useState(false); // Filtro de accesibilidad
   const [searchQuery, setSearchQuery] = useState(""); // Filtro de búsqueda por nombre
   const [selectedModality, setSelectedModality] = useState(""); // Modalidad seleccionada
- const [filtersVisible, setFiltersVisible] = useState(true); // Estado para mostrar/ocultar filtros
+  const [filtersVisible, setFiltersVisible] = useState(true); // Estado para mostrar/ocultar filtros
   const [municipality, setMunicipality] = useState(""); // Municipio seleccionado
   const [municipalities, setMunicipalities] = useState([]); // Lista de municipios según la isla
   const navigate = useNavigate();
@@ -166,7 +166,7 @@ const Spaces = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-300">
       <Navbar />
       <div className="flex">
         <div className="flex-grow p-4">
@@ -184,16 +184,18 @@ const Spaces = () => {
 
           {/* Contenedor de filtros desplegable */}
           {filtersVisible && (
-            <div className="bg-white p-4 rounded shadow-md mb-6">
+            <div className="bg-gray-100 p-4 rounded shadow-md mb-6">
               <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                 <div className="flex items-center gap-4 ">
                   <div className="flex items-center">
+                    {/* Label de islas (oculto por estetica)
                     <label
                       htmlFor="island"
                       className="text-lg font-semibold text-gray-700 mr-4"
                     >
                       Isla:
                     </label>
+                    */}
                     <select
                       id="island"
                       value={island}

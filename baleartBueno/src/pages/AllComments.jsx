@@ -122,7 +122,7 @@ const AllComments = () => {
   const totalPages = Math.ceil(comments.length / commentsPerPage);
 
   return (
-    <div className="bg-gray-100 p-5">
+    <div className="bg-gray-300 p-5">
         <h1 className="text-2xl text-center font-bold text-gray-800 mb-6">
           Todos los Comentarios
         </h1>
@@ -132,7 +132,7 @@ const AllComments = () => {
               key={comment.id}
               className="bg-white p-4 rounded shadow-md border border-gray-200"
             >
-              <p className="text-gray-800 font-semibold">
+              <p className="text-gray-800 font-semibold italic">
                 {comment.comment.length > 80
                   ? `${comment.comment.substring(0, 80)}...`
                   : comment.comment}
@@ -161,7 +161,7 @@ const AllComments = () => {
                       key={img.id}
                       src={img.url}
                       alt={`Comentario imagen ${img.id}`}
-                      className="w-64  object-cover rounded"
+                      className="w-32  object-cover rounded"
                       onError={(e) => {
                         e.target.src = "/default-image.jpg"; // Imagen por defecto si falla
                       }}

@@ -298,7 +298,7 @@ const SpaceDetails = () => {
                     key={comment.id}
                     className="bg-gray-50 p-4 rounded shadow-md border border-gray-200"
                   >
-                    <p className="text-gray-800 font-semibold">
+                    <p className="text-gray-800  italic">
                       {comment.comment}
                     </p>
                     <div className="flex items-center mt-2">
@@ -321,13 +321,9 @@ const SpaceDetails = () => {
                       <strong>Usuario:</strong>{" "}
                       {comment.userName || "Desconocido"}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Publicado el{" "}
-                      {new Date(comment.created_at).toLocaleDateString()}
-                    </p>
                     {comment.image && comment.image.length > 0 && (
-                      <div className="mt-2">
-                        <strong>Imágenes:</strong>
+                      <div >
+                        <strong className="text-sm text-gray-600">Imágenes:</strong>
                         <div className="grid grid-cols-3 gap-2 mt-2">
                           {comment.image.map((img) => (
                             <img
@@ -341,6 +337,10 @@ const SpaceDetails = () => {
                             />
                           ))}
                         </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Publicado el{" "}
+                      {new Date(comment.created_at).toLocaleDateString()}
+                    </p>
                       </div>
                     )}
                   </li>
