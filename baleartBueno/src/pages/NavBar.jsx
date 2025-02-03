@@ -2,7 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 
-const Navbar = () => {
+const Navbar = ({ language }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -53,7 +53,13 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 shadow-lg">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
       <Link to="/" className="hover:underline">
-  <img src="/logo.png" alt="logo" className="w-24 h-16" />
+      <img 
+  src="/logo.png" 
+  alt="logo" 
+  className="w-24 h-16"
+  title="home"
+/>
+    
 </Link>
 
         {/* Renderizar el <h1> dinámicamente */}
@@ -64,7 +70,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/auth"
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                className="w-full px-4 py-2 font-semibold text-white rounded bg-gradient-to-r from-green-400 via-green-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700"
               >
                 Iniciar Sesión
               </Link>
@@ -72,7 +78,11 @@ const Navbar = () => {
                 to="/register"
                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
               >
-                Registrarse
+                {language === "ES"
+                ? "Registarse"
+                : language === "EN"
+                ? "Sign Up"
+                : "Registrarse"}
               </Link>
             </>
           ) : (
@@ -86,7 +96,11 @@ const Navbar = () => {
                 onClick={logout}
                 className="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 hover:from-red-600 hover:via-rose-600 hover:to-pink-600 transition-all"
               >
-                Cerrar sesión
+                {language === "ES"
+                ? "Cerrar sesión"
+                : language === "EN"
+                ? "Log out"
+                : "Tancar sesió"}
               </button>
             </div>
           )}

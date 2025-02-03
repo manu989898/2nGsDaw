@@ -98,7 +98,7 @@ const ContactForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+              className="w-full px-4 py-2 font-semibold text-white rounded bg-gradient-to-r from-green-400 via-emerald-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700"
             >
               Enviar
             </button>

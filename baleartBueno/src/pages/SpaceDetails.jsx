@@ -18,6 +18,9 @@ const SpaceDetails = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
+  const [language, setLanguage] = useState("ES"); // Idioma actual (por defecto: español)
+  const [colorBlindMode, setColorBlindMode] = useState(false); // Modo daltónico
+
 
   useEffect(() => {
     fetchSpaceDetails();
@@ -55,7 +58,16 @@ const SpaceDetails = () => {
       setLoading(false);
     }
   };
-
+const getTranslatedDescription = () => {
+    switch (language) {
+      case "EN":
+        return space?.observation_EN || "No description available.";
+      case "CA":
+        return space?.observation_CA || "No hi ha descripció disponible.";
+      default:
+        return space?.observation_ES || "No hay descripción disponible.";
+    }
+  };
   const checkLoginStatus = async () => {
     try {
       const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -157,11 +169,21 @@ const SpaceDetails = () => {
     <div className="min-h-screen bg-gray-300">
       <Navbar />
       <div className="container mx-auto py-10 px-6">
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">{space.name}</h1>
-          <p className="text-gray-600 mt-3">
-            {space.observation_ES || "No hay descripción disponible."}
-          </p>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">{space.name} </h1>
+          {/* Banderas para cambiar el idioma */}
+          <div className="flex space-x-2 mt-4">
+            <button onClick={() => setLanguage("ES")}>
+              <img src="/flags/es.png" alt="Español" className="w-8 h-6" />
+            </button>
+            <button onClick={() => setLanguage("EN")}>
+              <img src="/flags/en.png" alt="English" className="w-8 h-6" />
+            </button>
+            <button onClick={() => setLanguage("CA")}>
+              <img src="/flags/ca.png" alt="Català" className="w-8 h-6" />
+            </button>
+          </div>
+         <p className="text-gray-600 mt-3">{getTranslatedDescription()}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-4 text-center gap-4 mt-4">
      
@@ -194,7 +216,7 @@ const SpaceDetails = () => {
         </div>
 
         {/* Galería de Imágenes */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
           <h2 className="text-2xl font-bold text-gray-700">Galería</h2>
           <div className="flex flex-col items-center mt-4">
             <img
@@ -222,7 +244,7 @@ const SpaceDetails = () => {
 
         {/* Sección para Añadir Comentario */}
         {isLoggedIn ? (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
             <h2 className="text-2xl font-bold text-gray-700">
               Añadir Comentario
             </h2>
@@ -277,7 +299,7 @@ const SpaceDetails = () => {
 
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
+                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed mt-4"
               >
                 Enviar comentario
               </button>
@@ -304,7 +326,7 @@ const SpaceDetails = () => {
         )}
 
         {/* Comentarios con paginación */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-700">Comentarios</h2>
 
           {comments.filter((comment) => comment.status === "P").length > 0 ? (
@@ -356,7 +378,7 @@ const SpaceDetails = () => {
             <button
               onClick={handlePrevPage}
               disabled={currentPage === 1}
-              className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed "
             >
               Anterior
             </button>
@@ -366,7 +388,7 @@ const SpaceDetails = () => {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

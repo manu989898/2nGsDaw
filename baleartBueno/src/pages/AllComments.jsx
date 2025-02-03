@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const AllComments = () => {
+const AllComments = ({ language }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -73,6 +73,15 @@ const AllComments = () => {
       setLoading(false);
     }
   };
+  const handleFirstPage = () => {
+    setCurrentPage(1);
+  };
+
+  const handleLastPage = () => {
+    setCurrentPage(totalPages);
+  };
+
+
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -126,8 +135,11 @@ const AllComments = () => {
   return (
     <div className="bg-gray-300 p-6 mt-8 rounded-lg shadow-md">
       <h2 className="text-2xl text-center font-bold text-gray-800 mb-6">
-        Todos los Comentarios
-      </h2>
+      {language === "ES"
+                ? "Todos los comentarios"
+                : language === "EN"
+                ? "All comments"
+                : "Tots els comentaris"}      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {currentComments.map((comment) => (
@@ -185,26 +197,61 @@ const AllComments = () => {
         ))}
       </div>
 
-      {/* Paginación */}
-      <div className="flex justify-center items-center mt-6 gap-4">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Anterior
-        </button>
-        <p className="text-gray-600">
-          Página {currentPage} de {totalPages}
-        </p>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Siguiente
-        </button>
-      </div>
+        {/* Paginación */}
+        <div className="flex justify-center items-center mt-8 space-x-4">
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleFirstPage}
+              disabled={currentPage === 1}
+            >
+              {language === "ES"
+                ? "Primera"
+                : language === "EN"
+                ? "First"
+                : "Primera"}
+            </button>
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              {language === "ES"
+                ? "Anterior"
+                : language === "EN"
+                ? "Previous"
+                : "Anterior"}
+            </button>
+            <span className="text-gray-600">
+  {language === "ES"
+    ? `Página ${currentPage} de ${totalPages}`
+    : language === "EN"
+    ? `Page ${currentPage} of ${totalPages}`
+    : `Pàgina ${currentPage} de ${totalPages}`}
+</span>
+
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              {language === "ES"
+                ? "Siguiente"
+                : language === "EN"
+                ? "Next"
+                : "Següent"}
+            </button>
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleLastPage}
+              disabled={currentPage === totalPages}
+            >
+              {language === "ES"
+                ? "Última"
+                : language === "EN"
+                ? "Last"
+                : "Última"}
+            </button>
+          </div>
     </div>
   );
 };

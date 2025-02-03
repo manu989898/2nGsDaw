@@ -35,7 +35,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-300">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold text-center mb-6">Iniciar Sesión</h1>
         <form onSubmit={handleLogin}>
@@ -73,7 +73,7 @@ const Auth = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+            className="w-full px-4 py-2 font-semibold text-white rounded bg-gradient-to-r from-green-400 via-green-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700"
           >
             Iniciar sesión
           </button>

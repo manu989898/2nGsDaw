@@ -20,7 +20,7 @@ const Spaces = () => {
   const [spaceImages, setSpaceImages] = useState([]); // Lista de imágenes de los espacios
   const [selectedService, setSelectedService] = useState(""); // Servicio seleccionado
   const navigate = useNavigate();
-  
+
   const islands = [
     "Mallorca",
     "Menorca",
@@ -33,7 +33,30 @@ const Spaces = () => {
   useEffect(() => {
     fetchSpaces(island, municipality);
     setFiltersVisible(true);
-  }, [island, municipality, accessibilityFilter, selectedModality]);
+  }, [island, municipality]); // Solo se ejecuta cuando cambian la isla o el municipio
+  useEffect(() => {
+    const newFilteredSpaces = spaces.filter(
+      (space) =>
+        space.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (!accessibilityFilter || ["S", "P"].includes(space.accessType)) &&
+        (selectedService === "" ||
+          space.serveis.some(
+            (service) =>
+              (service.name || service.description_ES) === selectedService
+          )) &&
+        (selectedModality === "" ||
+          space.modalitats.some((mod) => mod.name === selectedModality))
+    );
+
+    setTotalPages(Math.ceil(newFilteredSpaces.length / 6)); // Calcula total de páginas con los espacios filtrados
+    setCurrentPage(1); // Reinicia la página actual al aplicar un filtro
+  }, [
+    spaces,
+    searchQuery,
+    accessibilityFilter,
+    selectedService,
+    selectedModality,
+  ]);
 
   // Extraer nombres únicos de servicios
   const allServices = Array.from(
@@ -65,7 +88,7 @@ const Spaces = () => {
     Grafiti: "🖌️",
     Música: "🎵",
   };
-  
+
   //cambiar el space observacion_XX, djeo añadida la variable isFeatured para que se pueda usar en el futuro para mostrar mas o menos texto segun el post
   const renderObservation = (space, isFeatured) => {
     const truncate = (text, length) => {
@@ -149,7 +172,7 @@ const Spaces = () => {
       });
 
       setSpaces(spacesWithImages);
-      setTotalPages(Math.ceil(spacesWithImages.length / 4));
+      setTotalPages(Math.ceil(filteredSpaces.length / 6)); // 6 porque en displayedSpaces usas 6 por página
       setCurrentPage(1);
     } catch (error) {
       console.error("Error al obtener los espacios:", error);
@@ -158,12 +181,24 @@ const Spaces = () => {
     }
   };
 
+  const handleFirstPage = () => {
+    setCurrentPage(1);
+    scroll(0, 0);
+  };
+
+  const handleLastPage = () => {
+    setCurrentPage(totalPages);
+    scroll(0, 0);
+  };
+
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    scroll(0, 0);
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    scroll(0, 0);
   };
 
   //handle para ir a un espacio detallado al clicar
@@ -175,7 +210,7 @@ const Spaces = () => {
   const allModalities = Array.from(
     new Set(spaces.flatMap((space) => space.modalitats.map((mod) => mod.name)))
   );
-  
+
   const filteredSpaces = spaces.filter(
     (space) =>
       space.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -185,10 +220,9 @@ const Spaces = () => {
           (service) =>
             (service.name || service.description_ES) === selectedService
         )) &&
-      (selectedModality === "" || 
+      (selectedModality === "" ||
         space.modalitats.some((mod) => mod.name === selectedModality))
   );
-  
 
   const displayedSpaces = filteredSpaces.slice(
     (currentPage - 1) * 6,
@@ -196,8 +230,8 @@ const Spaces = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-300">
-      <Navbar />
+    <div className="min-h-screen bg-gray-200">
+      <Navbar language={language}  />
       <div className="flex">
         <div className="flex-grow p-4">
           {/* Botón para mostrar/ocultar filtros Actualmente desactivado para que se muestre siempre
@@ -258,7 +292,7 @@ const Spaces = () => {
                       onChange={(e) => setMunicipality(e.target.value)}
                       className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
                     >
-                      <option value="">Municipios</option>
+                      <option value="">{language === "ES" ? "Municipios" : language === "EN" ? "Municipality" : "Municipis"} </option>
                       {municipalities.map((mun) => (
                         <option key={mun} value={mun}>
                           {mun}
@@ -267,51 +301,50 @@ const Spaces = () => {
                     </select>
                   </div>
                   <div className="flex items-center">
-  <select
-    id="service"
-    value={selectedService}
-    onChange={(e) => setSelectedService(e.target.value)}
-    className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
-  >
-    <option value="">🛠️ Servicios</option>
-    {allServices.map((service) => {
-      const serviceName = service.trim(); // Normalizar el nombre del servicio
-      return (
-        <option key={serviceName} value={serviceName}>
-          {serviceIcons[serviceName] || "❔"} {serviceName}
-        </option>
-      );
-    })}
-  </select>
-</div>
+                    <select
+                      id="service"
+                      value={selectedService}
+                      onChange={(e) => setSelectedService(e.target.value)}
+                      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                    >
+                      <option value="">{language === "ES" ? "🛠️ Servicios" : language === "EN" ? "🛠️ Services" : "🛠️ Serveïs"} </option>
+                      {allServices.map((service) => {
+                        const serviceName = service.trim(); // Normalizar el nombre del servicio
+                        return (
+                          <option key={serviceName} value={serviceName}>
+                            {serviceIcons[serviceName] || "❔"} {serviceName}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
 
                   <input
                     type="text"
-                    placeholder="Buscar por nombre..."
+                    placeholder= {language === "ES" ? "Buscar por nombre..." : language === "EN" ? "Search by name...s" : "Cercar per nom..."}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="min-w-[200px] flex-grow px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
                   />
 
-
                   <div className="flex items-center">
-  <select
-    id="modality"
-    value={selectedModality}
-    onChange={(e) => setSelectedModality(e.target.value)}
-    className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
-  >
-    <option value="">🎭 Modalidades</option>
-    {allModalities.map((modality) => {
-      const modName = modality.trim();
-      return (
-        <option key={modName} value={modName}>
-          {modalityIcons[modName] || "❔"} {modName}
-        </option>
-      );
-    })}
-  </select>
-</div>
+                    <select
+                      id="modality"
+                      value={selectedModality}
+                      onChange={(e) => setSelectedModality(e.target.value)}
+                      className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
+                    >
+                      <option value="">{language === "ES" ? "🎭 Modalidades" : language === "EN" ? "🎭 Modalities" : "🎭 Modalitats"}</option>
+                      {allModalities.map((modality) => {
+                        const modName = modality.trim();
+                        return (
+                          <option key={modName} value={modName}>
+                            {modalityIcons[modName] || "❔"} {modName}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setLanguage("ES")}
@@ -355,31 +388,29 @@ const Spaces = () => {
                         className="w-8 h-6"
                       />
                     </button>
-                    
-                  <button
-                    onClick={() => setAccessibilityFilter((prev) => !prev)}
-                    className={`px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 transition-all ${
-                      accessibilityFilter
-                        ? "bg-blue-500 text-white ring-blue-300"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {accessibilityFilter
-                      ? "♿ Activado"
-                      : "♿ Desactivado"}
-                  </button>
+
                     <button
-  onClick={() => {
-    setSearchQuery("");
-    setSelectedModality("");
-    setAccessibilityFilter(false);
-    setSelectedService("");
-    setMunicipality("");
-  }}
-  className="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 hover:from-red-600 hover:via-rose-600 hover:to-pink-600 transition-all"
->
-  Eliminar Filtros
-</button>
+                      onClick={() => setAccessibilityFilter((prev) => !prev)}
+                      className={`px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 transition-all ${
+                        accessibilityFilter
+                          ? "bg-blue-500 text-white ring-blue-300"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      }`}
+                    >
+                      {accessibilityFilter ? "♿ Activado" : "♿ Desactivado"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setSelectedModality("");
+                        setAccessibilityFilter(false);
+                        setSelectedService("");
+                        setMunicipality("");
+                      }}
+                      className="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 hover:from-red-600 hover:via-rose-600 hover:to-pink-600 transition-all"
+                    >
+                      {language === "ES" ? "Eliminar Filtros" : language === "EN" ? "Remove Filters" : "Eliminar Filtres"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -413,30 +444,52 @@ const Spaces = () => {
                     {renderObservation(space, false)}
                   </p>
                   <p className="text-sm text-gray-500 mt-2">
-  <strong className="font-semibold text-gray-700">Ubicación:</strong> 📍 {space.address.municipality.name},{" "}
-  {space.address.municipality.island.name}
-</p>
+                    <strong className="font-semibold text-gray-700">
+                      {language === "ES"
+                        ? "Ubicación"
+                        : language === "EN"
+                        ? "Location"
+                        : "Ubicació"}
+                    </strong>{" "}
+                    📍 {space.address.municipality.name},{" "}
+                    {space.address.municipality.island.name}
+                  </p>
                   <p className="text-sm text-gray-500">
-  <strong className="font-semibold text-gray-700">Servicios:</strong>{" "}
-  <span>
-    {space.serveis
-      .map((service) =>
-        `${serviceIcons[service.name] || "❔"} ${service.name || service.description_ES}`
-      )
-      .join(", ") || "N/A"}{" "}
-  </span>
-</p>
+                    <strong className="font-semibold text-gray-700">
+                      {language === "ES"
+                        ? "Servicios"
+                        : language === "EN"
+                        ? "Services"
+                        : "Serveis"}{" "}
+                    </strong>{" "}
+                    <span>
+                      {space.serveis
+                        .map(
+                          (service) =>
+                            `${serviceIcons[service.name] || "❔"} ${
+                              service.name || service.description_ES
+                            }`
+                        )
+                        .join(", ") || "N/A"}{" "}
+                    </span>
+                  </p>
                   <p className="text-sm text-gray-500">
-  <strong className="font-semibold text-gray-700">Modalidades:</strong>{" "}
-  <span>
-    {space.modalitats
-      .map((mod) => {
-        const modName = mod.name.trim();
-        return `${modalityIcons[modName] || "❔"} ${modName}`;
-      })
-      .join(", ") || "N/A"}
-  </span>
-</p>
+                    <strong className="font-semibold text-gray-700">
+                      {language === "ES"
+                        ? "Modalidades"
+                        : language === "EN"
+                        ? "Modalities"
+                        : "Modalitats"}
+                    </strong>{" "}
+                    <span>
+                      {space.modalitats
+                        .map((mod) => {
+                          const modName = mod.name.trim();
+                          return `${modalityIcons[modName] || "❔"} ${modName}`;
+                        })
+                        .join(", ") || "N/A"}
+                    </span>
+                  </p>
                   <div className="flex items-center justify-between mt-4">
                     {/* Contenedor de puntuación y comentarios */}
                     <div className="flex items-center space-x-2">
@@ -459,7 +512,11 @@ const Spaces = () => {
                     </div>
 
                     <button className="bg-blue-600 text-white px-4 py-2 font-bold rounded hover:bg-blue-700">
-                      Ver más
+                      {language === "ES"
+                        ? "Ver más"
+                        : language === "EN"
+                        ? "See More"
+                        : "Veure més"}{" "}
                     </button>
                   </div>
                 </div>
@@ -470,65 +527,63 @@ const Spaces = () => {
           {/* Paginación */}
           <div className="flex justify-center items-center mt-8 space-x-4">
             <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleFirstPage}
+              disabled={currentPage === 1}
+            >
+              {language === "ES"
+                ? "Primera"
+                : language === "EN"
+                ? "First"
+                : "Primera"}
+            </button>
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handlePrevPage}
               disabled={currentPage === 1}
-              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Anterior
+              {language === "ES"
+                ? "Anterior"
+                : language === "EN"
+                ? "Previous"
+                : "Anterior"}
             </button>
             <span className="text-gray-600">
-              Página {currentPage} de {totalPages}
-            </span>
+  {language === "ES"
+    ? `Página ${currentPage} de ${totalPages}`
+    : language === "EN"
+    ? `Page ${currentPage} of ${totalPages}`
+    : `Pàgina ${currentPage} de ${totalPages}`}
+</span>
+
             <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Siguiente
+              {language === "ES"
+                ? "Siguiente"
+                : language === "EN"
+                ? "Next"
+                : "Següent"}
+            </button>
+            <button
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleLastPage}
+              disabled={currentPage === totalPages}
+            >
+              {language === "ES"
+                ? "Última"
+                : language === "EN"
+                ? "Last"
+                : "Última"}
             </button>
           </div>
         </div>
       </div>
-      <AllComments />
-    </div>
+      <AllComments language={language} />
+          </div>
   );
 };
 
 export default Spaces;
-/*
-fetch del json de o,agenes de los espacios
-
-const fetchSpaceImages = async () => {
-    try {
-      const response = await axios.get(
-        "http://
-      );
-      console.log("Imágenes de espacios:", response.data.data);
-      return response.data.data;
-    } catch (error) {
-      console.error("Error al obtener las imágenes de los espacios:", error);
-      return [];
-    }
-      
-
-const spacesWithImages = filteredSpaces.map((space) => {
-        const matchingImage = spaceImages.find(
-          (img) => img.registre === space.regNumber
-        );
-        return {
-          ...space,
-          image: matchingImage ? matchingImage.image : "/default-image.jpg", // Imagen por defecto si no se encuentra
-        };
-      });
-
-      setSpaces(spacesWithImages);
-      setTotalPages(Math.ceil(spacesWithImages.length / 4));
-      setCurrentPage(1);
-    } catch (error) {
-      console.error("Error al obtener los espacios:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-*/
