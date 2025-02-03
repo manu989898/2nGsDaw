@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 const Footer = () => {
     return (
-      <footer className="bg-blue-600 text-white p-4 shadow-md">
+      <footer className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-6 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             {/* Logo and description */}
             <div className="md:mb-0">
             <Link to="/" className="hover:underline">
-          <img src="/logo.png" alt="logo" className="w-24 h-18" />
+          <img src="/logo.png" alt="logo" className="w-24 h-18"/>
         </Link>
             </div>
   

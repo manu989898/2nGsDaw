@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -16,13 +16,13 @@ const Auth = () => {
         email,
         password,
       });
-  
+
       if (response.data.token) {
         const { user, token } = response.data;
         const userIdResponse = await axios.get(
           `http://127.0.0.1:8000/api/user/email/${user.email}`
         );
-  
+
         const userId = userIdResponse.data.id;
         login({ ...user, id: userId, token }); // Actualiza el usuario y token en el contexto
         navigate("/"); // Redirige al usuario a la página principal
@@ -30,6 +30,7 @@ const Auth = () => {
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
+      alert("Credenciales incorrectas. Intenta de nuevo.");
     }
   };
 
@@ -39,7 +40,10 @@ const Auth = () => {
         <h1 className="text-2xl font-bold text-center mb-6">Iniciar Sesión</h1>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold"
+            >
               Correo electrónico
             </label>
             <input
@@ -52,7 +56,10 @@ const Auth = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-semibold">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold"
+            >
               Contraseña
             </label>
             <input
@@ -70,7 +77,13 @@ const Auth = () => {
           >
             Iniciar sesión
           </button>
+
         </form>
+        <div className="text-center mt-4">
+          <a href="/password-reset" className="text-blue-500 hover:underline">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
       </div>
     </div>
   );

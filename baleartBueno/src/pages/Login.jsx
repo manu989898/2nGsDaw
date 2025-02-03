@@ -27,11 +27,12 @@ const Login = () => {
       });
 
       console.log("Login exitoso:", response.data);
-      alert("¡Login exitoso!");
+      
       // Aquí puedes redirigir al usuario o guardar el token, por ejemplo:
       // localStorage.setItem('token', response.data.token);
     } catch (error) {
       setLoading(false);
+      alert("Ocurrió un error inesperado. Por favor,"+ error);
       if (error.response && error.response.status === 401) {
         setErrors({ general: "Credenciales incorrectas. Intenta de nuevo." });
       } else if (error.response && error.response.status === 422) {

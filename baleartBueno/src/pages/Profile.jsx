@@ -15,6 +15,7 @@ const ProfileWithComments = () => {
   const [loading, setLoading] = useState(true); // Estado de carga
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de sesión
   const [userId, setUserId] = useState(null); // ID del usuario logueado
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     checkLoginStatus();
@@ -62,13 +63,18 @@ const ProfileWithComments = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    if (userData.password !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
     try {
       const response = await axios.put(
         `http://127.0.0.1:8000/api/user/${userId}`,
         userData
       );
+      
       alert("Perfil actualizado con éxito");
-      console.log("Datos actualizados:", response.data);
+      console.log("Datos actualizados:", userData);
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
       alert("Error al actualizar el perfil");
@@ -130,10 +136,10 @@ const ProfileWithComments = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-300">
       <Navbar />
       <div className="p-6 max-w-4xl mx-auto bg-white rounded shadow-md mt-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Perfil</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Tus Datos</h1>
         <form onSubmit={handleUpdate}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700 font-semibold">
@@ -216,11 +222,26 @@ const ProfileWithComments = () => {
               onChange={handleInputChange}
               required
             />
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold"
+            >
+              confirmar Contraseña
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+           
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+            className="w-full px-4 py-2 font-semibold text-white rounded-lg bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700"
           >
             Guardar Cambios
           </button>

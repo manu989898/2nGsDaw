@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const AllComments = () => {
-  const [comments, setComments] = useState([]); // Lista de todos los comentarios
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado de sesión
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const commentsPerPage = 2; // Número de comentarios por página
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const commentsPerPage = 4;
 
   useEffect(() => {
     checkLoginStatus();
@@ -25,12 +25,12 @@ const AllComments = () => {
         const response = await axios.get(
           `http://127.0.0.1:8000/api/user/email/${storedUser.email}`
         );
-        setIsLoggedIn(!!response.data.data.id); // Verifica si hay un usuario válido
+        setIsLoggedIn(!!response.data.data.id);
       } else {
         setIsLoggedIn(false);
       }
     } catch (error) {
-      console.error("Error al verificar el estado de inicio de sesión:", error);
+      console.error("Error al verificar sesión:", error);
       setIsLoggedIn(false);
     }
   };
@@ -40,38 +40,29 @@ const AllComments = () => {
       const response = await axios.get(`http://127.0.0.1:8000/api/comment`);
       const comments = response.data.data;
 
-      // Obtener nombres de los usuarios y espacios
       const enrichedComments = await Promise.all(
         comments.map(async (comment) => {
           let userName = "Desconocido";
-          if (comment.user_id) {
-            try {
+          let spaceName = "No especificado";
+
+          try {
+            if (comment.user_id) {
               const userResponse = await axios.get(
                 `http://127.0.0.1:8000/api/user/id/${comment.user_id}`
               );
               userName = userResponse.data.data.name;
-            } catch (error) {
-              console.error(`Error al obtener el usuario con ID ${comment.user_id}:`, error);
             }
-          }
-
-          let spaceName = "No especificado";
-          if (comment.space_id) {
-            try {
+            if (comment.space_id) {
               const spaceResponse = await axios.get(
                 `http://127.0.0.1:8000/api/space/${comment.space_id}`
               );
               spaceName = spaceResponse.data.data.name;
-            } catch (error) {
-              console.error(`Error al obtener el espacio con ID ${comment.space_id}:`, error);
             }
+          } catch (error) {
+            console.error("Error al obtener datos adicionales:", error);
           }
 
-          return {
-            ...comment,
-            userName,
-            spaceName,
-          };
+          return { ...comment, userName, spaceName };
         })
       );
 
@@ -89,19 +80,30 @@ const AllComments = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <p className="text-center mt-20 text-gray-500">
-          Debes iniciar sesión para ver los comentarios.
-        </p>
-      </div>
+      <div className="bg-red-100 p-6 shadow-md  text-center">
+      <h2 className="text-xl font-bold text-red-700">
+        Debes iniciar sesión para ver los comentarios
+      </h2>
+      <p className="text-gray-600 mt-2">
+        Por favor,
+        <a href="/auth" className="underline">
+          {" "}
+          inicia sesión
+        </a>{" "}
+        o{" "}
+        <a href="/register" className="underline">
+          crea una cuenta
+        </a>{" "}
+        para poder ver los comentarios.
+      </p>
+    </div>
     );
   }
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <p className="text-center mt-20 h-800 text-gray-500">
-          Cargando comentarios...
-        </p>
+      <div className="min-h-50 bg-gray-100">
+        <p className="text-center mt-20 text-gray-500">Cargando comentarios...</p>
       </div>
     );
   }
@@ -122,21 +124,26 @@ const AllComments = () => {
   const totalPages = Math.ceil(comments.length / commentsPerPage);
 
   return (
-    <div className="bg-gray-300 p-5">
-        <h1 className="text-2xl text-center font-bold text-gray-800 mb-6">
-          Todos los Comentarios
-        </h1>
-        <div className="space-y-4">
-          {currentComments.map((comment) => (
-            <div
-              key={comment.id}
-              className="bg-white p-4 rounded shadow-md border border-gray-200"
-            >
-              <p className="text-gray-800 font-semibold italic">
-                {comment.comment.length > 80
-                  ? `${comment.comment.substring(0, 80)}...`
+    <div className="bg-gray-300 p-6 mt-8 rounded-lg shadow-md">
+      <h2 className="text-2xl text-center font-bold text-gray-800 mb-6">
+        Todos los Comentarios
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {currentComments.map((comment) => (
+          <div
+            key={comment.id}
+            className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex items-center"
+          >
+            {/* Contenedor de texto */}
+            <div className="flex-1">
+              <p className="text-gray-800 font-medium italic">
+                {comment.comment.length > 100
+                  ? `${comment.comment.substring(0, 100)}...`
                   : comment.comment}
               </p>
+
+              {/* Puntuación con estrellas */}
               <div className="flex items-center mt-2">
                 <span className="text-sm font-medium text-gray-600 mr-2">
                   <strong>Puntuación:</strong>
@@ -148,54 +155,57 @@ const AllComments = () => {
                   <span key={i} className="text-gray-300">★</span>
                 ))}
               </div>
+
               <p className="text-sm text-gray-600">
                 <strong>Usuario:</strong> {comment.userName}
               </p>
               <p className="text-sm text-gray-600">
                 <strong>Espacio:</strong> {comment.spaceName}
               </p>
-              {comment.image && comment.image.length > 0 && (
-                <div className="mt-4 grid grid-cols-3 gap-2">
-                  {comment.image.map((img) => (
-                    <img
-                      key={img.id}
-                      src={img.url}
-                      alt={`Comentario imagen ${img.id}`}
-                      className="w-32  object-cover rounded"
-                      onError={(e) => {
-                        e.target.src = "/default-image.jpg"; // Imagen por defecto si falla
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
+
               <p className="text-xs text-gray-500 mt-2">
                 Publicado el {new Date(comment.created_at).toLocaleDateString()}
               </p>
             </div>
-          ))}
-        </div>
 
-        <div className="flex justify-center items-center mt-6 gap-4">
-  <button
-    onClick={() => handlePageChange(currentPage - 1)}
-    disabled={currentPage === 1}
-    className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-  >
-    Anterior
-  </button>
-  <p className="text-gray-600">
-    Página {currentPage} de {totalPages}
-  </p>
-  <button
-    onClick={() => handlePageChange(currentPage + 1)}
-    disabled={currentPage === totalPages}
-    className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-  >
-    Siguiente
-  </button>
-</div>
+            {/* Imagen alineada a la derecha */}
+            {comment.image && comment.image.length > 0 && (
+              <div className="ml-4">
+                <img
+                  src={comment.image[0].url}
+                  alt={`Imagen comentario`}
+                  className="w-24 h-24 object-cover rounded-lg"
+                  onError={(e) => {
+                    e.target.src = "/default-image.jpg";
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+
+      {/* Paginación */}
+      <div className="flex justify-center items-center mt-6 gap-4">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Anterior
+        </button>
+        <p className="text-gray-600">
+          Página {currentPage} de {totalPages}
+        </p>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
   );
 };
 

@@ -52,7 +52,7 @@ const ContactForm = () => {
 
             <div className="mb-4">
               <label htmlFor="phone" className="block text-gray-700 font-semibold">
-                Teléfono
+                Teléfono formato 123-456-789
               </label>
               <input
                 type="tel"
@@ -62,6 +62,7 @@ const ContactForm = () => {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
               />
             </div>
 

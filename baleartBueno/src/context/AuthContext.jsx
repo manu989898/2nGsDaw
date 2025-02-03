@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { redirect } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         setUser(JSON.parse(storedUser)); // Parsear el usuario almacenado
       }
     };
-  
+    console.log("Restaurando sesión con token", token);
     restoreSession();
   }, []);
   const login = (userData, token) => {
@@ -25,12 +24,14 @@ export const AuthProvider = ({ children }) => {
   localStorage.setItem("user", JSON.stringify(userData)); // Serializa el usuario como JSON
   setToken(token);
   setUser(userData);
+  alert("Eliminando System 32 📂");
   };
 
   const logout = () => {
-    redirect("/"); // Redirige al usuario a la página principal
     localStorage.removeItem("user"); // Elimina la información del usuario almacenada
     setUser(null); // Actualiza el estado del usuario en el contexto
+    //quiero recargar la pagina
+    window.location.reload();// resetear la página apra que se muestre el login y no se qeude en la página de perfil
   };
   
 

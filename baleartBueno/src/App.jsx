@@ -7,6 +7,7 @@ import Profile from "./pages/Profile.jsx";
 import AllComments from "./pages/AllComments.jsx";
 import Footer from "./pages/Footer.jsx";
 import ContactForm from "./pages/ContactForm.jsx";
+import PasswordRecuperar from "./pages/ResetPassword.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/all-comments" element={<AllComments />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<ContactForm />} />
+        <Route path="/password-reset" element={<PasswordRecuperar />} />
       </Routes>
       <Footer />
     </Router>
