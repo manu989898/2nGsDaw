@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./NavBar.jsx";
 import AllComments from "./AllComments.jsx"; // Importación del componente AllComments
 
+
 const Spaces = () => {
   const [spaces, setSpaces] = useState([]); // Lista de espacios
   const [currentPage, setCurrentPage] = useState(1); // Página actual
@@ -19,6 +20,8 @@ const Spaces = () => {
   const [municipalities, setMunicipalities] = useState([]); // Lista de municipios según la isla
   const [spaceImages, setSpaceImages] = useState([]); // Lista de imágenes de los espacios
   const [selectedService, setSelectedService] = useState(""); // Servicio seleccionado
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const navigate = useNavigate();
 
   const islands = [
@@ -29,7 +32,12 @@ const Spaces = () => {
     "Cabrera",
     "Dragonera",
   ];
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 6);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [spaces]);
   useEffect(() => {
     fetchSpaces(island, municipality);
     setFiltersVisible(true);
@@ -200,7 +208,8 @@ const Spaces = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
     scroll(0, 0);
   };
-
+  // 1️⃣ Guarda los objetos completos en galleryImages (NO SOLO LA IMAGEN)
+  const galleryImages = spaces.slice(0, 6);
   //handle para ir a un espacio detallado al clicar
   const handleSpaceClick = (spaceId) => {
     navigate(`/space/${spaceId}`);
@@ -231,7 +240,7 @@ const Spaces = () => {
 
   return (
     <div className="min-h-screen bg-gray-200">
-      <Navbar language={language}  />
+      <Navbar language={language} />
       <div className="flex">
         <div className="flex-grow p-4">
           {/* Botón para mostrar/ocultar filtros Actualmente desactivado para que se muestre siempre
@@ -246,9 +255,69 @@ const Spaces = () => {
 
       */}
 
+<div className="mb-6 shadow-md rounded-lg bg-white">
+        {galleryImages.length > 0 && (
+          <div className="relative w-full h-[450px] overflow-hidden rounded-lg shadow-lg group">
+            {galleryImages.map((image, index) => (
+              <img
+                key={index}
+                src={image.image}
+                alt={image.name}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                  index === currentImageIndex ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            <div className="absolute bottom-0 w-full bg-gradient-to-t from-black via-black/70 to-transparent p-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <h2 className="text-xl font-bold">{galleryImages[currentImageIndex]?.name || "Sin nombre"}</h2>
+              <p className="flex items-center">
+                ⭐{" "}
+                {galleryImages[currentImageIndex]?.comentaris?.length > 0
+                  ? (
+                      galleryImages[currentImageIndex].totalScore /
+                      galleryImages[currentImageIndex].comentaris.length
+                    ).toFixed(1)
+                  : "0.0"} {" "}
+                - {language === "ES" ? "Mejor valorado" : "Top Rated"}
+              </p>
+            </div>
+
+            <button
+              onClick={() =>
+                setCurrentImageIndex((prevIndex) =>
+                  prevIndex === 0 ? galleryImages.length - 1 : prevIndex - 1
+                )
+              }
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-lg hover:bg-opacity-75 transition"
+            >
+              ❮
+            </button>
+            <button
+              onClick={() =>
+                setCurrentImageIndex((prevIndex) => (prevIndex + 1) % galleryImages.length)
+              }
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-lg hover:bg-opacity-75 transition"
+            >
+              ❯
+            </button>
+
+            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {galleryImages.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-3 w-3 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                  }`}
+                ></div>
+              ))}
+            
+            </div>
+          </div>
+            )}
+          </div>
           {/* Contenedor de filtros desplegable */}
           {filtersVisible && (
-            <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+            <div className="bg-white p-4 rounded-lg shadow-md mb-6">
               <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                 <div className="flex items-center gap-4 ">
                   <div className="flex items-center">
@@ -292,7 +361,13 @@ const Spaces = () => {
                       onChange={(e) => setMunicipality(e.target.value)}
                       className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
                     >
-                      <option value="">{language === "ES" ? "Municipios" : language === "EN" ? "Municipality" : "Municipis"} </option>
+                      <option value="">
+                        {language === "ES"
+                          ? "Municipios"
+                          : language === "EN"
+                          ? "Municipality"
+                          : "Municipis"}{" "}
+                      </option>
                       {municipalities.map((mun) => (
                         <option key={mun} value={mun}>
                           {mun}
@@ -307,7 +382,13 @@ const Spaces = () => {
                       onChange={(e) => setSelectedService(e.target.value)}
                       className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
                     >
-                      <option value="">{language === "ES" ? "🛠️ Servicios" : language === "EN" ? "🛠️ Services" : "🛠️ Serveïs"} </option>
+                      <option value="">
+                        {language === "ES"
+                          ? "🛠️ Servicios"
+                          : language === "EN"
+                          ? "🛠️ Services"
+                          : "🛠️ Serveïs"}{" "}
+                      </option>
                       {allServices.map((service) => {
                         const serviceName = service.trim(); // Normalizar el nombre del servicio
                         return (
@@ -321,7 +402,13 @@ const Spaces = () => {
 
                   <input
                     type="text"
-                    placeholder= {language === "ES" ? "Buscar por nombre..." : language === "EN" ? "Search by name...s" : "Cercar per nom..."}
+                    placeholder={
+                      language === "ES"
+                        ? "Buscar por nombre..."
+                        : language === "EN"
+                        ? "Search by name...s"
+                        : "Cercar per nom..."
+                    }
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="min-w-[200px] flex-grow px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
@@ -334,7 +421,13 @@ const Spaces = () => {
                       onChange={(e) => setSelectedModality(e.target.value)}
                       className="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all"
                     >
-                      <option value="">{language === "ES" ? "🎭 Modalidades" : language === "EN" ? "🎭 Modalities" : "🎭 Modalitats"}</option>
+                      <option value="">
+                        {language === "ES"
+                          ? "🎭 Modalidades"
+                          : language === "EN"
+                          ? "🎭 Modalities"
+                          : "🎭 Modalitats"}
+                      </option>
                       {allModalities.map((modality) => {
                         const modName = modality.trim();
                         return (
@@ -409,13 +502,18 @@ const Spaces = () => {
                       }}
                       className="px-4 py-2 text-white rounded-lg shadow-md bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 hover:from-red-600 hover:via-rose-600 hover:to-pink-600 transition-all"
                     >
-                      {language === "ES" ? "Eliminar Filtros" : language === "EN" ? "Remove Filters" : "Eliminar Filtres"}
+                      {language === "ES"
+                        ? "Eliminar Filtros"
+                        : language === "EN"
+                        ? "Remove Filters"
+                        : "Eliminar Filtres"}
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           )}
+          
 
           {/* Espacios */}
           {loading ? (
@@ -549,12 +647,12 @@ const Spaces = () => {
                 : "Anterior"}
             </button>
             <span className="text-gray-600">
-  {language === "ES"
-    ? `Página ${currentPage} de ${totalPages}`
-    : language === "EN"
-    ? `Page ${currentPage} of ${totalPages}`
-    : `Pàgina ${currentPage} de ${totalPages}`}
-</span>
+              {language === "ES"
+                ? `Página ${currentPage} de ${totalPages}`
+                : language === "EN"
+                ? `Page ${currentPage} of ${totalPages}`
+                : `Pàgina ${currentPage} de ${totalPages}`}
+            </span>
 
             <button
               className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
@@ -582,7 +680,7 @@ const Spaces = () => {
         </div>
       </div>
       <AllComments language={language} />
-          </div>
+    </div>
   );
 };
 

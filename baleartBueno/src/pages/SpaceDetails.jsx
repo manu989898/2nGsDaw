@@ -311,10 +311,10 @@ const getTranslatedDescription = () => {
               Debes iniciar sesión para comentar
             </h2>
             <p className="text-gray-600 mt-2">
-              Por favor,
+              Por favor, 
               <a href="/auth" className="underline">
                 {" "}
-                inicia sesión
+              inicia sesión
               </a>{" "}
               o{" "}
               <a href="/register" className="underline">

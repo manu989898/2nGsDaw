@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./NavBar";
 
 const PasswordRecuperar = () => {
   const [userData, setUserData] = useState({
@@ -15,7 +16,7 @@ const PasswordRecuperar = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-
+const language = "ES";
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
@@ -89,8 +90,10 @@ const PasswordRecuperar = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen bg-gray-200">
+    <Navbar language={language}  /><div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+
         <h1 className="text-2xl font-bold text-center mb-6">Recuperar Contraseña</h1>
         <form onSubmit={handleResetPassword}>
           <div className="mb-4">
@@ -162,9 +165,10 @@ const PasswordRecuperar = () => {
           </button>
         </form>
         <div className="text-center mt-4">
-          <a href="/login" className="text-blue-500 hover:underline">Volver al inicio de sesión</a>
+          <a href="/auth" className="text-blue-500 hover:underline">Volver al inicio de sesión</a>
         </div>
       </div>
+    </div>
     </div>
   );
 };

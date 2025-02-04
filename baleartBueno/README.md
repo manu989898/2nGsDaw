@@ -77,7 +77,6 @@ Ahora puedes acceder a la aplicación y comenzar a trabajar con **Baleart**.
 #### Notas adicionales
 
 - Las imagenes mostradas en los spaces detallados (clicando en ellos desde el home) son imagenes random que no corresponden al space exacto ya que la dependencia que usamos en backend apra generar imagenes "fake" está inoperativa.
-- No muestro un slider de imagenes en el "/" debido a que romperia el estilo de la web. Pongo una galeria especifica en cada space detallado.
 - La página de contacto con la administración está en el footer.
 - Logo creado con dall-e.
 - Para poder restaurar la contraseña los campos del formulario deberán de coincidir con los datos del usuario.
