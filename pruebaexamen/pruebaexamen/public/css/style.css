@@ -1,0 +1,264 @@
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css);
+
+/* General Reset */
+body {
+    margin: 0;
+    position: relative;
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+}
+
+/* Navigation Bar */
+.navbar {
+    background-color: #2b2d42;
+    color: #edf2f4;
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.navbar ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.pagines {
+    border-radius: 5px;
+    color: #edf2f4;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.destacar {
+    /* Highlight active navigation */
+    background-color: #ef233c;
+    color: #edf2f4;
+}
+
+.navbar ul li a:hover {
+    color: #FFD700;
+}
+
+/* Filter Section */
+.filter {
+    align-items: center;
+    background-color: #edf2f4;
+    border: 1px solid #2b2d42;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem;
+    padding: 1rem;
+}
+
+/* Footer */
+footer {
+    background-color: #2b2d42;
+    color: #edf2f4;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+footer .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer .footer-links a {
+    color: #edf2f4;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+footer .footer-links a:hover {
+    color: #ef233c;
+}
+
+/* Grid and Cards */
+article {
+    background-color: rgb(249, 255, 255);
+    border: 1px solid rgb(24, 24, 83);
+    border-radius: 1rem;
+    box-shadow: 2px 2px 4px 4px rgba(87, 86, 86, 0.3);
+    max-width: 400px;
+    padding: 1rem;
+    text-align: center;
+}
+
+article:hover {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+article h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+article h3, article h4 {
+    margin: 0.5rem 0;
+}
+
+article img {
+    height: 100%;
+    max-height: 300px;
+    width: auto;
+}
+
+.card-image h4 {
+    text-align: center;
+}
+
+.card-image img {
+    height: 100%;
+    width: auto;
+}
+
+.grid-4 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 3rem;
+}
+
+#grid-characters {
+    display: grid;
+    gap: 1rem;
+    margin: 3rem;
+}
+
+/* Icon Styling */
+.fa-list {
+    font-size: 1.4rem;
+}
+
+.icon-filter {
+    height: 20px;
+    margin-right: 5px;
+    width: 20px;
+}
+
+.icon-grid {
+    cursor: pointer;
+    height: 24px;
+    margin-left: 10px;
+    width: 24px;
+}
+
+.modal {
+    position: fixed;
+    display: none;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+dialog {
+    background-color: #f1efef;
+    border: 1px dotted black;
+    left: center;
+    position: fixed;
+    top: center;
+    width: 50%;
+    z-index: 100;
+}
+
+#window-dialog {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    /*background: #fff; Removed in order to apply properly dark mode*/
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#window-dialog .buttons {
+    text-align: center;
+}
+
+/* Filter Inputs */
+input, select {
+    font-size: 1rem;
+    min-width: 200px;
+    padding: 0.4rem;
+}
+
+button {
+    font-weight: bolder;
+    padding: 0.5rem 1rem;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #222;
+    color: white;
+}
+
+.filter-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: gold;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: darkgoldenrod;
+}
+
+/* Character Information */
+#info-character {
+    display: flex;
+    justify-content: start;
+    padding: 2rem;
+}
+
+#info-character .card-image {
+    height: 400px;
+    margin-right: 2rem;
+    margin-top: -80px;
+}
+
+/* Dark Mode */
+.dark {
+    background-color: black;
+    color: white;
+}
+
+.yellow-star {
+    color: gold;
+}
+
+.grey-star {
+    color: grey;
+}
+
+.fa-star, .fa-star-half-stroke {
+    font-size: 1.2em; /* Adjust size as needed */
+    margin: 0 2px; /* Add spacing between stars */
+}

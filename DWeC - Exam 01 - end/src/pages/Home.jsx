@@ -1,74 +1,40 @@
 import {useState, useEffect} from "react";
-
-import Filter from "../components/Filter";
-import LoadMoreButton from "../components/LoadMoreButton";
 import ProductCard from "../components/ProductCard";
+import Product from "./Product";
+import "../css/main.css";
 
 export default function Home() {
     const [products, setProducts] = useState([]);
     const [displayedProducts, setDisplayedProducts] = useState([]);
-    const [favorites, setFavorites] = useState(()=>
-        JSON.parse(localStorage.getItem("favorites"))
-        ?JSON.parse(localStorage.getItem("favorites")):[]);
+    //FETCH DATA
+  // Dentro de useEffect, verifica que el data tenga ids únicos
+useEffect(() => {
+    fetch("/productos.json")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Verifica los datos
+            setProducts(data);
+            setDisplayedProducts(data);
+        });
+}, []);
 
-    useEffect(() => {
-        const localStorageProducts = JSON.parse(localStorage.getItem("products"));
-        if(localStorageProducts){            
-            setProducts(localStorageProducts);
-            setDisplayedProducts(localStorageProducts.slice(0,8));
-        }
-        else{
-            fetch("/data/star-wars-figures.json")
-                .then(res => res.json())
-                .then(data => {
-                    setProducts(data);
-                    setDisplayedProducts(data.slice(0,8));
-                    localStorage.setItem("products",JSON.stringify(data));
-                })
-        }
-    }, []);
 
-    function loadMore(){
-        const moreProducts = products.slice(displayedProducts.length,displayedProducts.length+4);
-        setDisplayedProducts([...displayedProducts,...moreProducts]);
-    }
-
-    function onFilter(minPrice, maxPrice){  
-        if(isNaN(minPrice)) minPrice = 0;     
-        const min = parseFloat(minPrice);
-        
-        if(isNaN(maxPrice)) maxPrice = Infinity;  
-        const max = parseFloat(maxPrice);
-
-        const filteredProducts = products.filter(product => {
-            const price = parseFloat(product.price);
-            return price >= min && price <= max;
-        })
-
-        setDisplayedProducts(filteredProducts);
-    }
-
-    function toggleFavorite(id){  
-        const updatedFavorites = favorites.includes(id)
-            ?favorites.filter(favoriteId => favoriteId != id)
-            :[...favorites,id];
-        setFavorites(updatedFavorites);
-        localStorage.setItem("favorites",JSON.stringify(updatedFavorites));
-    }
-
+ 
     return(
+        <main>
+        <section className="hero">
+        <h3>Trending item</h3>
+        <h2>Womens <br />latest fashion sale</h2>
+        <h4>starting at <span className="number">20</span>.00&euro;</h4>
+        <button>SHOP NOW</button>
+      </section>
         <div>
-            <Filter onFilter={onFilter}/>
-            <section id="figures-list" className="container py-4"> 
-                {displayedProducts.map(product => (                    
-                    <ProductCard
-                        key={product.id}
-                        product={{...product, favorite: favorites.includes(product.id)}}
-                        toggleFavorite={toggleFavorite}
-                    />
-                ))}
+            <section className="product-grid"> 
+                {displayedProducts.map(product => <Product key={product.id} product={product} />)}
+
+              
             </section>
-            <LoadMoreButton loadMore={loadMore}/>
         </div>
+        </main>
     )
 }

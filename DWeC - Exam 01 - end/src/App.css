@@ -1,72 +1,408 @@
-body {
-  font-family: Arial, sans-serif;
-}
 
-.card {
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
-  padding: 10px;
-  background-color: white;
-  text-align: center;
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
-.card img {
+.card{
   width: 100%;
-  height: auto;
-  margin-bottom: 1rem;
-}
+   border: 1px solid #f5f5f5e5;
+   border-radius: 10px;
+   overflow: hidden;
+   padding: 1rem;
+   max-width: 16.5rem;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   position: relative;
 
-.card h3 {
-  font-size: 1.5rem;
-  margin: 0.5rem 0;
 }
+.offer{
+   clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+   position: absolute;
+   top:15px;
+   left:0px;
+   z-index: 2;
+   width: 60px;
+   padding: 0.4rem 0.5rem 0.4rem 0.2rem;
+   
+   background-color:#FF8F9C ;
+   color:white;
+   font-weight: 2px;
+   text-shadow: 2px 2px 2px rgba(5,2,1,0.56);
+   font-size: 0.8rem;
+   text-align: center;
+   
+}
+.card:hover{
+   box-shadow: 0px 0px 15px 1px #989898;
+}
+.card h3{
+   color: #FF8F9C;
+   font-size: 0.9rem;
+}
+.card h4{
+   color: #4F4F4F;
+   font-size: 1rem;
+   font-weight: normal;
+}
+.card .price{
+   font-weight: bolder;
+}
+.card del {
+   text-decoration: line-through;
+   font-weight: normal;
+}
+.card img{
+   width: 100%;
+}
+.card .showcase-rating{
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   height: 2rem;
+}
+.card .fa-star{
+   color:#F6A355;
+}
+.card .grey-star{
+   color:#acabaa;
+}
+.card .price-box{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.card .price-box button{
+   border-radius: 5px;
+   border: 0;
+   padding: 0.5rem 1rem;
+   color:white;
+   font-weight: 700;
+   background-color: #fb9550;
+   cursor:pointer;
+}
+.card .price-box button:hover{
+   background-color: #e46918;
+   transform: scale(1.1);
+   transition: transform 0.5s ease;
+}
+footer{
+  padding: 1.5rem 10% 1rem 10%;
+  background-color: black;
+  color:white;
+}
+footer .footer-nav{
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  color:white;
+}
+footer .nav-title{
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
 
-.card span {
+  position:relative;
   display: block;
-  margin: 0.5rem 0;
+  padding-bottom: 5px;
+}
+footer .nav-title::after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left:0;
+  background-color: #F58996;
+  width:2rem;
+  height:3px;
+}
+footer .nav-title:hover::after{
+  width: 100%;
+  background-color: white;
+  transition: width 1s ease, background-color 1s ease;
+}
+footer ul, footer li{
+  text-decoration: none;
+}
+footer li{
+  color:#787878;
+}
+.footer-bottom{
+  text-align: center;
+  border-top:1px solid #787878;
+  padding: 2rem 0;
+  margin-top: 1rem;
+}
+.footer-bottom .copyright{
+
+  font-size: 0.7rem;
+  color:#bbb9b9;
+}
+footer a { 
+  text-decoration: none; 
+  line-height: 2rem;
+  color: #bbb9b9;
+}
+.footer-nav-list a:hover { 
+  border-bottom: 1px solid white;
+}
+.footer-nav-list li { 
+  list-style: none; 
+}
+body{
+  display: flex;
+  justify-content: center;
+  padding: 0 0;
+  font-family: 'Poppins';
+}
+#page{
+  width: 100%;
 }
 
-.card .brand,
-.card .description,
-.card .stock {
+
+header{
+    
+  position: sticky;
+  top:0;
+  left:0;
+  z-index: 100;
+}
+header .top-header{
+  padding: 0rem 10%;
+  height: 20vh;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #ccc;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .logo{
+  width: 50%;
+}
+
+header .search-container{
+  width: 60%;
+  text-align: center;
+  position: relative;
+}
+header .search-container input{
+  width:100%;
+  padding: 0.8rem 0.8rem;
+  border: 2px solid #de752a92;
+  border-radius: 10px;
   font-size: 0.9rem;
-  color: #555;
+  font-family: 'Poppins';
+}
+header .search-container input:focus{
+  border-style: none;
+}
+header .search-container .search-btn {
+  background: white;
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  padding: 8px 15px;
+  color:rgb(92, 91, 91)
 }
 
-#figures-list {
+header .icons-container{
+  text-align: right;
+  width: 20%;
+}
+header .fa-user, .fa-heart, .fa-bag-shopping{
+  font-size: 1.4rem;
+  margin-right: 0.8rem;
+}
+
+.main-nav{
+  display: flex;
+  justify-content: center;
+  padding: 1rem 10%;
+  background-color: white;
+}
+.main-nav a{
+  text-decoration: none;
+  margin-right: 2rem;
+  display: inline-block;
+  color: black;
+  font-weight:600;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+main{
+  padding: 0rem 10% 2rem 10%;
+}
+main > h2{
+  padding-top:1rem;
+  font-size: 1.5rem;
+}
+
+.hero {
+  background: url('../images/banners/banner-1.jpg') no-repeat top left;
+  background-size: cover;
+  padding-right: 70%;
+  border-radius: 1rem;
+  
+  padding:1rem 50% 1rem 4rem;
+}
+.hero h2{
+  font-size: 2.5rem;
+  color:black ;  
+}
+.hero h3{
+  font-size: 1.5rem;  
+  color:#FF8F9C;  
+}
+.hero h4{
+  font-size: 1.3rem; 
+  color:#7E7E7E;   
+  font-weight: 500;
+}
+.hero .number{
+  font-weight: bolder;
+  font-size: 1.8rem; 
+}
+.hero button{
+  margin:1rem 0;
+  padding: 0.8rem 0;
+  text-align: center;
+  width: 7rem;
+  color:white;
+  background-color: #ff8f9c;
+  border-radius: 5px;
+  border: 0px;
+  font-weight: bold;
+}
+
+.product-grid{
+  padding: 1rem 0 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(4, auto);
+  gap: 0.7rem;
+}
+/*-----------------------------------*\
+  #RESET
+\*-----------------------------------*/
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Favorite Icon Styles: For the heart icon on each card */
-.favorite {
-  position: absolute; /* Positions the favorite icon at a specific location within the card */
-  top: 10px; /* Places the icon 10px from the top of the card */
-  right: 10px; /* Places the icon 10px from the right side of the card */
-  z-index: 10; /* Ensures the icon appears above the other elements in the card */
+/* a { text-decoration: none; }
+
+li { list-style: none; }
+
+button {
+  background: none;
+  font: inherit;
+  border: none;
+  cursor: pointer;
+} */
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+@import url('./variables.css');
+@import url('./reset.css');
+@import url('./general.css');
+@import url('./topInfo.css');
+@import url('./header.css');
+@import url('./main.css');
+@import url('./card.css');
+@import url('./footer.css');
+
+
+
+
+
+
+
+
+
+.top-info{
+  padding: 0 10%;
+  height: 8vh;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #ccc;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-info .shipping-text{
+  color:#787878;
+  font-size: 0.9rem;
+  text-transform:uppercase;
 }
 
-/* Favorite Icon - Active State */
-.favorite .on {
-  color: red; /* Changes the color of the heart icon to red when the figure is marked as a favorite */
+.top-info .social-link{
+  text-decoration: none;
+  margin-right: 0.8rem;
+}
+.top-info .social-link:hover i{
+  color:blue;
 }
 
-/* Heart Icon Styling */
-.fa-heart {
-  font-size: 1.2rem; /* Sets the size of the heart icon to a readable size */
-  cursor: pointer; /* Changes the cursor to a pointer to indicate the icon is clickable */
+.top-info .social-link i{
+ font-size: 1.1rem;
+ color:#787878;
 }
 
-.resaltada {
-  /* Highlight active navigation */
-  background-color: #ef233c;
-  color: #edf2f4;
+:root {
+
+  /**
+   * colors
+   */
+
+  --spanish-gray: hsl(0, 0%, 60%);
+  --sonic-silver: hsl(0, 0%, 47%);
+  --eerie-black: hsl(0, 0%, 13%);
+  --salmon-pink: hsl(353, 100%, 78%);
+  --sandy-brown: hsl(29, 90%, 65%);
+  --bittersweet: hsl(0, 100%, 70%);
+  --ocean-green: hsl(152, 51%, 52%);
+  --davys-gray: hsl(0, 0%, 33%);
+  --cultured: hsl(0, 0%, 93%);
+  --white: hsl(0, 100%, 100%);
+  --onyx: hsl(0, 0%, 27%);
+
+  /**
+   * typography
+   */
+
+  --fs-1: 1.563rem;
+  --fs-2: 1.375rem;
+  --fs-3: 1.25rem;
+  --fs-4: 1.125rem;
+  --fs-5: 1rem;
+  --fs-6: 0.938rem;
+  --fs-7: 0.875rem;
+  --fs-8: 0.813rem;
+  --fs-9: 0.75rem;
+  --fs-10: 0.688rem;
+  --fs-11: 0.625rem;
+
+  --weight-300: 300;
+  --weight-400: 400;
+  --weight-500: 500;
+  --weight-600: 600;
+  --weight-700: 700;
+
+  /**
+   * border-radius
+   */
+
+  --border-radius-md: 10px;
+  --border-radius-sm: 5px;
+
+  /**
+   * transition 
+   */
+
+  --transition-timing: 0.2s ease;
+
 }
+

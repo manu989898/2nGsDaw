@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react";
 
 import Filter from "../components/Filter";
-import LoadMoreButton from "../components/LoadMoreButton";
 import ProductCard from "../components/ProductCard";
 
 export default function Favorites() {
@@ -20,11 +19,7 @@ export default function Favorites() {
         }
     }, [favorites]);
 
-    function loadMore(){
-        const moreProducts = products.slice(displayedProducts.length,displayedProducts.length+4);
-        setDisplayedProducts([...displayedProducts,...moreProducts]);
-    }
-
+  
     function onFilter(minPrice, maxPrice){  
         if(isNaN(minPrice)) minPrice = 0;     
         const min = parseFloat(minPrice);
@@ -60,7 +55,6 @@ export default function Favorites() {
                     />
                 ))}
             </section>
-            <LoadMoreButton loadMore={loadMore}/>
         </div>
     )
 

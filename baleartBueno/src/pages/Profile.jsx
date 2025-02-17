@@ -282,12 +282,12 @@ const ProfileWithComments = () => {
                   <strong>Estado:</strong>{" "}
                   <span
                     className={
-                      comment.status === "P"
+                      comment.status === "Y"
                         ? "text-green-500 font-semibold bg-green-100 px-2 py-1 rounded"
                         : "text-red-500 font-semibold bg-red-100 px-2 py-1 rounded"
                     }
                   >
-                    {comment.status === "P" ? "Publicado" : "Pendiente"}
+                    {comment.status === "Y" ? "Publicado" : "Pendiente"}
                   </span>
                 </p>
                 <p className="text-sm text-gray-600 mt-2">

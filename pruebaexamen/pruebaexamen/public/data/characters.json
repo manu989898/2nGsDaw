@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "name": "Vegeta",
+        "planet": "Planet Vegeta",
+        "gender": "Male",
+        "power": 2000,
+        "picture": "vegeta.png",
+        "rating": 7
+    },
+    {
+        "id": 2,
+        "name": "Majin Boo",
+        "planet": "Casa de Mr. Satan",
+        "gender": "Male",
+        "power": 12500,
+        "picture": "boogordo.png",
+        "rating": 6
+    },
+    {
+        "id": 3,
+        "name": "Frieza",
+        "planet": "Universe 7",
+        "gender": "Male",
+        "power": 125000,
+        "picture": "freeza.png",
+        "rating": 10
+    },
+    {
+        "id": 4,
+        "name": "Trunks",
+        "planet": "Planet Earth",
+        "gender": "Male",
+        "power": 1205,
+        "picture": "trunks.png",
+        "rating": 5
+    },
+    {
+        "id": 5,
+        "name": "Son Gohan",
+        "planet": "Paoz Mountain",
+        "gender": "Male",
+        "power": 10025,
+        "picture": "gohan.png",
+        "rating": 9
+    },
+    {
+        "id": 6,
+        "name": "Bulma",
+        "planet": "Earth",
+        "gender": "Female",
+        "power": 50,
+        "picture": "bulma.png",
+        "rating": 4
+    },
+    {
+        "id": 7,
+        "name": "Cell",
+        "planet": "Dr. Gero's Laboratory",
+        "gender": "None",
+        "power": 125000,
+        "picture": "cell.png",
+        "rating": 8
+    },
+    {
+        "id": 8,
+        "name": "Chi-Chi",
+        "planet": "Earth",
+        "gender": "Female",
+        "power": 120,
+        "picture": "chichi.png",
+        "rating": 3
+    },
+    {
+        "id": 9,
+        "name": "Piccolo",
+        "planet": "Planet Namek",
+        "gender": "Male",
+        "power": 14000,
+        "picture": "piccolo.png",
+        "rating": 8
+    },
+    {
+        "id": 10,
+        "name": "Yamcha",
+        "planet": "Earth",
+        "gender": "Male",
+        "power": 900,
+        "picture": "yamcha.png",
+        "rating": 2
+    },
+    {
+        "id": 11,
+        "name": "Krillin",
+        "planet": "Earth",
+        "gender": "Male",
+        "power": 1000,
+        "picture": "krillin.png",
+        "rating": 1
+    },
+    {
+        "id": 12,
+        "name": "Goku",
+        "planet": "Planet Earth",
+        "gender": "Male",
+        "power": 150000,
+        "picture": "goku.png",
+        "rating": 10
+    }
+]

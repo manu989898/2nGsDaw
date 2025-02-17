@@ -1,0 +1,94 @@
+
+
+[
+    {
+        "id": 1,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 2,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 3,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 4,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 5,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 6,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 7,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 8,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 9,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    },
+    {
+        "id": 10,
+        "name": "Pocket Watch",
+        "description": "Pocket Watch Leather Pouch",
+        "image": "./assets/images/products/watch-3.jpg",
+        "price": 100,
+        "discount": 150,
+        "rating": 5
+    }
+]

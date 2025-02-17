@@ -76,7 +76,6 @@ Ahora puedes acceder a la aplicación y comenzar a trabajar con **Baleart**.
 
 #### Notas adicionales
 
-- Las imagenes mostradas en los spaces detallados (clicando en ellos desde el home) son imagenes random que no corresponden al space exacto ya que la dependencia que usamos en backend apra generar imagenes "fake" está inoperativa.
 - La página de contacto con la administración está en el footer.
 - Logo creado con dall-e.
 - Para poder restaurar la contraseña los campos del formulario deberán de coincidir con los datos del usuario.
@@ -113,7 +112,7 @@ LOG_LEVEL=debug
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=project2
+DB_DATABASE=baleart
 DB_USERNAME=root
 DB_PASSWORD=
 

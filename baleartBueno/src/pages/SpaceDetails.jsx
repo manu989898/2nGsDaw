@@ -19,7 +19,6 @@ const SpaceDetails = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
   const [language, setLanguage] = useState("ES"); // Idioma actual (por defecto: español)
-  const [colorBlindMode, setColorBlindMode] = useState(false); // Modo daltónico
 
 
   useEffect(() => {
@@ -137,7 +136,7 @@ const getTranslatedDescription = () => {
           comment: newComment,
           score: newScore,
           images: newImages.filter((url) => url.trim() !== ""),
-          status: "N",
+          status: "P",
         },
       ],
     };
@@ -329,10 +328,10 @@ const getTranslatedDescription = () => {
         <div className="bg-gray-100 p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-700">Comentarios</h2>
 
-          {comments.filter((comment) => comment.status === "P").length > 0 ? (
+          {comments.filter((comment) => comment.status === "Y").length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
               {comments
-                .filter((comment) => comment.status === "P") // Filtrar solo los comentarios con status "P"
+                .filter((comment) => comment.status === "Y") // Filtrar solo los comentarios con status "Y"
                 .slice(indexOfFirstComment, indexOfLastComment) // Aplicar paginación
                 .map((comment) => (
                   <div

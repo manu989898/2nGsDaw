@@ -28,7 +28,7 @@ const language = "ES";
     try {
       // Obtener usuario por email
       const response = await axios.get(`http://127.0.0.1:8000/api/user/email/${userData.email}`);
-      const user = response.data.data; // Acceder correctamente a los datos del usuario
+      const user = response.data.data; // Acceder corectamente a los datos del usuario
 
       console.log("Usuario encontrado:", user);
 
@@ -38,7 +38,7 @@ const language = "ES";
         return;
       }
 
-      // Verificar que los datos ingresados coincidan con los del usuario registrado
+      // Verifcar que los datos ingresados coincidan con los del usuario registrado
       if (
         user.name !== userData.name ||
         user.lastName !== userData.lastName ||
