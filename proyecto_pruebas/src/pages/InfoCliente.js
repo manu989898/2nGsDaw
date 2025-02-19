@@ -234,22 +234,20 @@ useEffect(() => {
                   alt={vehiculo.modelo}
                   className="imagenMarca"
                 />
-                <h4>Historial de Servicios</h4>
-                {vehiculo.historial.length > 0 ? (
+                <h4>Datos dle vehiculo</h4>
+               
                   <ul>
-                    {vehiculo.historial.map((historial) => (
-                      <li key={historial.id_historial}>
-                        {historial.descripcion} - {historial.fecha} 
-                        <span className="dinero">(
-                          ${parseFloat(historial.costo_total).toFixed(2)}
-                        )</span>
-                       
-                      </li>
-                    ))}
+                    <li>
+                      <strong>Placa:</strong> {vehiculo.placa}
+                    </li>
+                    <li>
+                      <strong>Color:</strong> {vehiculo.color}
+                    </li>
+                    <li>
+                      <strong>Quilometraje:</strong> {vehiculo.quilometraje} Km
+                    </li>
                   </ul>
-                ) : (
-                  <p>No hay historial de servicios disponible.</p>
-                )}
+                
               </div>
             ))}
           </div>

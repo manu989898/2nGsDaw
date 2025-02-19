@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import CrearReparacion from "./CrearReparacion";  // Asegúrate de importar el componente CrearReparacion
 
 const Citas = () => {
   const [citas, setCitas] = useState([]);
@@ -11,91 +11,74 @@ const Citas = () => {
   const [estado, setEstado] = useState("Pendiente");
   const [filteredCitas, setFilteredCitas] = useState([]);
   const [estadoFiltro, setEstadoFiltro] = useState(""); // Filtro de estado
-
+  const [fechaFiltro, setFechaFiltro] = useState(""); // Filtro de fecha
+  const [mostrarCrearReparacion, setMostrarCrearReparacion] = useState(false); // Nuevo estado para manejar la visibilidad
 
   const navigate = useNavigate();
-  
+
   // Obtener citas y mecánicos al cargar el componente
   useEffect(() => {
-    async function fetchCitas(){
+    async function fetchCitas() {
       try {
         const response = await axios.get("http://localhost:8000/api/citas");
         setCitas(response.data);
-        console.log("Citas:", response.data); // Mostrar las citas en la consola  
+        console.log("Citas:", response.data); // Mostrar las citas en la consola
       } catch (error) {
         console.error("Error al obtener las citas:", error);
       }
-    };
-
-    const fetchMecanicos = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/mecanicos");
-        setMecanicos(response.data);
-        console.log("Mecánicos:", response.data); // Mostrar los mecánicos en la consola
-      } catch (error) {
-        console.error("Error al obtener los mecánicos:", error);
-      }
-    };
-
-    fetchCitas();
-    fetchMecanicos();
-  }, []);
-
-  // Asignar mecánico a una cita
-  const asignarMecanico = async (idCita) => {
-    if (!idMecanicoSeleccionado) {
-      alert("Selecciona un mecánico antes de asignarlo.");
-      return;
     }
 
+    fetchCitas();
+  }, []);
+
+  // Filtro por estado y fecha
+  useEffect(() => {
+    let filtradas = [...citas];
+
+    // Filtro por estado
+    if (estadoFiltro) {
+      filtradas = filtradas.filter(
+        (cita) => cita.estado === estadoFiltro
+      );
+    }
+
+    // Filtro por fecha
+    if (fechaFiltro) {
+      filtradas = filtradas.filter(
+        (cita) =>
+          cita.fecha_hora &&
+          new Date(cita.fecha_hora).toISOString().slice(0, 10) === fechaFiltro
+      );
+    }
+
+    setFilteredCitas(filtradas);
+  }, [estadoFiltro, fechaFiltro, citas]);
+
+  const completarCita = async (idCita) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/citas/${idCita}/asignar-mecanico`,
+        `http://localhost:8000/api/citas/${idCita}`,
         {
-          id_mecanico: idMecanicoSeleccionado,
+          estado: "Completada"
         }
       );
 
-      alert("Mecánico asignado correctamente.");
+      alert("Cita completada correctamente.");
       const updatedCita = response.data.cita;
-      const updatedMecanico = mecanicos.find(
-        (mecanico) => mecanico.id_mecanico === idMecanicoSeleccionado
-      );
 
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
           cita.id_cita === idCita
-            ? { ...cita, mecanico: updatedMecanico }
+            ? { ...cita, estado: "Completada" }
             : cita
         )
       );
     } catch (error) {
-      console.error("Error al asignar el mecánico:", error.response?.data || error);
-      alert("No se pudo asignar el mecánico.");
+      console.error("Error al completar la cita:", error.response?.data || error);
+      alert("No se pudo completar la cita.");
     }
   };
- // Filtro por estado
-useEffect(() => {
-  let filtradas = [...citas];
 
-  if (estadoFiltro) {
-    if (estadoFiltro === "Pendiente") {
-      // Mostrar aquellas que no están completadas ni en progreso
-      filtradas = filtradas.filter(
-        (cita) =>
-          cita.reparacion?.estado !== "Completada" &&
-          cita.reparacion?.estado !== "En Proceso"
-      );
-    } else {
-      // Filtrar por el estado seleccionado
-      filtradas = filtradas.filter(
-        (cita) => cita.reparacion?.estado === estadoFiltro
-      );
-    }
-  }
-
-  setFilteredCitas(filtradas);
-}, [estadoFiltro, citas]);
   // Asignar reparación a una cita
   const asignarReparacion = async (idCita) => {
     try {
@@ -123,85 +106,78 @@ useEffect(() => {
       alert("No se pudo asignar la reparación.");
     }
   };
-// Función para eliminar una cita
-const eliminarCita = async (idCita) => {
-  if (!window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
-    return; // Cancelar si el usuario no confirma
-  }
 
-  try {
-    await axios.delete(`http://localhost:8000/api/citas/${idCita}`);
-    alert("Cita eliminada correctamente.");
+  // Función para eliminar una cita
+  const eliminarCita = async (idCita) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+      return; // Cancelar si el usuario no confirma
+    }
 
-    // Actualizar la lista de citas después de eliminar
-    setCitas((prevCitas) => prevCitas.filter((cita) => cita.id_cita !== idCita));
-  } catch (error) {
-    console.error("Error al eliminar la cita:", error.response?.data || error);
-    alert("No se pudo eliminar la cita.");
-  }
-};
+    try {
+      await axios.delete(`http://localhost:8000/api/citas/${idCita}`);
+      alert("Cita eliminada correctamente.");
+
+      // Actualizar la lista de citas después de eliminar
+      setCitas((prevCitas) => prevCitas.filter((cita) => cita.id_cita !== idCita));
+    } catch (error) {
+      console.error("Error al eliminar la cita:", error.response?.data || error);
+      alert("No se pudo eliminar la cita.");
+    }
+  };
 
   return (
     <div>
       <h2>Citas</h2>
+
       {/* Filtro por estado */}
       <div className="asignar-mecanico-container">
         <div className="form-group">
-          <label htmlFor="estadoFiltro"></label>
+          <label htmlFor="estadoFiltro">Filtrar por Estado:</label>
           <select
             id="estadoFiltro"
             value={estadoFiltro}
             onChange={(e) => setEstadoFiltro(e.target.value)}
-            className="input-busqueda">
+            className="input-busqueda"
+          >
             <option value="">Todos</option>
             <option value="Pendiente">Pendiente</option>
-            <option value="En Proceso">En Proceso</option>
+            <option value="Asignada">Asignada</option>
             <option value="Completada">Completada</option>
           </select>
         </div>
-      {/* Botón para crear una nueva cita */}
+
+        {/* Filtro por fecha */}
+        <div className="form-group">
+          <label htmlFor="fechaFiltro">Filtrar por Fecha:</label>
+          <input
+            type="date"
+            id="fechaFiltro"
+            value={fechaFiltro}
+            onChange={(e) => setFechaFiltro(e.target.value)}
+            className="input-busqueda"
+          />
+        </div>
+      </div>
+
       <div className="centrar-boton">
-      <button
-        className="btn-login2"
-        style={{ marginBottom: "20px" }}
-        onClick={() => navigate("/crear-cita")}
-      >
-        Crear Nueva Cita
-      </button>
-      </div>
-      </div>
-      {/* Contenedor de asignación */}
-      <div className="asignar-mecanico-container">
-        <select
-          className="selector-mecanico"
-          onChange={(e) => setIdMecanicoSeleccionado(parseInt(e.target.value))}
+        <button
+          className="btn-login2"
+          style={{ marginBottom: "20px" }}
+          onClick={() => navigate("/crear-cita")}
         >
-          <option value="">--Seleccionar Mecánico--</option>
-          {mecanicos.map((mecanico) => (
-            <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
-              {mecanico.nombre} {mecanico.apellido}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="text"
-          placeholder="Notas de reparación"
-          value={notas}
-          onChange={(e) => setNotas(e.target.value)}
-          className="input-busqueda"
-        />
-
-        <select
-          className="selector-estado"
-          onChange={(e) => setEstado(e.target.value)}
+          Crear Nueva Cita
+        </button>
+        <button
+          className="btn-login2"
+          style={{ marginBottom: "20px", marginLeft: "10px" }}
+          onClick={() => setMostrarCrearReparacion(!mostrarCrearReparacion)}  // Controlamos la visibilidad del componente
         >
-          <option value="Pendiente">Pendiente</option>
-          <option value="En Proceso">En Proceso</option>
-          <option value="Completada">Completada</option>
-        </select>
-       
+          {mostrarCrearReparacion ? "Ocultar Reparación" : "Crear Reparación"}  {/* Cambiar el texto del botón */}
+        </button>
       </div>
+
+      {/* Si se debe mostrar el componente CrearReparacion, lo renderizamos */}
+      {mostrarCrearReparacion && <CrearReparacion />}
 
       {/* Tabla de citas */}
       <table>
@@ -210,77 +186,52 @@ const eliminarCita = async (idCita) => {
             <th>ID Cita</th>
             <th>Cliente</th>
             <th>Vehículo</th>
+            <th>Placa</th>
+            <th>Detalles de la cita</th>
             <th>Estado</th>
-           
-            <th>
-  Mecánico
-  <span className="info-icon" title="Mecánicos asignados a la reparación vinculada a esta cita.">
-    ℹ️
-  </span>
-</th>
-
+            <th>Fecha</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-  {filteredCitas.map((cita) => (
-    <tr key={cita.id_cita}>
-      <td>{cita.id_cita}</td>
-      <td>
-        {cita.vehiculo?.cliente?.nombre || "Nombre no disponible"}{" "}
-        {cita.vehiculo?.cliente?.apellido || "Apellido no disponible"}
-      </td>
-      <td>
-        <img
-          className="imagenMarca"
-          src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
-          alt={cita.vehiculo.modelo}
-          style={{ width: "100px", height: "auto" }}
-        />
-      </td>
-      <td>
-        <span
-          className={
-            cita.reparacion?.estado === "Completada"
-              ? "estado-completada"
-              : cita.reparacion?.estado === "En Proceso"
-              ? "estado-en-proceso"
-              : cita.reparacion?.estado === "Pendiente"
-              ? "estado-pendiente"
-              : "estado-sin-reparacion"
-          }
-        >
-          {cita.reparacion?.estado || "Sin reparación"}
-        </span>
-      </td>
-   
-      <td>
-        {mecanicos
-          .filter((mecanico) => mecanico.id_mecanico === cita.reparacion?.id_mecanico)
-          .map((mecanico) => (
-            <span key={mecanico.id_mecanico}>
-              {mecanico.nombre} {mecanico.apellido}
-            </span>
+          {filteredCitas.map((cita) => (
+            <tr key={cita.id_cita}>
+              <td>{cita.id_cita}</td>
+              <td>
+                {cita.vehiculo?.cliente?.nombre || "Nombre no disponible"}{" "}
+                {cita.vehiculo?.cliente?.apellido || "Apellido no disponible"}
+              </td>
+              <td>
+                <img
+                  className="imagenMarca"
+                  src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
+                  alt={cita.vehiculo.modelo}
+                  style={{ width: "100px", height: "auto" }}
+                />
+              </td>
+              <td style={{ whiteSpace: "nowrap" }}>{cita.vehiculo.placa || "Sin Detalles"}</td>
+              <td>{cita.tipo_servicio || "Sin Detalles"}</td>
+              <td>{cita.estado || "Sin Estado"}</td>
+              <td>{cita.fecha_hora || "Sin Fecha"}</td>
+              <td>
+                <button
+                  onClick={() => eliminarCita(cita.id_cita)}
+                  style={{ backgroundColor: "red", marginLeft: "10px" }}
+                >
+                  Eliminar
+                </button>
+            
+                
+                  <button
+                  onClick={() => completarCita(cita.id_cita)}
+                  style={{ backgroundColor: "green", marginLeft: "10px" }}
+                >
+                  Completar
+                </button>
+                </td>
+            </tr>
           ))}
-      </td>
-      <td>
-        <button onClick={() => asignarMecanico(cita.id_cita)}>
-          Asignar Mecánico
-        </button>
-        <button onClick={() => asignarReparacion(cita.id_cita)}>
-          Asignar Reparación
-        </button>
-        <button
-          onClick={() => eliminarCita(cita.id_cita)}
-          style={{ backgroundColor: "red", marginLeft: "10px" }}
-        >
-          Eliminar
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+        </tbody>
       </table>
     </div>
   );

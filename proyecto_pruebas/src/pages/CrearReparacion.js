@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 const CrearReparacion = () => {
   const [citas, setCitas] = useState([]); // Lista de citas disponibles
@@ -11,6 +12,7 @@ const CrearReparacion = () => {
   const [fechaInicio, setFechaInicio] = useState(""); // Fecha de inicio
   const [fechaFin, setFechaFin] = useState(""); // Fecha de finalización opcional
   const [vehiculos, setVehiculos] = useState([]); // Lista de vehículos
+  const navigate = useNavigate();
 
   // Cargar citas y mecánicos al montar el componente
   useEffect(() => {
@@ -45,7 +47,7 @@ const CrearReparacion = () => {
     }
 
     try {
-      // Enviar datos a la API para crear la reparación
+      // 1. Enviar datos a la API para crear la reparación
       const response = await api.post("/reparaciones", {
         id_cita: idCita,
         id_mecanico: idMecanico,
@@ -54,17 +56,26 @@ const CrearReparacion = () => {
         fecha_inicio: fechaInicio,
         fecha_fin: fechaFin || null, // Fecha fin opcional
       });
-
+      
       alert("Reparación creada correctamente.");
       console.log("Reparación creada:", response.data);
 
-      // Reiniciar los campos del formulario
+      // 2. Actualizar el estado de la cita a "Asignada"
+      const updateCitaResponse = await api.put(`/citas/${idCita}`, {
+        estado: "Asignada", // Cambiar el estado de la cita a "Asignada"
+      });
+
+      // Si todo es correcto, reiniciar los campos del formulario
       setIdCita("");
       setIdMecanico("");
       setNotas("");
       setEstado("En Proceso");
       setFechaInicio("");
       setFechaFin("");
+
+      // Redirigir a la lista de reparaciones
+      navigate("/reparaciones");
+
     } catch (error) {
       console.error("Error al crear la reparación:", error);
       alert("No se pudo crear la reparación. Inténtalo de nuevo.");
@@ -87,11 +98,15 @@ const CrearReparacion = () => {
             required
           >
             <option value="">-- Seleccionar Cita --</option>
-            {citas.map((cita) => (
-              <option key={cita.id_cita} value={cita.id_cita}>
-                {`Cita ${cita.id_cita} - Vehículo: ${vehiculos.find((vehiculo) => vehiculo.id_vehiculo === cita.id_vehiculo)?.placa} `}
-              </option>
-            ))}
+            {citas
+              .filter((cita) => cita.estado === "Pendiente") // Solo citas pendientes
+              .map((cita) => (
+                <option key={cita.id_cita} value={cita.id_cita}>
+                  {`Cita ${cita.id_cita} - Vehículo: ${vehiculos.find(
+                    (vehiculo) => vehiculo.id_vehiculo === cita.id_vehiculo
+                  )?.placa.toUpperCase()} `}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -137,6 +152,7 @@ const CrearReparacion = () => {
           >
             <option value="En Proceso">En Proceso</option>
             <option value="Completada">Completada</option>
+            <option value="Sin asignar">Sin Asignar</option>
           </select>
         </div>
 

@@ -7,6 +7,7 @@ const Reparaciones = () => {
   const [filteredReparaciones, setFilteredReparaciones] = useState([]);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [fechaFiltro, setFechaFiltro] = useState('');
+  const [ordenEstado, setOrdenEstado] = useState(''); // Estado para manejar el orden por estado
   const navigate = useNavigate();
   const [expandedNotes, setExpandedNotes] = useState({}); // Estado para controlar las notas expandidas
 
@@ -42,8 +43,19 @@ const Reparaciones = () => {
       );
     }
 
+    // Ordenar las reparaciones por estado si se ha seleccionado un criterio
+    if (ordenEstado) {
+      filtradas = filtradas.sort((a, b) => {
+        if (ordenEstado === 'asc') {
+          return a.estado.localeCompare(b.estado); // Orden ascendente
+        } else {
+          return b.estado.localeCompare(a.estado); // Orden descendente
+        }
+      });
+    }
+
     setFilteredReparaciones(filtradas);
-  }, [estadoFiltro, fechaFiltro, reparaciones]);
+  }, [estadoFiltro, fechaFiltro, reparaciones, ordenEstado]);
 
   const toggleNotes = (id) => {
     setExpandedNotes((prev) => ({
@@ -69,7 +81,7 @@ const Reparaciones = () => {
       <div className="filters-container">
         {/* Filtros */}
         <div className="form-group">
-          <label htmlFor="estadoFiltro">Estado:</label>
+          <label htmlFor="estadoFiltro">Estado</label>
           <select
             id="estadoFiltro"
             value={estadoFiltro}
@@ -83,7 +95,7 @@ const Reparaciones = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="fechaFiltro">Fecha de Finalización:</label>
+          <label htmlFor="fechaFiltro">Fecha de Finalización</label>
           <input
             type="date"
             id="fechaFiltro"
@@ -93,14 +105,9 @@ const Reparaciones = () => {
           />
         </div>
 
-        <div className="form-group">
-          <button
-            className="btn-login2"
-            onClick={() => navigate('/crear-reparacion')}
-          >
-            Crear Reparación
-          </button>
-        </div>
+       
+
+     
       </div>
 
       <div className="table-container">
@@ -149,15 +156,18 @@ const Reparaciones = () => {
                   {reparacion.estado}
                 </td>
                 <td
-                style={
-                  {maxWidth: '180px', overflowWrap: 'break-word'}
-                }>
+                style={{
+                  maxWidth: '180px',
+                  overflowWrap: 'break-word',
+                }}
+                >
                   {expandedNotes[reparacion.id_reparacion] ? (
                     <div>
                       <p
-                      style={
-                        {maxWidth: '200px', overflowWrap: 'break-word'}
-                      }
+                      style={{
+                        maxWidth: '200px',
+                        overflowWrap: 'break-word',
+                      }}
                       >{reparacion.notas}</p>
                       <button
                         className="btn-leer-mas"

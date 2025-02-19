@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 const CrearCita = () => {
   const [clientes, setClientes] = useState([]);
@@ -17,6 +18,7 @@ const CrearCita = () => {
   const [busquedaCliente, setBusquedaCliente] = useState("");
   const vehiculosRef = useRef(null);
   const [estadoCita, setEstadoCita] = useState("Pendiente");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Configurar la fecha y hora predeterminada al cargar la página
@@ -472,14 +474,13 @@ const CrearCita = () => {
             onChange={(e) => setEstadoCita(e.target.value)}
           >
             <option value="Pendiente">Pendiente</option>
-            <option value="Completada">Completada</option>
-            <option value="Cancelada">Cancelada</option>
+      
             <option value="Asignada">Asignada</option>
           </select>
         </div>
         <div className="centrar-boton">
 
-        <button className="btn-login2" type="submit">
+        <button className="btn-login2" type="submit" onClick={() => navigate("/citas")}>
           Crear Cita
         </button>
         </div>
