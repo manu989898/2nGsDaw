@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 
+
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [facturas, setFacturas] = useState([]);
@@ -245,6 +246,34 @@ useEffect(() => {
                     </li>
                     <li>
                       <strong>Quilometraje:</strong> {vehiculo.quilometraje} Km
+                    </li>
+                    <li>
+                      <strong>Transmisión:</strong> {vehiculo.transmision}
+                    </li>
+                    <li>
+                      <strong>Bastidor:</strong> {vehiculo.bastidor}
+                    </li>
+                    <li>
+                    <strong>Combustible:</strong>
+          {/* Mostrar icono según el tipo de combustible */}
+          {vehiculo.combustible === "Gasolina" && (
+            <img
+              src="95.jpg"
+              alt="Gasolina"
+              className="w-8 h-auto ml-2"            />
+          )}
+          {vehiculo.combustible === "Diesel" && (
+            <img
+              src="diesel.jpg"
+              alt="Diesel"
+              className="w-8 h-auto ml-2"            />
+          )}
+          {vehiculo.combustible === "Eléctrico" && (
+            <img
+              src="electrico.png"
+              alt="Eléctrico"
+              className="w-2 h-2 ml-2"            />
+          )}
                     </li>
                   </ul>
                 

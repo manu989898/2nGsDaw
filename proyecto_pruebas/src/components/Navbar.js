@@ -17,7 +17,6 @@ const Navbar = ({ user, onLogout }) => {
         <li><Link to="/reparaciones">Reparaciones</Link></li>
         <li><Link to="/reportes">Reportes</Link></li>
         <li><Link to="/timeline">Timeline</Link></li>
-        <li><Link to="/historial-servicios">Historial Servicios</Link></li>
         {user ? (
           <>
             <li>Bienvenid@, {user.name}</li>

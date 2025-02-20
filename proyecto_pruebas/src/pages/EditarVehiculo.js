@@ -11,6 +11,10 @@ const EditarVehiculo = () => {
     placa: "",
     año: "",
     color: "",
+    quilometraje: "",
+    bastidor: "",
+    combustible: "",
+    transmision: "",
     id_cliente: null,
   });
 
@@ -131,6 +135,56 @@ const EditarVehiculo = () => {
             required
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="quilometraje">Kilometraje:</label>
+          <input
+            type="number"
+            id="quilometraje"
+            name="quilometraje"
+            value={vehiculo.quilometraje}
+            onChange={handleChange}
+            placeholder="Kilometraje"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="bastidor">Bastidor:</label>
+          <input
+            type="text"
+            id="bastidor"
+            name="bastidor"
+            value={vehiculo.bastidor}
+            onChange={handleChange}
+            placeholder="Bastidor"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="combustible">Combustible:</label>
+          <input
+            type="text"
+            id="combustible"
+            name="combustible"
+            value={vehiculo.combustible}
+            onChange={handleChange}
+            placeholder="Combustible"
+            required
+          />
+        </div>
+        <div className="form-group">
+  <label htmlFor="transmision">Transmisión:</label>
+  <select
+    id="transmision"
+    name="transmision"
+    value={vehiculo.transmision}
+    onChange={handleChange}
+    required
+    className="input-busqueda"
+  >
+    <option value="Manual">Manual</option>
+    <option value="Automatica">Automática</option>
+  </select>
+</div>
+
 
         <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
           <button className="btn-login" type="submit">Guardar Cambios</button>

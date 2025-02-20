@@ -10,7 +10,6 @@ import Notificaciones from './pages/Notificaciones';
 import Inventarios from './pages/Inventarios'; 
 import Reparaciones from './pages/Reparaciones'; 
 import Reportes from './pages/Reportes'; 
-import HistorialServicios from './pages/HistorialServicios'; 
 import Empleados from './pages/Empleados'; 
 import Timeline from './pages/Timeline';
 import InfoClientes from './pages/InfoCliente';
@@ -78,7 +77,6 @@ const App = () => {
         <Route path="/crear-reparacion" element={<CrearReparacion />} />
         <Route path="/reportes" element={<Reportes />} /> 
         <Route path="/timeline" element={<Timeline />} />
-        <Route path="/historial-servicios" element={<HistorialServicios />} />
         <Route path="/register" element={<Register />} />
   
       </Routes>
