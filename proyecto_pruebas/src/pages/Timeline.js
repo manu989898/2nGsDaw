@@ -100,79 +100,89 @@ const Timeline = () => {
 };
 
   
-  return (
-    <div className="timeline-module-container">
-      <h1>Timeline de Reparaciones</h1>
+return (
+  <div className="timeline-module-container">
+    <h1>Timeline de Reparaciones</h1>
 
-      <div className="timeline-module-selector">
-        <label htmlFor="mecanico-select">Seleccione un Mecánico:</label>
-        <select
-          id="mecanico-select"
-          value={selectedMecanico || ""}
-          onChange={(e) => setSelectedMecanico(e.target.value)}
-        >
-          {mecanicos.length === 0 ? (
-            <option value="">No hay mecánicos disponibles</option>
-          ) : (
-            mecanicos.map((mecanico) => (
-              <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
-                {mecanico.nombre} {mecanico.apellido}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
-
-      {loading ? (
-        <p>Cargando reparaciones...</p>
-      ) : reparaciones.length === 0 ? (
-        <p>No hay reparaciones asignadas para este mecánico.</p>
-      ) : (
-        <div className="timeline-module">
-          {reparaciones.map((reparacion) => (
-            <div
-              key={reparacion.id_reparacion}
-              className={`timeline-module-item ${normalizeEstado(reparacion.estado)}`}
-            >
-              <div className="timeline-module-content">
-                <h3>
-                  Vehículo: {reparacion.cita?.vehiculo?.modelo} ({reparacion.cita?.vehiculo?.marca})
-                </h3>
-                <p>
-                  <strong>Matrícula:</strong> {reparacion.cita?.vehiculo?.placa}
-                </p>
-                <p>
-                  <strong>Servicio:</strong> {reparacion.cita?.tipo_servicio}
-                </p>
-                <p>
-                  <strong>Fecha/Hora:</strong> {reparacion.cita?.fecha_hora || "No disponible"}
-                </p>
-                <p>
-                  <strong>Estado de Reparación:</strong>{" "}
-                  <select
-                    value={reparacion.estado}
-                    onChange={(e) =>
-                      handleEstadoChange(reparacion.id_reparacion, e.target.value)
-                    }
-                  >
-                    <option value="Sin asignar">Sin asignar</option>
-                    <option value="En Proceso">En Proceso</option>
-                    <option value="Completada">Completada</option>
-                  </select>
-                </p>
-                <p>
-                  <strong>Notas:</strong> {reparacion.notas}
-                </p>
-                <p>
-                  <strong>Progreso:</strong> {reparacion.progreso}%
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="timeline-module-selector">
+      <label htmlFor="mecanico-select">Seleccione un Mecánico:</label>
+      <select
+        id="mecanico-select"
+        value={selectedMecanico || ""}
+        onChange={(e) => setSelectedMecanico(e.target.value)}
+      >
+        {mecanicos.length === 0 ? (
+          <option value="">No hay mecánicos disponibles</option>
+        ) : (
+          mecanicos.map((mecanico) => (
+            <option key={mecanico.id_mecanico} value={mecanico.id_mecanico}>
+              {mecanico.nombre} {mecanico.apellido}
+            </option>
+          ))
+        )}
+      </select>
     </div>
-  );
+
+    {loading ? (
+      <p>Cargando reparaciones...</p>
+    ) : reparaciones.length === 0 ? (
+      <p>No hay reparaciones asignadas para este mecánico.</p>
+    ) : (
+      <div className="timeline-module">
+        {reparaciones.map((reparacion) => (
+          <div
+          key={reparacion.id_reparacion}
+          className={`timeline-module-item ${normalizeEstado(reparacion.estado)}`}
+        >
+          <div className="timeline-module-content">
+            <h3>
+              Vehículo: {reparacion.cita?.vehiculo?.modelo} ({reparacion.cita?.vehiculo?.marca})
+            </h3>
+            <img
+                    className="imagenMarcas"
+                    src={`http://localhost:8000/img/${reparacion.cita.vehiculo.marca}.png`}
+                    alt={reparacion.cita.vehiculo.modelo}
+                    style={{ width: "100px", height: "auto" }}
+                  />
+            <p>
+              <strong>Matrícula:</strong> {reparacion.cita?.vehiculo?.placa}
+            </p>
+            <p>
+              <strong>Servicio:</strong> {reparacion.cita?.tipo_servicio}
+            </p>
+            <p>
+              <strong>Fecha/Hora:</strong> {reparacion.cita?.fecha_hora || "No disponible"}
+            </p>
+        
+            <p>
+              <strong>Estado de Reparación:</strong>
+              <select
+                value={reparacion.estado}
+                onChange={(e) =>
+                  handleEstadoChange(reparacion.id_reparacion, e.target.value)
+                }
+              >
+                <option value="Sin asignar">Sin asignar</option>
+                <option value="En Proceso">En Proceso</option>
+                <option value="Completada">Completada</option>
+              </select>
+            </p>
+            <p>
+              <strong>Notas:</strong> {reparacion.notas}
+            </p>
+            <p>
+              <strong>Progreso:</strong> {reparacion.progreso}%
+            </p>
+          </div>
+        </div>
+        
+          
+        ))}
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default Timeline;

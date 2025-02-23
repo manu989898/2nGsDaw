@@ -254,26 +254,31 @@ useEffect(() => {
                       <strong>Bastidor:</strong> {vehiculo.bastidor}
                     </li>
                     <li>
-                    <strong>Combustible:</strong>
+                    <strong></strong>
           {/* Mostrar icono según el tipo de combustible */}
           {vehiculo.combustible === "Gasolina" && (
-            <img
-              src="95.jpg"
-              alt="Gasolina"
-              className="w-8 h-auto ml-2"            />
-          )}
-          {vehiculo.combustible === "Diesel" && (
-            <img
-              src="diesel.jpg"
-              alt="Diesel"
-              className="w-8 h-auto ml-2"            />
-          )}
-          {vehiculo.combustible === "Eléctrico" && (
-            <img
-              src="electrico.png"
-              alt="Eléctrico"
-              className="w-2 h-2 ml-2"            />
-          )}
+  <img
+    src="95.jpg"
+    alt="Gasolina"
+    style={{ width: "40px", height: "auto", marginLeft: "5px" }} // Adjust size here
+  />
+)}
+{vehiculo.combustible === "Diesel" && (
+  <img
+    src="diesel.jpg"
+    alt="Diesel"
+    style={{ width: "50px", height: "auto", marginLeft: "5px" }} // Adjust size here
+  />
+)}
+{vehiculo.combustible === "Eléctrico" && (
+  <img
+    src="electrico.png"
+    alt="Eléctrico"
+    style={{ width: "35px", height: "auto", marginLeft: "5px" }} // Adjust size here
+  />
+)}
+
+
                     </li>
                   </ul>
                 

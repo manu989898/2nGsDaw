@@ -121,10 +121,13 @@ const CrearCita = () => {
     try {
       // Llamar a la API para crear un nuevo vehículo
       const response = await api.post("/vehiculos", {
+        
         ...nuevoVehiculo,
+
         id_cliente: clienteSeleccionado.id_usuario, // Asociar el vehículo al cliente seleccionado
       });
-  
+  console.log(nuevoVehiculo);
+  console.log(clienteSeleccionado.id_usuario);
       alert("Vehículo creado correctamente.");
       console.log("Vehículo creado:", response.data);
   
@@ -132,9 +135,13 @@ const CrearCita = () => {
       setVehiculos([...vehiculos, response.data.data]);
   
       // Limpiar el formulario
-      setNuevoVehiculo({ marca: "", modelo: "", placa: "", año: "", color: "" });
+      setNuevoVehiculo({ marca: "", modelo: "", placa: "", año: "", color: "", quilometraje: "", bastidor: "", combustible: "", transmision: "" });
       setMostrarFormularioNuevoVehiculo(false);
     } catch (error) {
+      console.log(nuevoVehiculo.transmision);  // Verifica el valor de la transmisión
+
+      console.log(nuevoVehiculo);
+console.log(clienteSeleccionado.id_usuario);
       console.error("Error al crear el vehículo:", error);
       alert("No se pudo crear el vehículo. Inténtalo de nuevo.");
     }
@@ -424,6 +431,57 @@ const CrearCita = () => {
           required
         />
       </div>
+      <div className="form-group">
+          <label htmlFor="quilometraje">Kilometraje:</label>
+          <input
+            type="number"
+            id="quilometraje"
+            name="quilometraje"
+            value={nuevoVehiculo.quilometraje}
+            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, quilometraje: e.target.value })}
+            placeholder="Kilometraje"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="bastidor">Bastidor:</label>
+          <input
+            type="text"
+            id="bastidor"
+            name="bastidor"
+            value={nuevoVehiculo.bastidor}
+            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, bastidor: e.target.value })}
+            placeholder="Bastidor"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="combustible">Combustible:</label>
+          <input
+            type="text"
+            id="combustible"
+            name="combustible"
+            value={nuevoVehiculo.combustible}
+            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, combustible: e.target.value })}
+            placeholder="Combustible"
+            required
+          />
+        </div>
+        <div className="form-group">
+  <label htmlFor="transmision">Transmisión:</label>
+  <select
+  id="transmision"
+  name="transmision"
+  value={nuevoVehiculo.transmision || ''} // Usar vacío como valor predeterminado
+  onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, transmision: e.target.value })}
+  required
+  className="input-busqueda"
+>
+  <option value="">Selecciona una opción</option>  {/* Esta es la opción predeterminada */}
+  <option value="Automatica">Automática</option>
+  <option value="Manual">Manual</option>
+</select>
+
+</div>
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
   <button className="btn-login" type="submit">
     Guardar Vehículo

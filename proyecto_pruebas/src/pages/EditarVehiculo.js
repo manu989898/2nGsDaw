@@ -120,7 +120,7 @@ const EditarVehiculo = () => {
             value={vehiculo.año}
             onChange={handleChange}
             placeholder="Año"
-            required
+            required    
           />
         </div>
         <div className="form-group">
