@@ -80,7 +80,7 @@ const CrearCita = () => {
   const handleNuevoCliente = async (e) => {
     e.preventDefault();
   
-    if (!nuevoCliente.nombre || !nuevoCliente.apellido || !nuevoCliente.email || !nuevoCliente.contraseña || !nuevoCliente.rol) {
+    if (!nuevoCliente.nombre || !nuevoCliente.apellido || !nuevoCliente.email || !nuevoCliente.contraseña || !nuevoCliente.rol || !nuevoCliente.direccion) {
       alert("Por favor, completa todos los campos del cliente.");
       return;
     }
@@ -97,7 +97,7 @@ const CrearCita = () => {
       setClienteSeleccionado(response.data.data);
   
       // Limpiar el formulario
-      setNuevoCliente({ nombre: "", apellido: "", email: "", telefono: "", rol: "", contraseña: "" });
+      setNuevoCliente({ nombre: "", apellido: "", email: "", telefono: "", rol: "", contraseña: "" ,direccion: ""});
       setMostrarFormularioNuevoCliente(false);
     } catch (error) {
       console.error("Error al crear el cliente:", error);
@@ -280,6 +280,16 @@ console.log(clienteSeleccionado.id_usuario);
           placeholder="Teléfono"
           value={nuevoCliente.telefono}
           onChange={(e) => setNuevoCliente({ ...nuevoCliente, telefono: e.target.value })}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="direccion">Direcicon:</label>
+        <input
+          type="text"
+          id="direccion"
+          placeholder="Dirección"
+          value={nuevoCliente.direccion}
+          onChange={(e) => setNuevoCliente({ ...nuevoCliente, direccion: e.target.value })}
         />
       </div>
       <div className="form-group">

@@ -114,6 +114,7 @@ useEffect(() => {
       // Scroll automático a la sección de vehículos
       if (vehiculosRef.current) {
         vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
+      
       }
     } catch (error) {
       console.error("Error al obtener la información del cliente:", error);
