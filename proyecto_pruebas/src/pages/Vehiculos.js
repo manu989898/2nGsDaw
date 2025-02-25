@@ -98,8 +98,8 @@ const Vehiculos = () => {
                 <td>
                   <button
                     className="btn-copy"
-                    onClick={() => copiarAlPortapapeles(cliente.nombre)}
-                    title="Copiar al portapapeles"
+                    onClick={() => copiarAlPortapapeles(cliente.email)}
+                    title="Copiar EMAIL al portapapeles"
                   >
                     Copiar <FiCopy />
                   </button>

@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 
-
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [facturas, setFacturas] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [historialGlobal, setHistorialGlobal] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
-  const [imagenes, setImagenes] = useState({}); // Almacenar imágenes generadas
+  const [imagenes, setImagenes] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate(); // Hook para redirigir
   const facturasRef = useRef(null);
@@ -17,20 +16,25 @@ const Clientes = () => {
 
   // Obtener todos los clientes al cargar el componente
   useEffect(() => {
+     
     const fetchClientes = async () => {
       try {
         const response = await api.get("/usuarios");
         setClientes(response.data);
-       // Generar imágenes para cada cliente
-       const nuevasImagenes = {};
-       response.data.forEach((cliente) => {
-         nuevasImagenes[cliente.id_usuario] = `https://randomuser.me/api/portraits/men/${cliente.id_usuario % 100}.jpg`;
-       });
-       setImagenes(nuevasImagenes);
+        // Generar imágenes para cada cliente
+        const nuevasImagenes = {};
+        response.data.forEach((cliente) => {
+          nuevasImagenes[cliente.id_usuario] = `https://randomuser.me/api/portraits/men/${cliente.id_usuario % 100}.jpg`;
+          
+        });
+        setImagenes(nuevasImagenes);
+        
       } catch (error) {
         console.error("Error al obtener los clientes:", error);
       }
     };
+
+
 
     fetchClientes();
   }, []);
@@ -48,59 +52,67 @@ const Clientes = () => {
 
     fetchHistorial();
   }, []);
+
   // Scroll a la sección de vehículos cuando se cargan los datos
-useEffect(() => {
+  useEffect(() => {
     if (vehiculos.length > 0 && vehiculosRef.current) {
+      vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (vehiculos.length === 0 && vehiculosRef.current) {
+      // Si no hay vehículos, aún hacer scroll a la sección
       vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [vehiculos]);
-  
+
   // Scroll a la sección de facturas cuando se cargan los datos
   useEffect(() => {
     if (facturas.length > 0 && facturasRef.current) {
       facturasRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (facturas.length === 0 && facturasRef.current) {
+      // Si no hay facturas, aún hacer scroll a la sección
+      facturasRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [facturas]);
-  
+
   const verFacturas = async (cliente) => {
     try {
       // Si ya están mostrando las facturas para este cliente, no hacer nada
       if (cliente.id_usuario === clienteSeleccionado?.id_usuario && facturas.length > 0) {
         return;
       }
-  
+
       // Actualizar cliente seleccionado y resetear otros datos
       setClienteSeleccionado(cliente);
       setVehiculos([]); // Ocultar vehículos
       setFacturas([]); // Limpiar facturas previas mientras se cargan las nuevas
-  
+
       const response = await api.get(`/usuarios/${cliente.id_usuario}/facturas`);
       setFacturas(response.data.facturas);
-  
+
       // Scroll automático a facturas
       if (facturasRef.current) {
         facturasRef.current.scrollIntoView({ behavior: "smooth" });
       }
     } catch (error) {
-      console.error("Error al obtener las facturas:", error);
+      alert(`No hay datos de facturas para ${cliente.nombre} ${cliente.apellido}`);
+      
     }
   };
-  
+
   const verInformacion = async (cliente) => {
     try {
       // Si ya están mostrando la información para este cliente, no hacer nada
       if (cliente.id_usuario === clienteSeleccionado?.id_usuario && vehiculos.length > 0) {
         return;
       }
-  
+
       // Actualizar cliente seleccionado y resetear otros datos
       setClienteSeleccionado(cliente);
       setFacturas([]); // Ocultar facturas
       setVehiculos([]); // Limpiar vehículos previos mientras se cargan los nuevos
-  
+
       const vehiculosResponse = await api.get(`/usuarios/${cliente.id_usuario}/vehiculos`);
       const vehiculosData = vehiculosResponse.data.vehiculos;
-  
+
       // Vincular historiales de servicios con vehículos
       const vehiculosConHistorial = vehiculosData.map((vehiculo) => {
         const historial = historialGlobal.filter(
@@ -108,22 +120,20 @@ useEffect(() => {
         );
         return { ...vehiculo, historial };
       });
-  
+
       setVehiculos(vehiculosConHistorial);
-  
+
       // Scroll automático a la sección de vehículos
       if (vehiculosRef.current) {
         vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
-      
       }
     } catch (error) {
-      console.error("Error al obtener la información del cliente:", error);
+      alert(`No hay datos de vehiculo para ${cliente.nombre} ${cliente.apellido}`);
     }
   };
-  
 
   const filteredClientes = clientes.filter((cliente) =>
-    cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    cliente.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -132,7 +142,7 @@ useEffect(() => {
 
       <input
         type="text"
-        placeholder="Buscar cliente"
+        placeholder="Buscar cliente por email"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="input-busqueda"
@@ -152,23 +162,29 @@ useEffect(() => {
           {filteredClientes.map((cliente) => (
             <tr key={cliente.id_usuario}>
               <td>{cliente.id_usuario}</td>
-              <td><img
+              <td>
+                <img
                   className="imagenMarcas"
                   src={imagenes[cliente.id_usuario] || `https://via.placeholder.com/75`}
                   alt={cliente.nombre}
                   style={{ width: "100px", height: "auto", borderRadius: "50%" }}
-                /></td>
+                />
+              </td>
               <td>{cliente.nombre} {cliente.apellido}</td>
-             
               <td>{cliente.email}</td>
               <td>
-                <button onClick={() => verInformacion(cliente)}>Ver Información</button>
+                <button 
+                  onClick={() => verInformacion(cliente)} 
+                  disabled={cliente.vehiculos && cliente.vehiculos.length === 0}
+                  style={{
+                    backgroundColor: cliente.vehiculos && cliente.vehiculos.length === 0 ? 'gray' : '',
+                    cursor: cliente.vehiculos && cliente.vehiculos.length === 0 ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  Ver Información
+                </button>
                 <button onClick={() => verFacturas(cliente)}>Ver Facturas</button>
-                <button
-  onClick={() => navigate(`/editar-cliente/${cliente.id_usuario}`)}
->
-  Editar
-</button>
+                <button onClick={() => navigate(`/editar-cliente/${cliente.id_usuario}`)}>Editar</button>
               </td>
             </tr>
           ))}
@@ -223,7 +239,7 @@ useEffect(() => {
       {clienteSeleccionado && vehiculos.length > 0 && (
         <div ref={vehiculosRef}>
           <h2>
-            Vehículos y Servicios de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
+            Vehículos de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
           </h2>
           <div className="vehiculos-container">
             {vehiculos.map((vehiculo) => (
@@ -236,53 +252,14 @@ useEffect(() => {
                   alt={vehiculo.modelo}
                   className="imagenMarca"
                 />
-                <h4>Datos dle vehiculo</h4>
-               
-                  <ul>
-                    <li>
-                      <strong>Placa:</strong> {vehiculo.placa}
-                    </li>
-                    <li>
-                      <strong>Color:</strong> {vehiculo.color}
-                    </li>
-                    <li>
-                      <strong>Quilometraje:</strong> {vehiculo.quilometraje} Km
-                    </li>
-                    <li>
-                      <strong>Transmisión:</strong> {vehiculo.transmision}
-                    </li>
-                    <li>
-                      <strong>Bastidor:</strong> {vehiculo.bastidor}
-                    </li>
-                    <li>
-                    <strong></strong>
-          {/* Mostrar icono según el tipo de combustible */}
-          {vehiculo.combustible === "Gasolina" && (
-  <img
-    src="95.jpg"
-    alt="Gasolina"
-    style={{ width: "40px", height: "auto", marginLeft: "5px" }} // Adjust size here
-  />
-)}
-{vehiculo.combustible === "Diesel" && (
-  <img
-    src="diesel.jpg"
-    alt="Diesel"
-    style={{ width: "50px", height: "auto", marginLeft: "5px" }} // Adjust size here
-  />
-)}
-{vehiculo.combustible === "Eléctrico" && (
-  <img
-    src="electrico.png"
-    alt="Eléctrico"
-    style={{ width: "35px", height: "auto", marginLeft: "5px" }} // Adjust size here
-  />
-)}
-
-
-                    </li>
-                  </ul>
-                
+                <h4>Datos del vehículo</h4>
+                <ul>
+                  <li><strong>Placa:</strong> {vehiculo.placa}</li>
+                  <li><strong>Color:</strong> {vehiculo.color}</li>
+                  <li><strong>Quilometraje:</strong> {vehiculo.quilometraje} Km</li>
+                  <li><strong>Transmisión:</strong> {vehiculo.transmision}</li>
+                  <li><strong>Bastidor:</strong> {vehiculo.bastidor}</li>
+                </ul>
               </div>
             ))}
           </div>
