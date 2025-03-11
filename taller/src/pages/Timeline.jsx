@@ -43,7 +43,7 @@ const Timeline = () => {
               const order = {
                 "En Proceso": 1,
                 Pendiente: 2,
-                Completada: 3,
+                Completado: 3,
               };
 
               return (order[estadoA] || 4) - (order[estadoB] || 4);
@@ -66,38 +66,33 @@ const Timeline = () => {
   };
 
   // Manejar la actualización del estado de la reparación
-  const handleEstadoChange = async (idReparacion, nuevoEstado) => {
+  const handleEstadoChange = async (idReparacion, nuevoMecanicoEstado) => {
     try {
-        console.log(`Actualizando estado de la reparación ID ${idReparacion} a ${nuevoEstado}`);
+        console.log(`Actualizando estadoMecanico de la reparación ID ${idReparacion} a ${nuevoMecanicoEstado}`);
         
-        const fechaFinFormateada = nuevoEstado === "Completada" ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null;
-
-        // Llamada a la API para actualizar el estado
-        const response = await api.put(`/reparaciones/${idReparacion}`, {
-          estado: nuevoEstado,
-          // Si el nuevo estado es "Completada", se actualiza la fecha de fin
-          fecha_fin: fechaFinFormateada,
-          // Si el nuevo estado es "Completada", se actualiza el progreso a 100
-          progreso: nuevoEstado === "Completada" ? 100 : 0,
+        const response = await api.put(`/reparaciones/${idReparacion}/estado-mecanico`, {
+          mecanicoEstado: nuevoMecanicoEstado,
         });
-        const updatedReparacion = response.data.reparacion;
 
-        // Actualizar la lista de reparaciones
-        setReparaciones((prevReparaciones) =>
-            prevReparaciones.map((reparacion) =>
-                reparacion.id_reparacion === idReparacion
-                    ? { ...reparacion, estado: updatedReparacion.estado }
-                    : reparacion
-            )
-        );
+        if (response.status === 200) {
+            setReparaciones(prevReparaciones => 
+                prevReparaciones.map(reparacion =>
+                    reparacion.id_reparacion === idReparacion
+                        ? { ...reparacion, mecanicoEstado: nuevoMecanicoEstado } // Asegurar que se actualiza el estado
+                        : reparacion
+                )
+            );
+        }
 
-        alert("Estado actualizado correctamente.");
-        console.log('Respuesta del servidor:', response.data);
+        console.log('Estado actualizado:', response.data);
     } catch (error) {
-        console.error("Error al actualizar el estado de la reparación:", error.response?.data || error);
-        alert("No se pudo actualizar el estado de la reparación.");
+        console.error("Error al actualizar el estado del mecánico:", error.response?.data || error);
+        alert("No se pudo actualizar el estado del mecánico.");
     }
 };
+
+
+
 
   
 return (
@@ -132,7 +127,7 @@ return (
         {reparaciones.map((reparacion) => (
           <div
           key={reparacion.id_reparacion}
-          className={`timeline-module-item ${normalizeEstado(reparacion.estado)}`}
+          className={`timeline-module-item ${normalizeEstado(reparacion.mecanicoEstado)}`}
         >
           <div className="timeline-module-content">
             <h3>
@@ -155,18 +150,19 @@ return (
             </p>
         
             <p>
-              <strong>Estado de Reparación:</strong>
-              <select
-                value={reparacion.estado}
-                onChange={(e) =>
-                  handleEstadoChange(reparacion.id_reparacion, e.target.value)
-                }
-              >
-                <option value="Sin asignar">Sin asignar</option>
-                <option value="En Proceso">En Proceso</option>
-                <option value="Completada">Completada</option>
-              </select>
-            </p>
+  <strong>Estado del Mecánico:</strong>
+  <select
+    value={reparacion.mecanicoEstado} // 🔹 Usamos mecanicoEstado
+    onChange={(e) =>
+      handleEstadoChange(reparacion.id_reparacion, e.target.value)
+    }
+  >
+
+    <option value="En Proceso">En Proceso</option>
+    <option value="Completado">Completado</option>
+  </select>
+</p>
+
             <p>
               <strong>Notas:</strong> {reparacion.notas}
             </p>

@@ -580,7 +580,7 @@ table td {
   font-weight: bold;
 }
 /* Estilos para los estados */
-.estado-completada {
+.estado-completado {
   color: #fff;
   background-color: #28a745; /* Verde */
   padding: 5px 10px;
