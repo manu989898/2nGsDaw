@@ -856,3 +856,34 @@ table td {
   background-color: #dddddd; 
   
 }
+/* Contenedor de la barra de progreso */
+.progress-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 25px;
+  position: relative;
+}
+
+/* Barra de progreso animada */
+.progress-bar {
+  height: 100%;
+  display: flex;
+  justify-content: center; /* Centra el texto horizontalmente */
+  align-items: center; /* Centra el texto verticalmente */
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Estilo para el porcentaje dentro de la barra */
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}

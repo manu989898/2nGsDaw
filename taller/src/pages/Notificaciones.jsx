@@ -17,7 +17,7 @@ const Notificaciones = () => {
     fetchNotificaciones();
   }, []);
 
-  const columns = ['id_notificacion', 'id_usuario', 'tipo', 'mensaje', 'estado', 'fecha_envio'];
+  const columns = ['id_notificacion', 'id_usuario', 'telefono', 'tipo', 'mensaje', 'estado', 'fecha_envio'];
 
   return (
     <div>
@@ -34,7 +34,11 @@ const Notificaciones = () => {
           {notificaciones.map((notificacion) => (
             <tr key={notificacion.id_notificacion}>
               {columns.map((col) => (
-                <td key={col}>{notificacion[col]}</td>
+                <td key={col}>
+                  {col === 'telefono' 
+                    ? notificacion.usuario?.telefono || 'No disponible' // Accede al teléfono del usuario
+                    : notificacion[col]}
+                </td>
               ))}
             </tr>
           ))}

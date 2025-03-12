@@ -140,25 +140,25 @@ const Reparaciones = () => {
                 <td>{reparacion.id_reparacion}</td>
                 <td>{reparacion.id_cita}</td>
                 <td>
-                  <div
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#e0e0e0',
-                      borderRadius: '5px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: `${reparacion.progreso}%`,
-                        backgroundColor:
-                          reparacion.progreso === 100 ? 'green' : 'orange',
-                        height: '10px',
-                      }}
-                    ></div>
-                  </div>
-                  {reparacion.progreso}%
-                </td>
+  <div className="progress-container">
+    <div
+      className="progress-bar"
+      style={{
+        width: `${reparacion.progreso}%`,
+        backgroundColor:
+          reparacion.progreso === 100
+            ? "#4CAF50" // Verde para completado
+            : reparacion.progreso >= 50
+            ? "#FFA500" // Naranja para en progreso
+            : "#FF4500", // Rojo para poco avance
+      }}
+    >
+      <span className="progress-text">{reparacion.progreso}%</span>
+    </div>
+  </div>
+</td>
+
+
                 <td
                   
                 >
@@ -174,7 +174,7 @@ const Reparaciones = () => {
                     <div>
                       <p
                       style={{
-                        maxWidth: '200px',
+                        maxWidth: '400px',
                         overflowWrap: 'break-word',
                       }}
                       >{reparacion.notas}</p>

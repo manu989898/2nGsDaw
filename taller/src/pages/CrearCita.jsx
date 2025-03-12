@@ -145,9 +145,7 @@ console.log(clienteSeleccionado.id_usuario);
       console.error("Error al crear el vehículo:", error);
       alert("No se pudo crear el vehículo. Inténtalo de nuevo.");
     }
-  };
-  
-  
+  }; 
 
   const formatFechaHora = (fechaHora) => {
     const fecha = new Date(fechaHora);
@@ -210,7 +208,7 @@ console.log(clienteSeleccionado.id_usuario);
             body: JSON.stringify({
                 id_usuario: clienteSeleccionado.id_usuario,
                 tipo: "Cliente", // 🔥 Solo puede ser "Cliente" o "Mecánico"
-                mensaje: `📅 Cita reservada para '${tipoServicio}' el día ${fechaHoraFormateada} con el vehículo de matrícula ${vehiculos.find(v => v.id_vehiculo === idVehiculo)?.placa}.`,
+                mensaje: `Buenos dias '${clienteSeleccionado.nombre}', le confirmamos la cita reservada para '${tipoServicio}' el día ${fechaHoraFormateada} con el vehículo de matrícula ${vehiculos.find(v => v.id_vehiculo === idVehiculo)?.placa}.`,
                 estado: "Enviada", // 🔥 Solo puede ser "Pendiente" o "Enviada"
                 fecha_envio: fechaHoraFormateada,
             }),
