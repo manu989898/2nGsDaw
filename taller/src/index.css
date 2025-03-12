@@ -848,4 +848,11 @@ table td {
   flex-direction: column; /* Alinear label e input verticalmente */
   align-items: flex-start; /* Alinear los labels con los inputs */
   min-width: 200px; /* Tamaño mínimo para los filtros */
+
+}
+.leyenda {
+  border-radius: 5px;
+  padding: 10px;  
+  background-color: #dddddd; 
+  
 }

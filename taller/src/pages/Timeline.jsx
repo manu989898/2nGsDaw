@@ -72,6 +72,7 @@ const Timeline = () => {
         
         const response = await api.put(`/reparaciones/${idReparacion}/estado-mecanico`, {
           mecanicoEstado: nuevoMecanicoEstado,
+          progreso: 50
         });
 
         if (response.status === 200) {

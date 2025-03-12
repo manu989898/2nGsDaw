@@ -105,8 +105,23 @@ const Reparaciones = () => {
           />
         </div>
 
-       
+        <div className="leyenda">
+        <label htmlFor="estadoFiltro">Leyenda de progreso</label>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+    <div style={{ width: '20px', height: '20px', backgroundColor: 'grey', marginRight: '10px' }}></div>
+    <span>0% - El mecánico está trabajando en el vehículo</span>
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+    <div style={{ width: '20px', height: '20px', backgroundColor: 'orange', marginRight: '10px' }}></div>
+    <span>50% - El mecánico ha terminado</span>
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+    <div style={{ width: '20px', height: '20px', backgroundColor: 'green', marginRight: '10px' }}></div>
+    <span>100% - Reparación completada y facturada</span>
+  </div>
+</div>
 
+     
      
       </div>
 
@@ -145,13 +160,7 @@ const Reparaciones = () => {
                   {reparacion.progreso}%
                 </td>
                 <td
-                  style={{
-                    backgroundColor:
-                      reparacion.estado === 'Completada' ? 'green' : 'yellow',
-                    color: 'black',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                  }}
+                  
                 >
                   {reparacion.estado}
                 </td>

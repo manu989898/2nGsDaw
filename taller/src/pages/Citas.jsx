@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CrearReparacion from "./CrearReparacion";  // Asegúrate de importar el componente CrearReparacion
+import CrearReparacion from "./CrearReparacion"; // Asegúrate de importar el componente CrearReparacion
 import CitasCalendario from "./CitasCalendario"; // Importamos el componente del calendario
 
 const Citas = () => {
@@ -42,9 +42,14 @@ const Citas = () => {
       alert("Cita eliminada correctamente.");
 
       // Actualizar la lista de citas después de eliminar
-      setCitas((prevCitas) => prevCitas.filter((cita) => cita.id_cita !== idCita));
+      setCitas((prevCitas) =>
+        prevCitas.filter((cita) => cita.id_cita !== idCita)
+      );
     } catch (error) {
-      console.error("Error al eliminar la cita:", error.response?.data || error);
+      console.error(
+        "Error al eliminar la cita:",
+        error.response?.data || error
+      );
       alert("No se pudo eliminar la cita.");
     }
   };
@@ -54,7 +59,7 @@ const Citas = () => {
       const response = await axios.put(
         `http://localhost:8000/api/citas/${idCita}`,
         {
-          estado: "Completada"
+          estado: "Completada",
         }
       );
 
@@ -63,13 +68,14 @@ const Citas = () => {
 
       setCitas((prevCitas) =>
         prevCitas.map((cita) =>
-          cita.id_cita === idCita
-            ? { ...cita, estado: "Completada" }
-            : cita
+          cita.id_cita === idCita ? { ...cita, estado: "Completada" } : cita
         )
       );
     } catch (error) {
-      console.error("Error al completar la cita:", error.response?.data || error);
+      console.error(
+        "Error al completar la cita:",
+        error.response?.data || error
+      );
       alert("No se pudo completar la cita.");
     }
   };
@@ -80,9 +86,7 @@ const Citas = () => {
 
     // Filtro por estado
     if (estadoFiltro) {
-      filtradas = filtradas.filter(
-        (cita) => cita.estado === estadoFiltro
-      );
+      filtradas = filtradas.filter((cita) => cita.estado === estadoFiltro);
     }
 
     // Filtro por fecha
@@ -154,9 +158,10 @@ const Citas = () => {
         <button
           className="btn-login2"
           style={{ marginBottom: "20px", marginLeft: "10px" }}
-          onClick={() => setMostrarCalendario(!mostrarCalendario)}  // Alterna entre las vistas
+          onClick={() => setMostrarCalendario(!mostrarCalendario)} // Alterna entre las vistas
         >
-          {mostrarCalendario ? "Ver en Tabla" : "Ver en Calendario"}  {/* Cambia el texto según la vista */}
+          {mostrarCalendario ? "Ver en Tabla" : "Ver en Calendario"}{" "}
+          {/* Cambia el texto según la vista */}
         </button>
       </div>
 
@@ -164,8 +169,8 @@ const Citas = () => {
       {mostrarCrearReparacion && <CrearReparacion />}
 
       {mostrarCalendario ? (
-  <CitasCalendario key={new Date().getTime()} citas={filteredCitas} />
-) : (
+        <CitasCalendario key={new Date().getTime()} citas={filteredCitas} />
+      ) : (
         // Mostrar la tabla de citas
         <table>
           <thead>
@@ -196,21 +201,43 @@ const Citas = () => {
                     style={{ width: "100px", height: "auto" }}
                   />
                 </td>
-                <td style={{ whiteSpace: "nowrap" }}>{cita.vehiculo.placa || "Sin Detalles"}</td>
+                <td style={{ whiteSpace: "nowrap" }}>
+                  {cita.vehiculo.placa || "Sin Detalles"}
+                </td>
                 <td>{cita.tipo_servicio || "Sin Detalles"}</td>
                 <td>{cita.estado || "Sin Estado"}</td>
                 <td>{cita.fecha_hora || "Sin Fecha"}</td>
                 <td>
                   <button
                     onClick={() => eliminarCita(cita.id_cita)}
-                    style={{ backgroundColor: "red", marginLeft: "10px" }}
+                    style={{
+                      backgroundColor:
+                        cita.estado === "Asignada" ||
+                        cita.estado === "Completada"
+                          ? "gray"
+                          : "red",
+                      color: "white",
+                      marginLeft: "10px",
+                      cursor:
+                        cita.estado === "Asignada" ||
+                        cita.estado === "Completada"
+                          ? "not-allowed"
+                          : "pointer",
+                    }}
+                    disabled={
+                      cita.estado === "Asignada" || cita.estado === "Completada"
+                    } // Deshabilitar si está asignada o completada
                   >
                     Eliminar
                   </button>
 
                   <button
                     onClick={() => completarCita(cita.id_cita)}
-                    style={{ backgroundColor: "green", marginLeft: "10px" }}
+                    style={{
+                      backgroundColor: "green",
+                      marginLeft: "10px",
+                      color: "white",
+                    }}
                   >
                     Completar
                   </button>

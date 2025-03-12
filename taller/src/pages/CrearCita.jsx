@@ -163,41 +163,71 @@ console.log(clienteSeleccionado.id_usuario);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!clienteSeleccionado) {
-      alert("Debes seleccionar un cliente existente.");
-      return;
+        alert("Debes seleccionar un cliente existente.");
+        return;
     }
-  
+
     if (!idVehiculo) {
-      alert("Debes seleccionar un vehículo existente.");
-      return;
+        alert("Debes seleccionar un vehículo existente.");
+        return;
     }
-  
+
     if (!tipoServicio || !fechaHora) {
-      alert("Por favor, completa todos los campos requeridos.");
-      return;
+        alert("Por favor, completa todos los campos requeridos.");
+        return;
     }
-  
+
     try {
-      // Convertir la fechaHora al formato requerido por la base de datos
-      const fechaHoraFormateada = formatFechaHora(fechaHora);
-  
-      const response = await api.post("/citas", {
-        id_cliente: clienteSeleccionado.id_usuario,
-        id_vehiculo: idVehiculo,
-        tipo_servicio: tipoServicio,
-        fecha_hora: fechaHoraFormateada,
-        estado: estadoCita,
-      });
-  
-      alert("Cita creada correctamente.");
-      console.log("Cita creada:", response.data);
+        // Convertir la fechaHora al formato correcto
+        const fechaHoraFormateada = formatFechaHora(fechaHora);
+
+        // 1️⃣ Crear la cita
+        const response = await fetch("http://localhost:8000/api/citas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id_cliente: clienteSeleccionado.id_usuario,
+                id_vehiculo: idVehiculo,
+                tipo_servicio: tipoServicio,
+                fecha_hora: fechaHoraFormateada,
+                estado: "Pendiente",
+            }),
+        });
+
+        if (!response.ok) throw new Error(`Error en la cita: ${response.status}`);
+
+        const data = await response.json();
+        const nuevaCita = data.cita;
+
+        alert(`✅ Cita creada correctamente. 📅 Fecha: ${nuevaCita.fecha_hora}`);
+
+        // 2️⃣ Crear la notificación después de la cita
+        const responseNotificacion = await fetch("http://localhost:8000/api/notificaciones", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id_usuario: clienteSeleccionado.id_usuario,
+                tipo: "Cliente", // 🔥 Solo puede ser "Cliente" o "Mecánico"
+                mensaje: `📅 Cita reservada para '${tipoServicio}' el día ${fechaHoraFormateada} con el vehículo de matrícula ${vehiculos.find(v => v.id_vehiculo === idVehiculo)?.placa}.`,
+                estado: "Enviada", // 🔥 Solo puede ser "Pendiente" o "Enviada"
+                fecha_envio: fechaHoraFormateada,
+            }),
+        });
+
+        if (!responseNotificacion.ok) throw new Error(`Error en la notificación: ${responseNotificacion.status}`);
+
+        alert("🔔 Notificación creada correctamente.");
+        navigate("/citas");
+
     } catch (error) {
-      console.error("Error al crear la cita:", error);
-      alert("No se pudo crear la cita. Inténtalo de nuevo.");
+        console.error("Error al crear la cita o notificación:", error);
+        alert("❌ Hubo un error. Revisa los datos e inténtalo de nuevo.");
     }
-  };
+};
+
+
   
   return (
     <div className="details-section">
