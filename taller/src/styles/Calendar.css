@@ -1,0 +1,27 @@
+.rbc-day-bg {
+    position: relative; /* Asegura que los eventos sean relativos a cada celda */
+  }
+  
+  .rbc-events-container {
+    max-height: 120px; /* Altura máxima antes de activar el scroll */
+    overflow-y: auto; /* Habilita el scroll vertical */
+  }
+  
+  .rbc-event {
+    white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+  }
+  /* 📌 Estilos para el scroll de eventos en vista Mes, Semana o Día */
+.rbc-month-view .rbc-day-slot .rbc-events-container,
+.rbc-time-view .rbc-day-slot .rbc-events-container {
+  max-height: 100px; /* 🔹 Limita la altura máxima antes de activar el scroll */
+  overflow-y: auto; /* 🔹 Activa el scroll interno */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 📌 Evitar que los estilos afecten la vista Agenda */
+.rbc-agenda-view .rbc-events-container {
+  max-height: none !important; /* 🔹 Restablece el comportamiento normal */
+  overflow: visible !important; /* 🔹 Asegura que no haya scroll */
+  background-color: azure !important;
+}

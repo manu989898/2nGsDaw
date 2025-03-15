@@ -3,6 +3,7 @@ import axios from "axios";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
+import "../styles/Calendar.css";
 
 // Usamos momentLocalizer para compatibilidad con moment.js
 const localizer = momentLocalizer(moment);
@@ -44,21 +45,23 @@ const CitasCalendario = () => {
   });
 
   // Asigna colores según el estado de la cita
-  const eventStyleGetter = (event) => {
+  const eventStyleGetter = (event, start, end, isSelected) => {
     let backgroundColor = "blue"; // Color por defecto
-    let textColor = "white"; // Texto por defecto
-
-    if (event.estado === "Completada") {
-      backgroundColor = "green";
-      textColor = "white"; // Texto blanco para mejor contraste
-    } else if (event.estado === "Pendiente") {
-      backgroundColor = "blue";
-      textColor = "white";
-    } else if (event.estado === "Asignada") {
-      backgroundColor = "orange";
-      textColor = "black"; // Texto negro para mayor contraste
+    let textColor = "white"; 
+  
+    if (vistaActual === "agenda") {
+      backgroundColor = "transparent"; // 🔹 Quita el color azul en la vista agenda
+      textColor = "black"; // 🔹 Cambia el texto a negro para mejor visibilidad
+    } else {
+      if (event.estado === "Completada") {
+        backgroundColor = "green";
+      } else if (event.estado === "Pendiente") {
+        backgroundColor = "blue";
+      } else if (event.estado === "Asignada") {
+        backgroundColor = "blue";
+      }
     }
-
+  
     return {
       style: {
         backgroundColor,
@@ -66,10 +69,13 @@ const CitasCalendario = () => {
         fontWeight: "bold",
         padding: "5px",
         borderRadius: "5px",
-        border: "1px solid black", // Bordes para mejorar contraste
+        border: vistaActual === "agenda" ? "none" : "1px solid black",
+        maxHeight:vistaActual === "week" ? "45px" : "25px", // 🔹 Limita la altura de cada evento
+        overflow: "hidden",
       },
     };
   };
+  
 
   return (
     <Calendar

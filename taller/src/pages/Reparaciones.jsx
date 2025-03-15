@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import "../styles/Timeline.css";
 
 const Reparaciones = () => {
   const [reparaciones, setReparaciones] = useState([]);

@@ -20,6 +20,7 @@ import EditarCliente from './pages/EditarCliente';
 import CrearReparacion from './pages/CrearReparacion';
 import React, { useState, useEffect } from "react";
 import Register from './pages/Register';
+import GestorReparaciones from './pages/GestorReparaciones';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -79,6 +80,7 @@ const App = () => {
         <Route path="/reportes" element={<Reportes />} /> 
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/gestor-reparaciones" element={<GestorReparaciones />} />
   
       </Routes>
     </Router>

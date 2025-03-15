@@ -1,0 +1,177 @@
+/* Contenedor principal */
+.timeline-module-container {
+    padding: 20px;
+    background-color: #f4f7fc;
+    border-radius: 12px;
+    max-width: 1100px;
+    margin: auto;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+  }
+  
+  .timeline-module-container h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Selector de mecánicos */
+  .timeline-module-selector {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .timeline-module-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #555;
+  }
+  
+  .timeline-module-selector select {
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    background: #fff;
+  }
+  
+  /* Timeline - Grid Layout */
+  .timeline-module {
+    display: flex;
+    gap: 20px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  /* Estilos de cada mecánico */
+  .timeline-mecanico {
+    flex: 1;
+    min-width: 300px;
+    max-width: 350px;
+    min-height: 300px;
+    border: 2px dashed #ccc;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timeline-mecanico h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  /* Cards del timeline */
+  .timeline-reparacion {
+    cursor: grab !important; /* Permite arrastrar */
+    user-select: none; /* Evita selección de texto */
+    touch-action: none; /* Previene problemas en móviles */
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border-left: 6px solid #ccc;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease;
+  }
+  
+  /* Efecto hover en las tarjetas */
+  .timeline-reparacion:hover {
+    transform: scale(1.03);
+    box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estados de las reparaciones */
+  .timeline-reparacion.pendiente {
+    background-color: #ffe5e5; /* Rojo claro */
+    border-left-color: #dc3545; /* Rojo */
+    border-left: 5px solid #dc3545; /* Red border */
+
+  }
+  
+  .timeline-reparacion.en-proceso {
+    background-color: #fff3cd; /* Amarillo claro */
+    border-left-color: #ffc107; /* Amarillo */
+    border-left: 5px solid #ffc107; /* Yellow border */
+
+  }
+  
+  .timeline-reparacion.completado {
+    background-color: #d4edda; /* Verde claro */
+    border-left-color: #28a745; /* Verde */
+    border-left: 5px solid #28a745; /* Green border */
+
+  }
+  
+  /* Contenido de las cards */
+  .timeline-reparacion h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #444;
+  }
+  
+  .timeline-reparacion p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* Barra de progreso */
+  .progress-bar {
+    height: 8px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 8px;
+    overflow: hidden;
+    background: #e0e0e0;
+  }
+  
+  .progress-bar div {
+    height: 200%;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  /* Colores para la barra de progreso */
+  .progress-bar.pendiente div {
+    background: #dc3545; /* Rojo */
+    border-left: 5px solid #dc3545; /* Red border */
+
+  }
+  
+  .progress-bar.en-proceso div {
+    background: #ffc107; /* Amarillo */
+    border-left: 5px solid #ffc107; /* Yellow border */
+
+  }
+  
+  .progress-bar.completado div {
+    background: #28a745; /* Verde */
+    border-left: 5px solid #28a745; /* Green border */
+
+  }
+  
+  /* Estilo para el drag handle */
+  .drag-handle {
+    cursor: grab;
+    background: #ddd;
+    padding: 5px;
+    border-bottom: 2px solid #bbb;
+    text-align: center;
+    font-weight: bold;
+  }
+  .completado h3 {
+    background-color: #28a745 !important; /* Verde */
+    color: white !important;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
