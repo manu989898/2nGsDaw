@@ -6,278 +6,274 @@ const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [facturas, setFacturas] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
-  const [historialGlobal, setHistorialGlobal] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [imagenes, setImagenes] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate(); // Hook para redirigir
+  const navigate = useNavigate();
   const facturasRef = useRef(null);
   const vehiculosRef = useRef(null);
 
-  // Obtener todos los clientes al cargar el componente
+  // Obtener clientes
   useEffect(() => {
-     
     const fetchClientes = async () => {
       try {
         const response = await api.get("/usuarios");
         setClientes(response.data);
-        // Generar imágenes para cada cliente
+
+        // Generar imágenes aleatorias
         const nuevasImagenes = {};
         response.data.forEach((cliente) => {
-          nuevasImagenes[cliente.id_usuario] = `https://randomuser.me/api/portraits/men/${cliente.id_usuario % 100}.jpg`;
-          
+          nuevasImagenes[
+            cliente.id_usuario
+          ] = `https://randomuser.me/api/portraits/men/${
+            cliente.id_usuario % 100
+          }.jpg`;
         });
         setImagenes(nuevasImagenes);
-        
       } catch (error) {
         console.error("Error al obtener los clientes:", error);
       }
     };
-
-
-
     fetchClientes();
   }, []);
 
-  // Obtener todos los historiales de servicios globalmente al cargar el componente
-  useEffect(() => {
-    const fetchHistorial = async () => {
-      try {
-        const response = await api.get("/historial_servicios");
-        setHistorialGlobal(response.data);
-      } catch (error) {
-        console.error("Error al obtener el historial de servicios:", error);
-      }
-    };
-
-    fetchHistorial();
-  }, []);
-
-  // Scroll a la sección de vehículos cuando se cargan los datos
-  useEffect(() => {
-    if (vehiculos.length > 0 && vehiculosRef.current) {
-      vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (vehiculos.length === 0 && vehiculosRef.current) {
-      // Si no hay vehículos, aún hacer scroll a la sección
-      vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [vehiculos]);
-
-  // Scroll a la sección de facturas cuando se cargan los datos
-  useEffect(() => {
-    if (facturas.length > 0 && facturasRef.current) {
-      facturasRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (facturas.length === 0 && facturasRef.current) {
-      // Si no hay facturas, aún hacer scroll a la sección
-      facturasRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [facturas]);
-
+  // Obtener facturas de un cliente
   const verFacturas = async (cliente) => {
     try {
-      // Si ya están mostrando las facturas para este cliente, no hacer nada
-      if (cliente.id_usuario === clienteSeleccionado?.id_usuario && facturas.length > 0) {
-        return;
-      }
-
-      // Actualizar cliente seleccionado y resetear otros datos
       setClienteSeleccionado(cliente);
-      setVehiculos([]); // Ocultar vehículos
-      setFacturas([]); // Limpiar facturas previas mientras se cargan las nuevas
+      setVehiculos([]);
+      setFacturas([]); // Limpia antes de cargar nuevas
 
-      const response = await api.get(`/usuarios/${cliente.id_usuario}/facturas`);
-      setFacturas(response.data.facturas);
+      const response = await api.get(
+        `/usuarios/${cliente.id_usuario}/facturas`
+      );
+      setFacturas(response.data.facturas || []);
 
-      // Scroll automático a facturas
       if (facturasRef.current) {
         facturasRef.current.scrollIntoView({ behavior: "smooth" });
       }
     } catch (error) {
-      alert(`No hay datos de facturas para ${cliente.nombre} ${cliente.apellido}`);
-      
+      alert(`❌ No hay facturas para ${cliente.nombre} ${cliente.apellido}`);
+      setFacturas([]);
     }
   };
 
+  // Obtener vehículos de un cliente
   const verInformacion = async (cliente) => {
     try {
-      // Si ya están mostrando la información para este cliente, no hacer nada
-      if (cliente.id_usuario === clienteSeleccionado?.id_usuario && vehiculos.length > 0) {
-        return;
-      }
-
-      // Actualizar cliente seleccionado y resetear otros datos
       setClienteSeleccionado(cliente);
-      setFacturas([]); // Ocultar facturas
-      setVehiculos([]); // Limpiar vehículos previos mientras se cargan los nuevos
+      setFacturas([]);
+      setVehiculos([]); // Limpia antes de cargar nuevas
 
-      const vehiculosResponse = await api.get(`/usuarios/${cliente.id_usuario}/vehiculos`);
-      const vehiculosData = vehiculosResponse.data.vehiculos;
+      const response = await api.get(
+        `/usuarios/${cliente.id_usuario}/vehiculos`
+      );
+      setVehiculos(response.data.vehiculos || []);
 
-      // Vincular historiales de servicios con vehículos
-      const vehiculosConHistorial = vehiculosData.map((vehiculo) => {
-        const historial = historialGlobal.filter(
-          (h) => h.id_vehiculo === vehiculo.id_vehiculo
-        );
-        return { ...vehiculo, historial };
-      });
-
-      setVehiculos(vehiculosConHistorial);
-
-      // Scroll automático a la sección de vehículos
-      if (vehiculosRef.current) {
-        vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+      setTimeout(() => {
+        if (vehiculosRef.current) {
+          vehiculosRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100); // Pequeño delay para asegurar el render antes del scroll
     } catch (error) {
-      alert(`No hay datos de vehiculo para ${cliente.nombre} ${cliente.apellido}`);
+      alert(`❌ No hay vehículos para ${cliente.nombre} ${cliente.apellido}`);
+      setVehiculos([]);
     }
   };
 
   const filteredClientes = clientes.filter((cliente) =>
-    cliente.email.toLowerCase().includes(searchTerm.toLowerCase())
+    cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div>
-      <h1>Clientes</h1>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        Clientes
+      </h1>
 
-      <input
-        type="text"
-        placeholder="Buscar cliente por email"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="input-busqueda"
-      />
+      {/* Campo de búsqueda */}
+      <div className="flex justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Buscar cliente por nombre..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-1/2 p-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Telefono</th>
-            <th>Dirección</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredClientes.map((cliente) => (
-            <tr key={cliente.id_usuario}>
-              <td>{cliente.id_usuario}</td>
-              <td>
-                <img
-                  className="imagenMarcas"
-                  src={imagenes[cliente.id_usuario] || `https://via.placeholder.com/75`}
-                  alt={cliente.nombre}
-                  style={{ width: "100px", height: "auto", borderRadius: "50%" }}
-                />
-              </td>
-              <td>{cliente.nombre} {cliente.apellido}</td>
-              <td>{cliente.email}</td>
-              <td>{cliente.telefono}</td>
-              <td>{cliente.direccion || "N/D"}</td>
-              <td>
-                <button 
-                  onClick={() => verInformacion(cliente)} 
-                  disabled={cliente.vehiculos && cliente.vehiculos.length === 0}
-                  style={{
-                    backgroundColor: cliente.vehiculos && cliente.vehiculos.length === 0 ? 'gray' : '',
-                    cursor: cliente.vehiculos && cliente.vehiculos.length === 0 ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  Ver Información
-                </button>
-                <button onClick={() => verFacturas(cliente)}>Ver Facturas</button>
-                <button onClick={() => navigate(`/editar-cliente/${cliente.id_usuario}`)}>Editar</button>
-              </td>
+      <div className="max-w-[90%] mx-auto my-6 p-4  overflow-x-auto">
+        <table className="w-full border-collapse border table-fixed">
+          {/* 🔹 Encabezado de la Tabla */}
+          <thead className="bg-blue-600 text-white text-center">
+            <tr>
+              <th className="p-4 border w-[5%]">Número</th>
+              <th className="p-4 border w-[10%]">Imagen</th>
+              <th className="p-4 border w-[15%]">Nombre</th>
+              <th className="p-4 border w-[20%]">Email</th>
+              <th className="p-4 border w-[15%]">Teléfono</th>
+              <th className="p-4 border w-[20%]">Dirección</th>{" "}
+              {/* Nueva columna de Dirección */}
+              <th className="p-4 border w-[25%]">Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
 
-      {clienteSeleccionado && facturas.length > 0 && (
-        <div ref={facturasRef}>
-          <h2>
-            Facturas de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
-          </h2>
-          <table>
-            <thead>
-              <tr>
-                <th>ID Factura</th>
-                <th>Monto Total</th>
-                <th>Fecha de Emisión</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {facturas.map((factura) => {
-                const monto = parseFloat(factura.monto_total);
-                return (
-                  <tr key={factura.id_factura}>
-                    <td>{factura.id_factura}</td>
-                    <td>
-                      <span className="dinero">
-                        {isNaN(monto) ? "$0.00" : `$${monto.toFixed(2)}`}
-                      </span>
-                    </td>
-                    <td>{factura.fecha_emision}</td>
-                    <td
-                      className={
-                        factura.estado === "Pagada"
-                          ? "estado-pagada"
-                          : factura.estado === "Pendiente"
-                          ? "estado-pendientes"
-                          : "estado-vencida"
+          {/* 🔹 Cuerpo de la Tabla */}
+          <tbody>
+            {filteredClientes.map((cliente, index) => (
+              <tr
+                key={cliente.id_usuario}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                } hover:bg-gray-200 transition duration-150`}
+              >
+                <td className="p-4 text-center border h-16">
+                  {cliente.id_usuario}
+                </td>
+                {/* 📌 Celda de imagen bien alineada */}
+                <td className="border h-16">
+                  <div className="flex justify-center items-center">
+                    <img
+                      src={imagenes[cliente.id_usuario]}
+                      alt="Perfil"
+                      className="w-12 h-12 rounded-full object-cover shadow-md"
+                    />
+                  </div>
+                </td>
+                <td className="p-4 text-center border h-16">
+                  {cliente.nombre} {cliente.apellido}
+                </td>
+                <td className="p-4 text-center border h-16">{cliente.email}</td>
+                <td className="p-4 text-center border h-16">
+                  {cliente.telefono || "N/D"}
+                </td>
+                <td className="p-4 text-center">
+                  {cliente.direccion || "Sin Dirección"}
+                </td>{" "}
+                {/* Nueva columna de Dirección */}
+                {/* 📌 Botones alineados correctamente en el centro */}
+                <td className="p-4 border h-16">
+                  <div className="flex justify-center items-center space-x-2 flex-wrap gap-2">
+                    <button
+                      onClick={() => verInformacion(cliente)}
+                      className="px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition shadow-md flex items-center space-x-1"
+                    >
+                      <span>🚗</span> <span> Vehiculos</span>
+                    </button>
+
+                    <button
+                      onClick={() => verFacturas(cliente)}
+                      className="px-3 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow-md flex items-center space-x-1"
+                    >
+                      <span>📄</span> <span> Facturas</span>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        navigate(`/editar-cliente/${cliente.id_usuario}`)
                       }
+                      className="px-3 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition shadow-md flex items-center space-x-1"
+                    >
+                      <span>✏️</span> <span>Editar</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Sección de Facturas */}
+      {clienteSeleccionado && facturas.length > 0 && (
+        <div ref={facturasRef} className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-700">
+            Facturas de {clienteSeleccionado.nombre}{" "}
+            {clienteSeleccionado.apellido}
+          </h2>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="p-4 text-left">ID Factura</th>
+                  <th className="p-4 text-left">Monto Total</th>
+                  <th className="p-4 text-left">Fecha de Emisión</th>
+                  <th className="p-4 text-left">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {facturas.map((factura) => (
+                  <tr key={factura.id_factura} className="hover:bg-gray-100">
+                    <td className="p-4">{factura.id_factura}</td>
+                    <td className="p-4">
+                      ${Number(factura.monto_total).toFixed(2)}
+                    </td>
+                    <td className="p-4">{factura.fecha_emision}</td>
+                    <td
+                      className={`p-4 border ${
+                        factura.estado === "Pagada"
+                          ? "bg-green-200 text-green-800"
+                          : "bg-red-200 text-red-800"
+                      }`}
                     >
                       {factura.estado}
-                    </td>
+                    </td>{" "}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {clienteSeleccionado && vehiculos.length > 0 && (
         <div ref={vehiculosRef}>
-          <h2>
-            Vehículos de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
+          <h2 className="text-2xl font-semibold text-gray-700 text-center">
+            Vehículos de {clienteSeleccionado.nombre}{" "}
+            {clienteSeleccionado.apellido}
           </h2>
           <div className="vehiculos-container">
             {vehiculos.map((vehiculo) => (
               <div key={vehiculo.id_vehiculo} className="card">
-                 <button
-                    className="btn-copy"
-                    onClick={() => navigate(`/editar-vehiculo/${vehiculo.id_vehiculo}`)}
-                  >
-                    Editar
-                  </button>
                 <h3>
                   {vehiculo.marca} {vehiculo.modelo} ({vehiculo.año})
                 </h3>
+
                 <img
                   src={`http://localhost:8000/img/${vehiculo.marca}.png`}
-                  alt={vehiculo.modelo}
-                  className="imagenMarca"
+                  alt={vehiculos[0].modelo}
+                  className="w-24 mx-auto my-3"
                 />
-                
                 <h4>Datos del vehículo</h4>
-                
+
                 <ul>
-                  <li><strong>Placa:</strong> {vehiculo.placa}</li>
-                  <li><strong>Color:</strong> {vehiculo.color}</li>
-                  <li><strong>Quilometraje:</strong> {vehiculo.quilometraje} Km</li>
-                  <li><strong>Transmisión:</strong> {vehiculo.transmision}</li>
-                  <li><strong>Bastidor:</strong> {vehiculo.bastidor}</li>
+                  <li>
+                    <strong>Placa:</strong> {vehiculo.placa}
+                  </li>
+                  <li>
+                    <strong>Color:</strong> {vehiculo.color}
+                  </li>
+                  <li>
+                    <strong>Quilometraje:</strong> {vehiculo.quilometraje} Km
+                  </li>
+                  <li>
+                    <strong>Transmisión:</strong> {vehiculo.transmision}
+                  </li>
+                  <li>
+                    <strong>Bastidor:</strong> {vehiculo.bastidor}
+                  </li>
                 </ul>
-                
+                <button
+                  onClick={() =>
+                    navigate(`/editar-vehiculo/${vehiculos[0].id_vehiculo}`)
+                  }
+                  className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+                >
+                  Editar
+                </button>
               </div>
-              
             ))}
           </div>
-          
         </div>
       )}
     </div>

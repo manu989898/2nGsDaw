@@ -59,62 +59,85 @@ const Vehiculos = () => {
         </button>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            {columns.map((col) => (
-              <th key={col}>{col}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredVehiculos.map((vehiculo) => {
-            const cliente = clientes.find(
-              (c) => c.id_usuario === vehiculo.id_cliente
-            );
-            const nombreCompleto = cliente
-              ? `${cliente.nombre} ${cliente.apellido}`
-              : "Cliente no encontrado";
+      <div className="max-w-[90%] mx-auto my-6 p-4  overflow-x-auto">
+      <table className="w-full border-collapse border-none shadow-lg bg-white rounded-lg table-fixed">
+    {/* 🔹 Encabezado */}
+    <thead className="bg-blue-600 text-white">
+      <tr>
+        <th className="p-4 border w-[5%]">ID</th>
+        <th className="p-4 border w-[15%]">Modelo</th>
+        <th className="p-4 border w-[10%]">Imagen</th>
+        <th className="p-4 border w-[10%]">Año</th>
+        <th className="p-4 border w-[10%]">Placa</th>
+        <th className="p-4 border w-[10%]">Kilometraje</th>
+        <th className="p-4 border w-[20%]">Cliente</th>
+        <th className="p-4 border w-[20%]">Acciones</th>
+      </tr>
+    </thead>
 
-            return (
-              <tr key={vehiculo.id}>
-                <td>{vehiculo.id_vehiculo}</td>
-                <td>{vehiculo.modelo}</td>
-                <td>
-                  <img
-                    className="imagenMarcas"
-                    src={`http://localhost:8000/img/${vehiculo.marca}.png`}
-                    alt={vehiculo.modelo}
-                    style={{ width: "100px", height: "auto" }}
-                  />
-                </td>
-                <td>{vehiculo.año}</td>
-                <td>{vehiculo.placa}</td>
-                <td>{vehiculo.quilometraje} Km</td> 
-                <td>
-                  {nombreCompleto}
-                  
-                </td>
-                <td>
-                  <button
-                    className="btn-copy"
-                    onClick={() => copiarAlPortapapeles(cliente.email)}
-                    title="Copiar EMAIL al portapapeles"
-                  >
-                    Copiar <FiCopy />
-                  </button>
-                  <button
-                    className="btn-copy"
-                    onClick={() => navigate(`/editar-vehiculo/${vehiculo.id_vehiculo}`)}
-                  >
-                    Editar
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    {/* 🔹 Cuerpo de la Tabla */}
+    <tbody>
+      {filteredVehiculos.map((vehiculo, index) => {
+        const cliente = clientes.find((c) => c.id_usuario === vehiculo.id_cliente);
+        const nombreCompleto = cliente
+          ? `${cliente.nombre} ${cliente.apellido}`
+          : "Cliente no encontrado";
+
+        return (
+          <tr 
+            key={vehiculo.id_vehiculo} 
+            className={`${
+              index % 2 === 0 ? "bg-gray-100" : "bg-white"
+            } hover:bg-gray-200 transition duration-150`}
+          >
+            <td className="p-4 text-center border h-16">{vehiculo.id_vehiculo}</td>
+            <td className="p-4 text-center border h-16">{vehiculo.modelo}</td>
+
+            {/* 📌 Imagen del vehículo */}
+            <td className="p-4 border h-16">
+              <div className="flex justify-center items-center">
+                <img
+                  className="w-12 h-12 rounded-lg shadow-md object-contain"
+                  src={`http://localhost:8000/img/${vehiculo.marca}.png`}
+                  alt={vehiculo.modelo}
+                />
+              </div>
+            </td>
+
+            <td className="p-4 text-center border h-16">{vehiculo.año}</td>
+            <td className="p-4 text-center border h-16">{vehiculo.placa}</td>
+            <td className="p-4 text-center border h-16">{vehiculo.quilometraje} Km</td>
+            <td className="p-4 text-center border h-16">{nombreCompleto}</td>
+
+            {/* 📌 Botones de acción */}
+            <td className="p-4 border h-16">
+              <div className="flex justify-center items-center space-x-2 flex-wrap gap-2">
+                {/* Botón de Copiar */}
+                <button
+                  className="px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition shadow-md"
+                  onClick={() => copiarAlPortapapeles(cliente.nombre)}
+                  title="Copiar Nombre al portapapeles"
+                >
+                  📋 Copiar
+                </button>
+                
+                {/* Botón de Editar */}
+                <button
+                  className="px-3 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition shadow-md"
+                  onClick={() => navigate(`/editar-vehiculo/${vehiculo.id_vehiculo}`)}
+                >
+                  ✏️ Editar
+                </button>
+              </div>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
+
+
     </div>
   );
 };

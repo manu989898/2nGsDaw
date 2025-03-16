@@ -3,35 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../api.jsx";
 
 const EditarCliente = () => {
-  const { id } = useParams(); // Obtener ID del cliente desde la URL
+  const { id } = useParams();
   const navigate = useNavigate();
-
   const [cliente, setCliente] = useState({
     nombre: "",
     apellido: "",
     email: "",
     telefono: "",
-    rol: "cliente", // Valor predeterminado
+    direccion: "",
+    rol: "cliente",
   });
 
   useEffect(() => {
-    // Cargar los datos del cliente
     const fetchCliente = async () => {
       try {
         const response = await api.get(`/usuarios/${id}`);
-        setCliente({
-          nombre: response.data.nombre,
-          apellido: response.data.apellido,
-          email: response.data.email,
-          telefono: response.data.telefono,
-          direccion: response.data.direccion,
-          rol: response.data.rol,
-        });
+        setCliente(response.data);
       } catch (error) {
         console.error("Error al cargar los datos del cliente:", error);
       }
     };
-
     fetchCliente();
   }, [id]);
 
@@ -42,119 +33,78 @@ const EditarCliente = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos enviados:", cliente);
-
     try {
-      await api.put(`/usuarios/${id}`, cliente); // Solo enviamos los campos editables
-      alert("Cliente actualizado correctamente.");
-      navigate("/clientes"); // Volver a la lista de clientes
-      console.log("Datos enviados:", cliente);
-
+      await api.put(`/usuarios/${id}`, cliente);
+      alert("✅ Cliente actualizado correctamente.");
+      navigate("/clientes");
     } catch (error) {
-      console.error("Error al actualizar el cliente:", error.response);
-      console.log("Datos enviados:", cliente);
-
-      alert("No se pudo actualizar el cliente.");
+      console.error("Error al actualizar el cliente:", error);
+      alert("❌ No se pudo actualizar el cliente.");
     }
   };
 
   return (
-    <div className="details-section">
-      <h1>Editar Cliente</h1>
-      <form onSubmit={handleSubmit} style={{ maxWidth: "500px", margin: "0 auto" }}>
-        {/* Campos editables */}
-        <div className="form-group">
-          <label htmlFor="nombre">Nombre:</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            value={cliente.nombre}
-            onChange={handleChange}
-            placeholder="Nombre"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="apellido">Apellido:</label>
-          <input
-            type="text"
-            id="apellido"
-            name="apellido"
-            value={cliente.apellido}
-            onChange={handleChange}
-            placeholder="Apellido"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={cliente.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="telefono">Teléfono:</label>
-          <input
-            type="text"
-            id="telefono"
-            name="telefono"
-            value={cliente.telefono}
-            onChange={handleChange}
-            placeholder="Teléfono"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="direccion">Dirección:</label>
-          <input
-            type="text"
-            id="direccion"
-            name="direccion"
-            value={cliente.direccion}
-            onChange={handleChange}
-            placeholder="Dirección"
-            required
-          />
-        </div>
-        <div className="form-group">
-  <label htmlFor="rol">Rol:</label>
-  <select
-    id="rol"
-    name="rol"
-    value={cliente.rol || "cliente"} // Valor predeterminado
-    onChange={handleChange}
-    required
-    style={{
-        width: "100%",
-        padding: "10px",
-        borderRadius: "5px",
-        border: "1px solid #ccc",
-        background: "#f8f9fa",
-        fontSize: "16px",
-        color: "#495057",
-      }}
-  >
-    <option value="cliente">Cliente</option>
-    <option value="mecanico">Mecánico</option>
-    <option value="gerente">Gerente</option>
-  </select>
-</div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">Editar Cliente</h1>
 
-        {/* Botones */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
-          <button className="btn-login" type="submit">Guardar Cambios</button>
-          <button className="btn-login" type="button" onClick={() => navigate("/clientes")}>
-            Cancelar
-          </button>
-        </div>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Campos editables */}
+          {[
+            { label: "Nombre", name: "nombre", type: "text" },
+            { label: "Apellido", name: "apellido", type: "text" },
+            { label: "Email", name: "email", type: "email" },
+            { label: "Teléfono", name: "telefono", type: "text" },
+            { label: "Dirección", name: "direccion", type: "text" },
+          ].map(({ label, name, type }) => (
+            <div key={name} className="form-group">
+              <label className="block font-medium text-gray-700">{label}:</label>
+              <input
+                type={type}
+                name={name}
+                value={cliente[name]}
+                onChange={handleChange}
+                placeholder={label}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              />
+            </div>
+          ))}
+
+          {/* Selector de Rol */}
+          <div className="form-group">
+            <label className="block font-medium text-gray-700">Rol:</label>
+            <select
+              name="rol"
+              value={cliente.rol}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            >
+              <option value="cliente">Cliente</option>
+              <option value="mecanico">Mecánico</option>
+              <option value="gerente">Gerente</option>
+            </select>
+          </div>
+
+          {/* Botones */}
+          <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              className="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+              Guardar Cambios
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/clientes")}
+              className="w-1/2 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500 transition"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -230,38 +230,44 @@ console.log(clienteSeleccionado.id_usuario);
   return (
     <div className="details-section">
       <h1>Crear Cita</h1>
-
       {!mostrarFormularioNuevoCliente && (
-        <div>
-          <input
-            className="input-busqueda"
-            type="text"
-            placeholder="Buscar cliente por nombre"
-            value={busquedaCliente}
-            onChange={(e) => setBusquedaCliente(e.target.value)}
-          />
-          {clientesFiltrados.length > 0 && (
-            <ul className="clientes-lista">
-              {clientesFiltrados.map((cliente) => (
-                <li
-                  key={cliente.id_usuario}
-                  onClick={() => verInformacionCliente(cliente)}
-                  className={
-                    clienteSeleccionado?.id_usuario === cliente.id_usuario ? "selected" : ""
-                  }
-                >
-                  {cliente.nombre} {cliente.apellido}
-                </li>
-              ))}
-            </ul>
-          )}
-          <div className="centrar-boton">
-          <button className="btn-login2" onClick={() => setMostrarFormularioNuevoCliente(true)}>
-            Crear Nuevo Cliente
-          </button>
-          </div>
-        </div>
-      )}
+  <div className="flex flex-col items-center space-y-4">
+    {/* Campo de búsqueda */}
+    <input
+      className="w-full max-w-md p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      type="text"
+      placeholder="🔎 Buscar cliente por nombre..."
+      value={busquedaCliente}
+      onChange={(e) => setBusquedaCliente(e.target.value)}
+    />
+
+    {/* Lista de clientes filtrados */}
+    {clientesFiltrados.length > 0 && (
+      <ul className="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-md">
+        {clientesFiltrados.map((cliente) => (
+          <li
+            key={cliente.id_usuario}
+            onClick={() => verInformacionCliente(cliente)}
+            className={`p-3 cursor-pointer hover:bg-blue-100 transition ${
+              clienteSeleccionado?.id_usuario === cliente.id_usuario ? "bg-blue-200" : ""
+            }`}
+          >
+            {cliente.nombre} {cliente.apellido}
+          </li>
+        ))}
+      </ul>
+    )}
+
+    {/* Botón para crear un nuevo cliente */}
+    <button
+      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+      onClick={() => setMostrarFormularioNuevoCliente(true)}
+    >
+      ➕ Crear Nuevo Cliente
+    </button>
+  </div>
+)}
+
 
 {mostrarFormularioNuevoCliente && (
   <div className="nuevo-cliente-form">
@@ -376,7 +382,7 @@ console.log(clienteSeleccionado.id_usuario);
       {clienteSeleccionado && (
         <div ref={vehiculosRef}>
           <h2>
-            Vehículos y Servicios de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
+            Vehículos de {clienteSeleccionado.nombre} {clienteSeleccionado.apellido}
           </h2>
           <div className="vehiculos-container">
             {vehiculos.map((vehiculo) => (
@@ -413,127 +419,134 @@ console.log(clienteSeleccionado.id_usuario);
           {mostrarFormularioNuevoVehiculo && (
   <div className="nuevo-vehiculo-form">
     <h3 style={{ textAlign: "center", color: "#007bff" }}>Crear Nuevo Vehículo</h3>
-    <form onSubmit={handleNuevoVehiculo} style={{ maxWidth: "500px", margin: "0 auto" }}>
-      <div className="form-group">
-        <label htmlFor="marca">Marca:</label>
-        <input
-          type="text"
-          id="marca"
-          placeholder="Marca"
-          value={nuevoVehiculo.marca}
-          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, marca: e.target.value })}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="modelo">Modelo:</label>
-        <input
-          type="text"
-          id="modelo"
-          placeholder="Modelo"
-          value={nuevoVehiculo.modelo}
-          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, modelo: e.target.value })}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="placa">Placa:</label>
-        <input
-          type="text"
-          id="placa"
-          placeholder="Placa"
-          value={nuevoVehiculo.placa}
-          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, placa: e.target.value })}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="año">Año:</label>
-        <input
-          type="number"
-          id="año"
-          placeholder="Año"
-          value={nuevoVehiculo.año}
-          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, año: e.target.value })}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="color">Color:</label>
-        <input
-          type="text"
-          id="color"
-          placeholder="Color"
-          value={nuevoVehiculo.color}
-          onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, color: e.target.value })}
-          required
-        />
-      </div>
-      <div className="form-group">
-          <label htmlFor="quilometraje">Kilometraje:</label>
-          <input
-            type="number"
-            id="quilometraje"
-            name="quilometraje"
-            value={nuevoVehiculo.quilometraje}
-            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, quilometraje: e.target.value })}
-            placeholder="Kilometraje"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="bastidor">Bastidor:</label>
-          <input
-            type="text"
-            id="bastidor"
-            name="bastidor"
-            value={nuevoVehiculo.bastidor}
-            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, bastidor: e.target.value })}
-            placeholder="Bastidor"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="combustible">Combustible:</label>
-          <input
-            type="text"
-            id="combustible"
-            name="combustible"
-            value={nuevoVehiculo.combustible}
-            onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, combustible: e.target.value })}
-            placeholder="Combustible"
-            required
-          />
-        </div>
-        <div className="form-group">
-  <label htmlFor="transmision">Transmisión:</label>
-  <select
-  id="transmision"
-  name="transmision"
-  value={nuevoVehiculo.transmision || ''} // Usar vacío como valor predeterminado
-  onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, transmision: e.target.value })}
-  required
-  className="input-busqueda"
->
-  <option value="">Selecciona una opción</option>  {/* Esta es la opción predeterminada */}
-  <option value="Automatica">Automática</option>
-  <option value="Manual">Manual</option>
-</select>
+    <form onSubmit={handleNuevoVehiculo} className="space-y-4">
+          {/* Marca */}
+          <div>
+            <label className="block text-gray-700">Marca:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: Toyota"
+              value={nuevoVehiculo.marca}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, marca: e.target.value })}
+              required
+            />
+          </div>
+          {/* Modelo */}
+          <div>
+            <label className="block text-gray-700">Modelo:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: Corolla"
+              value={nuevoVehiculo.modelo}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, modelo: e.target.value })}
+              required
+            />
+          </div>
+          {/* Placa */}
+          <div>
+            <label className="block text-gray-700">Placa:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: ABC-123"
+              value={nuevoVehiculo.placa}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, placa: e.target.value })}
+              required
+            />
+          </div>
+          {/* Año */}
+          <div>
+            <label className="block text-gray-700">Año:</label>
+            <input
+              type="number"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: 2022"
+              value={nuevoVehiculo.año}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, año: e.target.value })}
+              required
+            />
+          </div>
+          {/* Color */}
+          <div>
+            <label className="block text-gray-700">Color:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: Rojo"
+              value={nuevoVehiculo.color}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, color: e.target.value })}
+              required
+            />
+          </div>
+          {/* Kilometraje */}
+          <div>
+            <label className="block text-gray-700">Kilometraje:</label>
+            <input
+              type="number"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: 50000"
+              value={nuevoVehiculo.quilometraje}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, quilometraje: e.target.value })}
+            />
+          </div>
+          {/* Bastidor */}
+          <div>
+            <label className="block text-gray-700">Bastidor:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: 1HGBH41JXMN109186"
+              value={nuevoVehiculo.bastidor}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, bastidor: e.target.value })}
+              required
+            />
+          </div>
+          {/* Combustible */}
+          <div>
+            <label className="block text-gray-700">Combustible:</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              placeholder="Ej: Gasolina"
+              value={nuevoVehiculo.combustible}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, combustible: e.target.value })}
+              required
+            />
+          </div>
+          {/* Transmisión */}
+          <div>
+            <label className="block text-gray-700">Transmisión:</label>
+            <select
+              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              value={nuevoVehiculo.transmision || ""}
+              onChange={(e) => setNuevoVehiculo({ ...nuevoVehiculo, transmision: e.target.value })}
+              required
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Automatica">Automática</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
 
-</div>
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
-  <button className="btn-login" type="submit">
-    Guardar Vehículo
-  </button>
-  <button
-    className="btn-login"
-    type="button"
-    onClick={() => setMostrarFormularioNuevoVehiculo(false)}
-  >
-    Cancelar
-  </button>
-</div>
-            
-    </form>
+          {/* Botones */}
+          <div className="flex justify-center space-x-4">
+            <button
+              type="submit"
+              className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition"
+            >
+              ✅ Guardar Vehículo
+            </button>
+            <button
+              type="button"
+              onClick={() => setMostrarFormularioNuevoVehiculo(false)}
+              className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition"
+            >
+              ❌ Cancelar
+            </button>
+          </div>
+        </form>
   </div>
 )}
 
@@ -541,46 +554,63 @@ console.log(clienteSeleccionado.id_usuario);
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-      <div className="form-group">
-  <label htmlFor="tipoServicio">Tipo de Servicio:</label>
-  <input
-    className="input-busqueda"
-    type="text"
-    id="tipoServicio"
-    value={tipoServicio}
-    onChange={(e) => setTipoServicio(e.target.value)}
-  />
-</div>
+<form
+  onSubmit={handleSubmit}
+  className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg mx-auto mt-6"
+>
+  {/* Tipo de Servicio */}
+  <div className="mb-4">
+    <label htmlFor="tipoServicio" className="block text-gray-700 font-semibold">
+      Tipo de Servicio:
+    </label>
+    <input
+      className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
+      type="text"
+      id="tipoServicio"
+      placeholder="Ej: Cambio de aceite"
+      value={tipoServicio}
+      onChange={(e) => setTipoServicio(e.target.value)}
+      required
+    />
+  </div>
 
-        <div className="form-group">
-          <label>Fecha y Hora:</label>
-          <input
-            className="input-busqueda"
-            type="datetime-local"
-            value={fechaHora}
-            onChange={(e) => setFechaHora(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="form-group">Estado de la Cita:</label>
-          <select
-            className="input-busqueda"
-            value={estadoCita}
-            onChange={(e) => setEstadoCita(e.target.value)}
-          >
-            <option value="Pendiente">Pendiente</option>
-      
-            <option value="Asignada">Asignada</option>
-          </select>
-        </div>
-        <div className="centrar-boton">
+  {/* Fecha y Hora */}
+  <div className="mb-4">
+    <label className="block text-gray-700 font-semibold">Fecha y Hora:</label>
+    <input
+      className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
+      type="datetime-local"
+      value={fechaHora}
+      onChange={(e) => setFechaHora(e.target.value)}
+      required
+    />
+  </div>
 
-        <button className="btn-login2" type="submit" onClick={() => navigate("/citas")}>
-          Crear Cita
-        </button>
-        </div>
-      </form>
+  {/* Estado de la Cita */}
+  <div className="mb-4">
+    <label className="block text-gray-700 font-semibold">Estado de la Cita:</label>
+    <select
+      className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 focus:outline-none"
+      value={estadoCita}
+      onChange={(e) => setEstadoCita(e.target.value)}
+    >
+      <option value="Pendiente">Pendiente</option>
+      <option value="Asignada">Asignada</option>
+    </select>
+  </div>
+
+  {/* Botón de enviar */}
+  <div className="text-center mt-6">
+    <button
+      type="submit"
+      className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition"
+      onClick={() => navigate("/citas")}
+    >
+      ✅ Crear Cita
+    </button>
+  </div>
+</form>
+
     </div>
   );
 };

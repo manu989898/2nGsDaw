@@ -1,4 +1,8 @@
 /* General */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -85,20 +89,9 @@ table td {
 }
 
 /* Buttons */
-button {
-  margin: 5px;
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
 
-button:hover {
-  background-color: #0056b3;
-}
+
+
 
 /* Disabled Button */
 button:disabled {
@@ -892,4 +885,14 @@ table td {
   color: white !important;
   padding: 5px;
   border-radius: 5px;
+}
+.clientes-table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+.clientes-button {
+  background-color: #007bff;
+  color: white;
 }

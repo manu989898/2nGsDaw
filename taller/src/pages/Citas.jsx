@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CrearReparacion from "./CrearReparacion"; // Asegúrate de importar el componente CrearReparacion
-import CitasCalendario from "./CitasCalendario"; // Importamos el componente del calendario
+import CrearReparacion from "./CrearReparacion"; 
+import CitasCalendario from "./CitasCalendario"; 
 
 const Citas = () => {
   const [citas, setCitas] = useState([]);
-  const [mecanicos, setMecanicos] = useState([]);
-  const [idMecanicoSeleccionado, setIdMecanicoSeleccionado] = useState(null);
-  const [notas, setNotas] = useState("");
-  const [estado, setEstado] = useState("Pendiente");
   const [filteredCitas, setFilteredCitas] = useState([]);
-  const [estadoFiltro, setEstadoFiltro] = useState(""); // Filtro de estado
-  const [fechaFiltro, setFechaFiltro] = useState(""); // Filtro de fecha
-  const [mostrarCrearReparacion, setMostrarCrearReparacion] = useState(false); // Nuevo estado para manejar la visibilidad
-  const [mostrarCalendario, setMostrarCalendario] = useState(false); // Nuevo estado para cambiar entre vista de tabla y calendario
-
+  const [estadoFiltro, setEstadoFiltro] = useState("");
+  const [ordenAscendente, setOrdenAscendente] = useState(true);
+  const [mostrarCrearReparacion, setMostrarCrearReparacion] = useState(false);
+  const [mostrarCalendario, setMostrarCalendario] = useState(false);
   const navigate = useNavigate();
 
-  // Obtener citas y mecánicos al cargar el componente
+  // Obtener citas al cargar el componente
   useEffect(() => {
     async function fetchCitas() {
       try {
@@ -28,224 +23,222 @@ const Citas = () => {
         console.error("Error al obtener las citas:", error);
       }
     }
-
     fetchCitas();
   }, []);
 
+  // Filtrar citas según el estado seleccionado
+  useEffect(() => {
+    let filtradas = [...citas];
+    if (estadoFiltro) {
+      filtradas = filtradas.filter((cita) => cita.estado === estadoFiltro);
+    }
+    setFilteredCitas(filtradas);
+  }, [estadoFiltro, citas]);
+
+  // Ordenar por estado
+  const ordenarPorEstado = () => {
+    const nuevasCitasOrdenadas = [...filteredCitas].sort((a, b) => {
+      return ordenAscendente
+        ? a.estado.localeCompare(b.estado)
+        : b.estado.localeCompare(a.estado);
+    });
+
+    setFilteredCitas(nuevasCitasOrdenadas);
+    setOrdenAscendente(!ordenAscendente);
+  };
+
+  // Eliminar cita
   const eliminarCita = async (idCita) => {
     if (!window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
-      return; // Cancelar si el usuario no confirma
+      return;
     }
-
     try {
       await axios.delete(`http://localhost:8000/api/citas/${idCita}`);
       alert("Cita eliminada correctamente.");
 
-      // Actualizar la lista de citas después de eliminar
-      setCitas((prevCitas) =>
-        prevCitas.filter((cita) => cita.id_cita !== idCita)
-      );
+      // Actualizar las citas eliminando la que se acaba de borrar
+      setCitas((prev) => prev.filter((cita) => cita.id_cita !== idCita));
     } catch (error) {
-      console.error(
-        "Error al eliminar la cita:",
-        error.response?.data || error
-      );
+      console.error("Error al eliminar la cita:", error);
       alert("No se pudo eliminar la cita.");
     }
   };
 
+  // Completar cita
   const completarCita = async (idCita) => {
     try {
-      const response = await axios.put(
-        `http://localhost:8000/api/citas/${idCita}`,
-        {
-          estado: "Completada",
-        }
-      );
+      await axios.put(`http://localhost:8000/api/citas/${idCita}`, {
+        estado: "Completada",
+      });
 
       alert("Cita completada correctamente.");
-      const updatedCita = response.data.cita;
 
-      setCitas((prevCitas) =>
-        prevCitas.map((cita) =>
+      // Actualizar las citas con el nuevo estado
+      setCitas((prev) =>
+        prev.map((cita) =>
           cita.id_cita === idCita ? { ...cita, estado: "Completada" } : cita
         )
       );
     } catch (error) {
-      console.error(
-        "Error al completar la cita:",
-        error.response?.data || error
-      );
+      console.error("Error al completar la cita:", error);
       alert("No se pudo completar la cita.");
     }
   };
 
-  // Filtro por estado y fecha
-  useEffect(() => {
-    let filtradas = [...citas];
-
-    // Filtro por estado
-    if (estadoFiltro) {
-      filtradas = filtradas.filter((cita) => cita.estado === estadoFiltro);
-    }
-
-    // Filtro por fecha
-    if (fechaFiltro) {
-      filtradas = filtradas.filter(
-        (cita) =>
-          cita.fecha_hora &&
-          new Date(cita.fecha_hora).toISOString().slice(0, 10) === fechaFiltro
-      );
-    }
-
-    setFilteredCitas(filtradas);
-  }, [estadoFiltro, fechaFiltro, citas]);
-
   return (
-    <div>
-      <h2>Citas</h2>
+    <div className="max-w-[90%] mx-auto my-6 p-4">
+      <h2 className="text-center text-xl font-bold mb-4">Citas</h2>
 
-      {/* Mostrar filtros solo si no se está mostrando el calendario */}
-      {!mostrarCalendario && (
-        <div className="asignar-mecanico-container">
-          {/* Filtro por estado */}
-          <div className="form-group">
-            <label htmlFor="estadoFiltro">Filtrar por Estado:</label>
-            <select
-              id="estadoFiltro"
-              value={estadoFiltro}
-              onChange={(e) => setEstadoFiltro(e.target.value)}
-              className="input-busqueda"
-            >
-              <option value="">Todos</option>
-              <option value="Pendiente">Pendiente</option>
-              <option value="Asignada">Asignada</option>
-              <option value="Completada">Completada</option>
-            </select>
-          </div>
+      {/* 📌 Filtros y Botones */}
+     
+        {/* 📌 Filtro por Estado */}
 
-          {/* Filtro por fecha */}
-          <div className="form-group">
-            <label htmlFor="fechaFiltro">Filtrar por Fecha:</label>
-            <input
-              type="date"
-              id="fechaFiltro"
-              value={fechaFiltro}
-              onChange={(e) => setFechaFiltro(e.target.value)}
-              className="input-busqueda"
-            />
-          </div>
+        {/* 📌 Botones */}
+        <div className="flex space-x-2 mt-4 md:mt-0">
+        <div className="flex items-center space-x-2">
+          <label htmlFor="estadoFiltro" className="text-gray-700 font-medium">
+            Estado:
+          </label>
+          <select
+            id="estadoFiltro"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            className="px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+          >
+            <option value="">Todos</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Asignada">Asignada</option>
+            <option value="Completada">Completada</option>
+          </select>
         </div>
-      )}
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"
+            onClick={() => navigate("/crear-cita")}
+          >
+            Crear Nueva Cita
+          </button>
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600"
+            onClick={() => setMostrarCrearReparacion(!mostrarCrearReparacion)}
+          >
+            {mostrarCrearReparacion ? "Ocultar Reparación" : "Crear Reparación"}
+          </button>
+          <button
+            className="bg-purple-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-purple-600"
+            onClick={() => setMostrarCalendario(!mostrarCalendario)}
+          >
+            {mostrarCalendario ? "Ver en Tabla" : "Ver en Calendario"}
+          </button>
+        </div>
 
-      <div className="centrar-boton">
-        <button
-          className="btn-login2"
-          style={{ marginBottom: "20px" }}
-          onClick={() => navigate("/crear-cita")}
-        >
-          Crear Nueva Cita
-        </button>
-        <button
-          className="btn-login2"
-          style={{ marginBottom: "20px", marginLeft: "10px" }}
-          onClick={() => setMostrarCrearReparacion(!mostrarCrearReparacion)}
-        >
-          {mostrarCrearReparacion ? "Ocultar Reparación" : "Crear Reparación"}
-        </button>
 
-        {/* Botón para cambiar entre la tabla y el calendario */}
-        <button
-          className="btn-login2"
-          style={{ marginBottom: "20px", marginLeft: "10px" }}
-          onClick={() => setMostrarCalendario(!mostrarCalendario)} // Alterna entre las vistas
-        >
-          {mostrarCalendario ? "Ver en Tabla" : "Ver en Calendario"}{" "}
-          {/* Cambia el texto según la vista */}
-        </button>
-      </div>
-
-      {/* Si se debe mostrar el componente CrearReparacion, lo renderizamos */}
+      {/* 📌 Mostrar CrearReparacion si está activo */}
       {mostrarCrearReparacion && <CrearReparacion />}
 
+      {/* 📌 Mostrar Citas en Calendario o en Tabla */}
       {mostrarCalendario ? (
-        <CitasCalendario key={new Date().getTime()} citas={filteredCitas} />
+        <CitasCalendario citas={filteredCitas} />
       ) : (
-        // Mostrar la tabla de citas
-        <table>
-          <thead>
-            <tr>
-              <th>ID Cita</th>
-              <th>Cliente</th>
-              <th>Vehículo</th>
-              <th>Placa</th>
-              <th>Detalles de la cita</th>
-              <th>Estado</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCitas.map((cita) => (
-              <tr key={cita.id_cita}>
-                <td>{cita.id_cita}</td>
-                <td>
-                  {cita.vehiculo?.cliente?.nombre || "Nombre no disponible"}{" "}
-                  {cita.vehiculo?.cliente?.apellido || "Apellido no disponible"}
-                </td>
-                <td>
-                  <img
-                    className="imagenMarca"
-                    src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
-                    alt={cita.vehiculo.modelo}
-                    style={{ width: "100px", height: "auto" }}
-                  />
-                </td>
-                <td style={{ whiteSpace: "nowrap" }}>
-                  {cita.vehiculo.placa || "Sin Detalles"}
-                </td>
-                <td>{cita.tipo_servicio || "Sin Detalles"}</td>
-                <td>{cita.estado || "Sin Estado"}</td>
-                <td>{cita.fecha_hora || "Sin Fecha"}</td>
-                <td>
-                  <button
-                    onClick={() => eliminarCita(cita.id_cita)}
-                    style={{
-                      backgroundColor:
-                        cita.estado === "Asignada" ||
-                        cita.estado === "Completada"
-                          ? "gray"
-                          : "red",
-                      color: "white",
-                      marginLeft: "10px",
-                      cursor:
-                        cita.estado === "Asignada" ||
-                        cita.estado === "Completada"
-                          ? "not-allowed"
-                          : "pointer",
-                    }}
-                    disabled={
-                      cita.estado === "Asignada" || cita.estado === "Completada"
-                    } // Deshabilitar si está asignada o completada
-                  >
-                    Eliminar
-                  </button>
+        <div className="overflow-x-auto">
+           <table className="w-full border-collapse border-none shadow-lg bg-white rounded-lg table-fixed">
+    {/* 🔹 Encabezado */}
+    <thead className="bg-blue-600 text-white">
+      <tr>
+        <th className="p-4 border w-[5%]">ID Cita</th>
+        <th className="p-4 border w-[15%]">Cliente</th>
+        <th className="p-4 border w-[10%]">Vehículo</th>
+        <th className="p-4 border w-[10%]">Placa</th>
+        <th className="p-4 border w-[20%]">Detalles</th>
+        <th 
+          className="p-4 border w-[10%] cursor-pointer hover:bg-blue-700 transition duration-200"
+          onClick={ordenarPorEstado}
+        >
+          Estado {ordenAscendente ? "⬆️" : "⬇️"}
+        </th>
+        <th className="p-4 border w-[15%]">Fecha</th>
+        <th className="p-4 border w-[15%]">Acciones</th>
+      </tr>
+    </thead>
 
-                  <button
-                    onClick={() => completarCita(cita.id_cita)}
-                    style={{
-                      backgroundColor: "green",
-                      marginLeft: "10px",
-                      color: "white",
-                    }}
-                  >
-                    Completar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    {/* 🔹 Cuerpo de la Tabla */}
+    <tbody>
+      {filteredCitas.map((cita, index) => (
+        <tr 
+          key={cita.id_cita} 
+          className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"} hover:bg-gray-200 transition duration-150`}
+        >
+          <td className="p-4 text-center border h-16">{cita.id_cita}</td>
+
+          {/* 📌 Cliente */}
+          <td className="p-4 text-center border h-16">
+            {cita.vehiculo?.cliente?.nombre || "Nombre no disponible"}{" "}
+            {cita.vehiculo?.cliente?.apellido || "Apellido no disponible"}
+          </td>
+
+          {/* 📌 Imagen del vehículo */}
+          <td className="p-4 border h-16">
+            <div className="flex justify-center items-center">
+              <img
+                src={`http://localhost:8000/img/${cita.vehiculo.marca}.png`}
+                alt={cita.vehiculo.modelo}
+                className="w-12 h-12 rounded-lg shadow-md object-contain"
+              />
+            </div>
+          </td>
+
+          {/* 📌 Placa del vehículo */}
+          <td className="p-4 text-center border h-16">{cita.vehiculo.placa || "Sin Detalles"}</td>
+
+          {/* 📌 Detalles de la cita */}
+          <td className="p-4 text-center border h-16">{cita.tipo_servicio || "Sin Detalles"}</td>
+
+          {/* 📌 Estado de la cita */}
+          <td className="p-4 text-center border h-16">
+            <span className={`px-3 py-1 rounded-full text-white ${
+              cita.estado === "Pendiente" ? "bg-yellow-500" :
+              cita.estado === "Asignada" ? "bg-blue-500" :
+              "bg-green-500"
+            }`}>
+              {cita.estado || "Sin Estado"}
+            </span>
+          </td>
+
+          {/* 📌 Fecha */}
+          <td className="p-4 text-center border h-16">{cita.fecha_hora || "Sin Fecha"}</td>
+
+          {/* 📌 Botones de acción */}
+          <td className="p-4 border h-16">
+            <div className="flex justify-center items-center space-x-2 flex-wrap gap-2">
+            <button 
+                onClick={() => eliminarCita(cita.id_cita)}
+                disabled={cita.estado === "Asignada" || cita.estado === "Completada"}
+                className={`px-3 py-2 rounded-lg text-white shadow-md transition ${
+                  cita.estado === "Asignada" || cita.estado === "Completada"
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600"
+                }`}
+              >
+                ❌ Eliminar
+              </button>
+
+              <button 
+                onClick={() => completarCita(cita.id_cita)}
+                disabled={cita.estado === "Completada"}
+                className={`px-3 py-2 rounded-lg text-white shadow-md transition ${
+                  cita.estado === "Completada"
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-500 hover:bg-green-600"
+                }`}
+              >
+                ✅ Completar
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+        </div>
       )}
     </div>
   );

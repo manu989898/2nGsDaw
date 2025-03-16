@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../api";
 
 const EditarVehiculo = () => {
-  const { id } = useParams(); // Obtener ID del vehículo desde la URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const [vehiculo, setVehiculo] = useState({
     marca: "",
@@ -18,19 +18,16 @@ const EditarVehiculo = () => {
     id_cliente: null,
   });
 
-  const [cliente, setCliente] = useState({ nombre: "", apellido: "" }); // Información del cliente
+  const [cliente, setCliente] = useState({ nombre: "", apellido: "" });
 
   useEffect(() => {
-    // Cargar los datos del vehículo y el cliente
     const fetchVehiculo = async () => {
       try {
-        // Obtener datos del vehículo
         const responseVehiculo = await api.get(`/vehiculos/${id}`);
         const vehiculoData = responseVehiculo.data;
 
         setVehiculo(vehiculoData);
 
-        // Obtener datos del cliente asociado al vehículo
         const responseCliente = await api.get(`/usuarios/${vehiculoData.id_cliente}`);
         setCliente(responseCliente.data);
       } catch (error) {
@@ -50,149 +47,89 @@ const EditarVehiculo = () => {
     e.preventDefault();
     try {
       await api.put(`/vehiculos/${id}`, vehiculo);
-      alert("Vehículo actualizado correctamente.");
-      navigate("/vehiculos"); // Volver a la lista de vehículos
+      alert("✅ Vehículo actualizado correctamente.");
+      navigate("/vehiculos");
     } catch (error) {
       console.error("Error al actualizar el vehículo:", error);
-      alert("No se pudo actualizar el vehículo.");
+      alert("❌ No se pudo actualizar el vehículo.");
     }
   };
 
   return (
-    <div className="details-section">
-      <h1>Editar Vehículo</h1>
-      <form onSubmit={handleSubmit} style={{ maxWidth: "500px", margin: "0 auto" }}>
-        {/* Datos del cliente */}
-        <div className="form-group">
-          <label htmlFor="nombreCliente">Nombre del Propietario:</label>
-          <input
-            type="text"
-            id="nombreCliente"
-            value={`${cliente.nombre} ${cliente.apellido}`}
-            readOnly
-            style={{ backgroundColor: "#f8f9fa", cursor: "not-allowed" }}
-          />
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">Editar Vehículo</h1>
 
-        {/* Datos del vehículo */}
-        <div className="form-group">
-          <label htmlFor="marca">Marca:</label>
-          <input
-            type="text"
-            id="marca"
-            name="marca"
-            value={vehiculo.marca}
-            onChange={handleChange}
-            placeholder="Marca"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="modelo">Modelo:</label>
-          <input
-            type="text"
-            id="modelo"
-            name="modelo"
-            value={vehiculo.modelo}
-            onChange={handleChange}
-            placeholder="Modelo"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="placa">Placa:</label>
-          <input
-            type="text"
-            id="placa"
-            name="placa"
-            value={vehiculo.placa}
-            onChange={handleChange}
-            placeholder="Placa"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="año">Año:</label>
-          <input
-            type="number"
-            id="año"
-            name="año"
-            value={vehiculo.año}
-            onChange={handleChange}
-            placeholder="Año"
-            required    
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="color">Color:</label>
-          <input
-            type="text"
-            id="color"
-            name="color"
-            value={vehiculo.color}
-            onChange={handleChange}
-            placeholder="Color"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="quilometraje">Kilometraje:</label>
-          <input
-            type="number"
-            id="quilometraje"
-            name="quilometraje"
-            value={vehiculo.quilometraje}
-            onChange={handleChange}
-            placeholder="Kilometraje"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="bastidor">Bastidor:</label>
-          <input
-            type="text"
-            id="bastidor"
-            name="bastidor"
-            value={vehiculo.bastidor}
-            onChange={handleChange}
-            placeholder="Bastidor"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="combustible">Combustible:</label>
-          <input
-            type="text"
-            id="combustible"
-            name="combustible"
-            value={vehiculo.combustible}
-            onChange={handleChange}
-            placeholder="Combustible"
-            required
-          />
-        </div>
-        <div className="form-group">
-  <label htmlFor="transmision">Transmisión:</label>
-  <select
-    id="transmision"
-    name="transmision"
-    value={vehiculo.transmision}
-    onChange={handleChange}
-    required
-    className="input-busqueda"
-  >
-    <option value="Manual">Manual</option>
-    <option value="Automatica">Automática</option>
-  </select>
-</div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Datos del cliente */}
+          <div className="form-group">
+            <label className="block font-medium text-gray-700">Propietario:</label>
+            <input
+              type="text"
+              value={`${cliente.nombre} ${cliente.apellido}`}
+              readOnly
+              className="w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+            />
+          </div>
 
+          {/* Datos del vehículo */}
+          {[
+            { label: "Marca", name: "marca", type: "text" },
+            { label: "Modelo", name: "modelo", type: "text" },
+            { label: "Placa", name: "placa", type: "text" },
+            { label: "Año", name: "año", type: "number" },
+            { label: "Color", name: "color", type: "text" },
+            { label: "Kilometraje", name: "quilometraje", type: "number" },
+            { label: "Bastidor", name: "bastidor", type: "text" },
+            { label: "Combustible", name: "combustible", type: "text" },
+          ].map(({ label, name, type }) => (
+            <div key={name} className="form-group">
+              <label className="block font-medium text-gray-700">{label}:</label>
+              <input
+                type={type}
+                name={name}
+                value={vehiculo[name]}
+                onChange={handleChange}
+                placeholder={label}
+                required
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              />
+            </div>
+          ))}
 
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
-          <button className="btn-login" type="submit">Guardar Cambios</button>
-          <button className="btn-login" type="button" onClick={() => navigate("/vehiculos")}>
-            Cancelar
-          </button>
-        </div>
-      </form>
+          {/* Selector de Transmisión */}
+          <div className="form-group">
+            <label className="block font-medium text-gray-700">Transmisión:</label>
+            <select
+              name="transmision"
+              value={vehiculo.transmision}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            >
+              <option value="Manual">Manual</option>
+              <option value="Automatica">Automática</option>
+            </select>
+          </div>
+
+          {/* Botones */}
+          <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              className="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+              Guardar Cambios
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/vehiculos")}
+              className="w-1/2 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500 transition"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

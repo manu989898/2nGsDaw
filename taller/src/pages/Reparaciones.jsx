@@ -126,91 +126,121 @@ const Reparaciones = () => {
      
       </div>
 
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th key={col}>{col.replace('_', ' ').toUpperCase()}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredReparaciones.map((reparacion) => (
-              <tr key={reparacion.id_reparacion}>
-                <td>{reparacion.id_reparacion}</td>
-                <td>{reparacion.id_cita}</td>
-                <td>
-  <div className="progress-container">
-    <div
-      className="progress-bar"
-      style={{
-        width: `${reparacion.progreso}%`,
-        backgroundColor:
-          reparacion.progreso === 100
-            ? "#4CAF50" // Verde para completado
-            : reparacion.progreso >= 50
-            ? "#FFA500" // Naranja para en progreso
-            : "#FF4500", // Rojo para poco avance
-      }}
-    >
-      <span className="progress-text">{reparacion.progreso}%</span>
+      <div className="max-w-[90%] mx-auto my-6 p-4 bg-white rounded-lg shadow-lg">
+  <h1 className="text-2xl font-bold text-gray-700 mb-4 text-center">
+    🔧 Reparaciones
+  </h1>
+
+  <div className="overflow-x-auto">
+  <div className="table-container">
+  <table
+    style={{
+      tableLayout: "fixed", // Fija el ancho de las celdas
+      width: "100%", // Asegura que la tabla ocupe todo el espacio disponible
+    }}
+  >
+    <thead>
+      <tr>
+        {columns.map((col) => (
+          <th key={col} style={{ width: "14%" }}>{col.replace('_', ' ').toUpperCase()}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {filteredReparaciones.map((reparacion) => (
+        <tr key={reparacion.id_reparacion}>
+          <td>{reparacion.id_reparacion}</td>
+          <td>{reparacion.id_cita}</td>
+          <td>
+            <div className="progress-container">
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${reparacion.progreso}%`,
+                  backgroundColor:
+                    reparacion.progreso === 100
+                      ? "#4CAF50" // Verde para completado
+                      : reparacion.progreso >= 50
+                      ? "#FFA500" // Naranja para en progreso
+                      : "#FF4500", // Rojo para poco avance
+                }}
+              >
+                <span className="progress-text">{reparacion.progreso}%</span>
+              </div>
+            </div>
+          </td>
+           {/* 📌 Estado */}
+            <td className="p-4 text-center">
+              <span
+                className={`px-3 py-1 rounded-full text-white ${
+                  reparacion.estado === "Completada"
+                    ? "bg-green-500"
+                    : reparacion.estado === "En Proceso"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+                }`}
+              >
+                {reparacion.estado}
+              </span>
+            </td>
+            <td
+  className="p-4 text-center align-middle"
+  style={{
+    maxWidth: "400px",
+    whiteSpace: "normal", // Permite el salto de línea
+    textAlign: "justify", // Justifica el texto para mejor legibilidad
+  }}
+>
+  {expandedNotes[reparacion.id_reparacion] ? (
+    <div>
+      <p>{reparacion.notas}</p>
+      <button
+        className="text-blue-500 hover:underline mt-1 focus:outline-none"
+        onClick={() =>
+          setExpandedNotes({
+            ...expandedNotes,
+            [reparacion.id_reparacion]: false,
+          })
+        }
+      >
+        Leer menos
+      </button>
     </div>
-  </div>
+  ) : (
+    <div>
+      <p>
+        {reparacion.notas?.length > 100
+          ? `${reparacion.notas.slice(0, 100)}...`
+          : reparacion.notas}
+      </p>
+      {reparacion.notas?.length > 100 && (
+        <button
+          className="text-blue-500 hover:underline mt-1 focus:outline-none"
+          onClick={() =>
+            setExpandedNotes({
+              ...expandedNotes,
+              [reparacion.id_reparacion]: true,
+            })
+          }
+        >
+          Leer más
+        </button>
+      )}
+    </div>
+  )}
 </td>
 
+          <td>{reparacion.fecha_inicio}</td>
+          <td>{reparacion.fecha_fin || "Pendiente"}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-                <td
-                  
-                >
-                  {reparacion.estado}
-                </td>
-                <td
-                style={{
-                  maxWidth: '180px',
-                  overflowWrap: 'break-word',
-                }}
-                >
-                  {expandedNotes[reparacion.id_reparacion] ? (
-                    <div>
-                      <p
-                      style={{
-                        maxWidth: '400px',
-                        overflowWrap: 'break-word',
-                      }}
-                      >{reparacion.notas}</p>
-                      <button
-                        className="btn-leer-mas"
-                        onClick={() => toggleNotes(reparacion.id_reparacion)}
-                      >
-                        Leer menos
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <p>
-                        {reparacion.notas?.length > 100
-                          ? `${reparacion.notas.slice(0, 100)}...`
-                          : reparacion.notas}
-                      </p>
-                      {reparacion.notas?.length > 100 && (
-                        <button
-                          className="btn-leer-mas"
-                          onClick={() => toggleNotes(reparacion.id_reparacion)}
-                        >
-                          Leer más
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </td>
-                <td>{reparacion.fecha_inicio}</td>
-                <td>{reparacion.fecha_fin || 'Pendiente'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+  </div>
+</div>
+
     </div>
   );
 };

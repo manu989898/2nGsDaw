@@ -220,17 +220,26 @@ const GestorReparaciones = () => {
                     {...provided.droppableProps}
                   >
                     <h2
-                      style={{
-                        color:
-                          mecanico.nombre.toLowerCase() === "completado"
-                            ? "green"
-                            : mecanico.nombre.toLowerCase() === "sin asignar"
-                            ? "goldenrod"
-                            : "black",
-                      }}
-                    >
-                      {mecanico.nombre} {mecanico.apellido}
-                    </h2>
+  style={{
+    backgroundColor:
+      mecanico.nombre.toLowerCase() === "completado"
+        ? "#28a745" // ✅ Verde claro para completado
+        : mecanico.nombre.toLowerCase() === "sin asignar"
+        ? "#ffc107" // ✅ Amarillo dorado para "Sin Asignar"
+        : "#343a40", // ✅ Gris oscuro para otros estados
+
+    color: "white", // ✅ Texto en blanco para mejor contraste
+    padding: "10px 15px", // ✅ Espaciado uniforme
+    borderRadius: "8px", // ✅ Bordes redondeados para suavizar el diseño
+    textAlign: "center", // ✅ Centra el texto
+    fontWeight: "bold", // ✅ Texto en negrita
+    textTransform: "capitalize", // ✅ Asegura que el nombre empiece con mayúscula
+    boxShadow: "0px 2px 5px rgba(0,0,0,0.2)", // ✅ Pequeña sombra para dar profundidad
+  }}
+>
+  {mecanico.nombre} {mecanico.apellido}
+</h2>
+
 
                     {reparacionesFiltradas
                       .filter((rep) => rep.id_mecanico === mecanico.id_mecanico)
@@ -256,12 +265,35 @@ const GestorReparaciones = () => {
                                     ? "completado"
                                     : ""
                                 }`}
+                                style={{
+                                  backgroundColor:
+                                    reparacion.mecanicoEstado.toLowerCase() ===
+                                    "completado"
+                                      ? "#d4edda"
+                                      : "#f8f9fa", // ✅ Verde si está completado
+                                  border:
+                                    reparacion.mecanicoEstado.toLowerCase() ===
+                                    "completado"
+                                      ? "2px solid #28a745"
+                                      : "none", // ✅ Borde verde si está completado
+                                  borderRadius: "8px",
+                                  padding: "8px",
+                                  boxShadow: "0px 2px 5px rgba(0,0,0,0.1)", // ✅ Pequeña sombra
+                                }}
                               >
                                 <h3
                                   style={{
                                     display: "flex",
                                     alignItems: "center",
-                                    gap: "8px",
+                                    justifyContent: "space-between",
+                                    gap: "12px",
+                                    fontSize: "16px",
+                                    fontWeight: "bold",
+                                    color:
+                                      reparacion.mecanicoEstado.toLowerCase() ===
+                                      "completado"
+                                        ? "#155724"
+                                        : "black", // ✅ Texto verde oscuro si está completado
                                   }}
                                 >
                                   {reparacion.cita?.vehiculo?.placa ||
@@ -270,33 +302,50 @@ const GestorReparaciones = () => {
                                     className="imagenMarcas"
                                     src={`http://localhost:8000/img/${reparacion.cita?.vehiculo?.marca}.png`}
                                     alt={reparacion.cita?.vehiculo?.modelo}
-                                    style={{ width: "50px", height: "auto" }}
+                                    style={{
+                                      width: "50px",
+                                      height: "auto",
+                                      objectFit: "contain",
+                                      borderRadius: "5px",
+                                      backgroundColor: "white",
+                                      padding: "5px",
+                                      border:
+                                        reparacion.mecanicoEstado.toLowerCase() ===
+                                        "completado"
+                                          ? "1px solid #28a745"
+                                          : "none", // ✅ Borde verde en la imagen si está completado
+                                    }}
                                   />
                                 </h3>
                               </div>
 
-                              <p></p>
                               <p>
-                                <strong>Servicio:</strong>{" "}
-                                {reparacion.cita?.tipo_servicio}
+                                <strong>🛠 Servicio:</strong>{" "}
+                                {reparacion.cita?.tipo_servicio ||
+                                  "No especificado"}
                               </p>
                               <p>
-                                <strong>Fecha/Hora:</strong>{" "}
+                                <strong>📅 Fecha/Hora:</strong>{" "}
                                 {reparacion.cita?.fecha_hora || "No disponible"}
                               </p>
                               <p>
-                                <strong>Notas:</strong> {reparacion.notas}
+                                <strong>📝 Notas:</strong>{" "}
+                                {reparacion.notas || "Sin notas"}
                               </p>
-                              <p>
-                                <strong>Estado del Mecánico:</strong>
+
+                              {/* 🔹 Selector de Estado del Mecánico */}
+                              <p className="flex items-center gap-2">
+                                <strong>⚙️ Estado del Mecánico:</strong>
                                 <select
-                                  value={reparacion.mecanicoEstado} // 🔹 Usamos mecanicoEstado
+                                  value={reparacion.mecanicoEstado}
                                   onChange={(e) =>
                                     handleEstadoChange(
                                       reparacion.id_reparacion,
                                       e.target.value
                                     )
                                   }
+                                  className={`px-2 py-1 border rounded-md shadow-sm text-sm 
+            `}
                                 >
                                   <option value="En Proceso">En Proceso</option>
                                   <option value="Completado">Completado</option>
