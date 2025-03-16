@@ -7,10 +7,10 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Login.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
+  
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
@@ -19,12 +19,13 @@ const Login = ({ onLogin }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-    
+  
       if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem("authToken", data.token);  // Guardar el token en sessionStorage
-        onLogin(data.user);  // Llamar la función onLogin pasando el usuario
-        navigate("/");  // Redirigir al home
+        sessionStorage.setItem("authToken", data.token);  // Store token
+        sessionStorage.setItem("user", JSON.stringify(data.user)); // Store user data
+        onLogin(data.user);  // Passing user data to parent (App)
+        navigate("/");  // Navigate to the main page
       } else {
         setError("Credenciales inválidas. Intenta nuevamente.");
       }
@@ -32,8 +33,8 @@ const Login = ({ onLogin }) => {
       console.error("Error al iniciar sesión:", error);
       setError("Ocurrió un error en el servidor. Intenta más tarde.");
     }
-    
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-200">
@@ -63,7 +64,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-blue-700 font-semibold mb-1">
+            <label htmlFor="password" className="block text-gray-700 font-semibold mb-1">
               Contraseña
             </label>
             <input

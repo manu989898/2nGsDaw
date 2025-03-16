@@ -37,7 +37,9 @@ const Vehiculos = () => {
 
   return (
     <div>
-      <h1>Vehículos</h1>
+       <h1 className="text-3xl mt-5 font-bold text-center text-gray-800 mb-6">
+        Vehiculos
+      </h1>
 
       <div className="buscador-matricula">
         <label htmlFor="matricula" className="etiqueta-matricula">

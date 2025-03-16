@@ -191,7 +191,9 @@ const GestorReparaciones = () => {
   };
   return (
     <div className="timeline-module-container">
-      <h1>Timeline de Reparaciones</h1>
+       <h1 className="text-3x font-bold text-center text-gray-800 mb-6">
+        Gestor Taller
+      </h1>
       <div className="search-container">
         <input
           type="text"
@@ -220,26 +222,25 @@ const GestorReparaciones = () => {
                     {...provided.droppableProps}
                   >
                     <h2
-  style={{
-    backgroundColor:
-      mecanico.nombre.toLowerCase() === "completado"
-        ? "#28a745" // ✅ Verde claro para completado
-        : mecanico.nombre.toLowerCase() === "sin asignar"
-        ? "#ffc107" // ✅ Amarillo dorado para "Sin Asignar"
-        : "#343a40", // ✅ Gris oscuro para otros estados
+                      style={{
+                        backgroundColor:
+                          mecanico.nombre.toLowerCase() === "completado"
+                            ? "#28a745" // ✅ Verde claro para completado
+                            : mecanico.nombre.toLowerCase() === "sin asignar"
+                            ? "#ffc107" // ✅ Amarillo dorado para "Sin Asignar"
+                            : "#343a40", // ✅ Gris oscuro para otros estados
 
-    color: "white", // ✅ Texto en blanco para mejor contraste
-    padding: "10px 15px", // ✅ Espaciado uniforme
-    borderRadius: "8px", // ✅ Bordes redondeados para suavizar el diseño
-    textAlign: "center", // ✅ Centra el texto
-    fontWeight: "bold", // ✅ Texto en negrita
-    textTransform: "capitalize", // ✅ Asegura que el nombre empiece con mayúscula
-    boxShadow: "0px 2px 5px rgba(0,0,0,0.2)", // ✅ Pequeña sombra para dar profundidad
-  }}
->
-  {mecanico.nombre} {mecanico.apellido}
-</h2>
-
+                        color: "white", // ✅ Texto en blanco para mejor contraste
+                        padding: "10px 15px", // ✅ Espaciado uniforme
+                        borderRadius: "8px", // ✅ Bordes redondeados para suavizar el diseño
+                        textAlign: "center", // ✅ Centra el texto
+                        fontWeight: "bold", // ✅ Texto en negrita
+                        textTransform: "capitalize", // ✅ Asegura que el nombre empiece con mayúscula
+                        boxShadow: "0px 2px 5px rgba(0,0,0,0.2)", // ✅ Pequeña sombra para dar profundidad
+                      }}
+                    >
+                      {mecanico.nombre} {mecanico.apellido}
+                    </h2>
 
                     {reparacionesFiltradas
                       .filter((rep) => rep.id_mecanico === mecanico.id_mecanico)

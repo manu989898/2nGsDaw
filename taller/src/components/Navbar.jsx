@@ -14,14 +14,13 @@ const Navbar = ({ user, onLogout }) => {
         <ul className="flex space-x-4">
           <li><Link to="/" className="hover:text-gray-300">Dashboard</Link></li>
           <li><Link to="/clientes" className="hover:text-gray-300">Clientes</Link></li>
-          <li><Link to="/citas" className="hover:text-gray-300">Citas</Link></li>
           <li><Link to="/vehiculos" className="hover:text-gray-300">Vehículos</Link></li>
-          <li><Link to="/gestor-reparaciones" className="hover:text-gray-300">Gestor R</Link></li>
-          <li><Link to="/empleados" className="hover:text-gray-300">Empleados</Link></li>
-          <li><Link to="/notificaciones" className="hover:text-gray-300">Notificaciones</Link></li>
+          <li><Link to="/citas" className="hover:text-gray-300">Citas</Link></li>
           <li><Link to="/reparaciones" className="hover:text-gray-300">Reparaciones</Link></li>
-          <li><Link to="/reportes" className="hover:text-gray-300">Reportes</Link></li>
+          <li><Link to="/gestor-reparaciones" className="hover:text-gray-300">Gestor R</Link></li>
           <li><Link to="/timeline" className="hover:text-gray-300">Timeline</Link></li>
+          <li><Link to="/notificaciones" className="hover:text-gray-300">Notificaciones</Link></li>
+          <li><Link to="/reportes" className="hover:text-gray-300">Reportes</Link></li>
         </ul>
 
         {/* Usuario autenticado */}

@@ -65,19 +65,13 @@ const Reparaciones = () => {
     }));
   };
 
-  const columns = [
-    'id_reparacion',
-    'id_cita',
-    'progreso',
-    'estado',
-    'notas',
-    'fecha_inicio',
-    'fecha_fin',
-  ];
+ 
 
   return (
     <div className="reparaciones-container">
-      <h1>Reparaciones</h1>
+     <h1 className="text-2xl mt-4 font-bold text-gray-700 mb-4 text-center">
+    🔧 Reparaciones
+  </h1>
 
       <div className="filters-container">
         {/* Filtros */}
@@ -126,10 +120,8 @@ const Reparaciones = () => {
      
       </div>
 
-      <div className="max-w-[90%] mx-auto my-6 p-4 bg-white rounded-lg shadow-lg">
-  <h1 className="text-2xl font-bold text-gray-700 mb-4 text-center">
-    🔧 Reparaciones
-  </h1>
+      <div className="max-w-[90%] mx-auto my-6 p-4">
+  
 
   <div className="overflow-x-auto">
   <div className="table-container">
@@ -141,9 +133,15 @@ const Reparaciones = () => {
   >
     <thead>
       <tr>
-        {columns.map((col) => (
-          <th key={col} style={{ width: "14%" }}>{col.replace('_', ' ').toUpperCase()}</th>
-        ))}
+        
+        <th>Número Reparación</th>
+        <th>Número Cita</th>
+        <th>Progreso</th>
+        <th>Estado</th>
+        <th>Notas</th>
+        <th>Fecha de Inicio</th>
+        <th>Fecha de Finalización</th>
+
       </tr>
     </thead>
     <tbody>
@@ -210,7 +208,7 @@ const Reparaciones = () => {
     <div>
       <p>
         {reparacion.notas?.length > 100
-          ? `${reparacion.notas.slice(0, 100)}...`
+          ? `${reparacion.notas.slice(0, 30)}...`
           : reparacion.notas}
       </p>
       {reparacion.notas?.length > 100 && (

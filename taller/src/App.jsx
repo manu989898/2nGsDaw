@@ -26,13 +26,20 @@ import CrearReparacion from "./pages/CrearReparacion";
 import Register from "./pages/Register";
 import GestorReparaciones from "./pages/GestorReparaciones";
 import React, { useState, useEffect } from "react";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    // Load the user synchronously from sessionStorage
+    const storedUser = sessionStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  const [loading, setLoading] = useState(true); // Prevent redirection until confirmed
 
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");  // Obtener el token desde sessionStorage
+    // If there's a token, validate it with an API call
+    const token = sessionStorage.getItem("authToken");
+
     if (token) {
       fetch("http://127.0.0.1:8000/api/me", {
         method: "GET",
@@ -40,158 +47,55 @@ const App = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Error al autenticar");
-        })
+        .then((response) => response.json())
         .then((data) => {
-          setUser(data.user);  // Aquí se asigna el usuario
+          setUser(data.user);
+          sessionStorage.setItem("user", JSON.stringify(data.user)); // Store user data persistently
         })
-        .catch((error) => {
-          console.error("Error al obtener usuario:", error);
-          sessionStorage.removeItem("authToken");  // Si hubo error, elimina el token
-        });
+        .catch(() => {
+          sessionStorage.removeItem("authToken");
+          sessionStorage.removeItem("user");
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
     } else {
-      setUser(null); // Si no hay token, el usuario no está autenticado
+      setLoading(false);
     }
   }, []);
-  
+
   const handleLogout = () => {
-    // Elimina el token de sessionStorage en lugar de localStorage
     sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("user");
     setUser(null);
   };
-  
+
+  // Prevent redirects while checking authentication status
+  if (loading) return <p>Loading...</p>;
+
   return (
     <Router>
       <Navbar user={user} onLogout={handleLogout} />
       <Routes>
-        <Route path="/login" element={<Login onLogin={setUser} />} />
-        <Route path="/register" element={<Register />} />
+        {/* Public routes */}
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login onLogin={setUser} />} />
+        <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
 
-        {/* Rutas protegidas */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute user={user}>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/clientes"
-          element={
-            <ProtectedRoute user={user}>
-              <InfoClientes />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/editar-cliente/:id"
-          element={
-            <ProtectedRoute user={user}>
-              <EditarCliente />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/empleados"
-          element={
-            <ProtectedRoute user={user}>
-              <Empleados />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/citas"
-          element={
-            <ProtectedRoute user={user}>
-              <Citas />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/crear-cita"
-          element={
-            <ProtectedRoute user={user}>
-              <CrearCita />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/vehiculos"
-          element={
-            <ProtectedRoute user={user}>
-              <Vehiculos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/editar-vehiculo/:id"
-          element={
-            <ProtectedRoute user={user}>
-              <EditarVehiculo />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/mecanicos"
-          element={
-            <ProtectedRoute user={user}>
-              <Mecanicos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/notificaciones"
-          element={
-            <ProtectedRoute user={user}>
-              <Notificaciones />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reparaciones"
-          element={
-            <ProtectedRoute user={user}>
-              <Reparaciones />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/crear-reparacion"
-          element={
-            <ProtectedRoute user={user}>
-              <CrearReparacion />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reportes"
-          element={
-            <ProtectedRoute user={user}>
-              <Reportes />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/timeline"
-          element={
-            <ProtectedRoute user={user}>
-              <Timeline />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/gestor-reparaciones"
-          element={
-            <ProtectedRoute user={user}>
-              <GestorReparaciones />
-            </ProtectedRoute>
-          }
-        />
+        {/* Protected routes */}
+        <Route path="/" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/clientes" element={user ? <InfoClientes /> : <Navigate to="/login" />} />
+        <Route path="/editar-cliente/:id" element={user ? <EditarCliente /> : <Navigate to="/login" />} />
+        <Route path="/empleados" element={user ? <Empleados /> : <Navigate to="/login" />} />
+        <Route path="/citas" element={user ? <Citas /> : <Navigate to="/login" />} />
+        <Route path="/crear-cita" element={user ? <CrearCita /> : <Navigate to="/login" />} />
+        <Route path="/vehiculos" element={user ? <Vehiculos /> : <Navigate to="/login" />} />
+        <Route path="/editar-vehiculo/:id" element={user ? <EditarVehiculo /> : <Navigate to="/login" />} />
+        <Route path="/mecanicos" element={user ? <Mecanicos /> : <Navigate to="/login" />} />
+        <Route path="/notificaciones" element={user ? <Notificaciones /> : <Navigate to="/login" />} />
+        <Route path="/reparaciones" element={user ? <Reparaciones /> : <Navigate to="/login" />} />
+        <Route path="/crear-reparacion" element={user ? <CrearReparacion /> : <Navigate to="/login" />} />
+        <Route path="/reportes" element={user ? <Reportes /> : <Navigate to="/login" />} />
+        <Route path="/timeline" element={user ? <Timeline /> : <Navigate to="/login" />} />
+        <Route path="/gestor-reparaciones" element={user ? <GestorReparaciones /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

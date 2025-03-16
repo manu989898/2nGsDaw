@@ -27,7 +27,9 @@ const Timeline = () => {
         try {
           setLoading(true);
           const response = await api.get(`/mecanicos/${selectedMecanico}/reparaciones`);
-          const sortedReparaciones = response.data.filter((reparacion) => reparacion.id_cita)
+          
+          const sortedReparaciones = response.data
+            .filter((reparacion) => reparacion.id_cita)
             .sort((a, b) => {
               const order = {
                 "En Proceso": 1,
@@ -35,7 +37,12 @@ const Timeline = () => {
                 Completado: 3,
               };
               return (order[a.estado] || 4) - (order[b.estado] || 4);
-            });
+            })
+            .map((reparacion) => ({
+              ...reparacion,
+              mecanicoEstado: reparacion.mecanicoEstado || "Pendiente", // Set default state
+            }));
+  
           setReparaciones(sortedReparaciones);
         } catch (error) {
           console.error("Error al obtener las reparaciones:", error);
@@ -44,10 +51,10 @@ const Timeline = () => {
         }
       }
     };
-
+  
     fetchReparaciones();
   }, [selectedMecanico]);
-
+  
   const handleEstadoChange = async (idReparacion, nuevoMecanicoEstado) => {
     try {
       await api.put(`/reparaciones/${idReparacion}/estado-mecanico`, {

@@ -87,11 +87,9 @@ const Citas = () => {
 
   return (
     <div className="max-w-[90%] mx-auto my-6 p-4">
-      <h2 className="text-center text-xl font-bold mb-4">Citas</h2>
-
-      {/* 📌 Filtros y Botones */}
-     
-        {/* 📌 Filtro por Estado */}
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        Citas
+      </h1>
 
         {/* 📌 Botones */}
         <div className="flex space-x-2 mt-4 md:mt-0">
@@ -194,14 +192,22 @@ const Citas = () => {
 
           {/* 📌 Estado de la cita */}
           <td className="p-4 text-center border h-16">
-            <span className={`px-3 py-1 rounded-full text-white ${
-              cita.estado === "Pendiente" ? "bg-yellow-500" :
-              cita.estado === "Asignada" ? "bg-blue-500" :
-              "bg-green-500"
-            }`}>
-              {cita.estado || "Sin Estado"}
-            </span>
-          </td>
+  <span 
+    className={`px-3 py-1 rounded-full text-white ${
+      cita.estado === "Pendiente" ? "bg-yellow-500" :
+      cita.estado === "Asignada" ? "bg-blue-500" :
+      "bg-green-500"
+    }`}
+    title={
+      cita.estado === "Pendiente" ? "La cita aún no ha sido asignada" :
+      cita.estado === "Asignada" ? "La cita ha sido asignada a un mecánico" :
+      "La cita ha sido completada"
+    }
+  >
+    {cita.estado || "Sin Estado"}
+  </span>
+</td>
+
 
           {/* 📌 Fecha */}
           <td className="p-4 text-center border h-16">{cita.fecha_hora || "Sin Fecha"}</td>
